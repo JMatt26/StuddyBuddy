@@ -1,1 +1,1 @@
-# StuddyBuddy
+# Study-App
