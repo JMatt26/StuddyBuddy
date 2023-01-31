@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Education {
@@ -22,6 +23,9 @@ public class Education {
     private Program major;
 
     private Program minor;
+
+    @ManyToOne
+    private User user;
 
     public int getEducationId() {
         return educationId;
@@ -61,6 +65,14 @@ public class Education {
 
     public void setMinor(Program minor) {
         this.minor = minor;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     

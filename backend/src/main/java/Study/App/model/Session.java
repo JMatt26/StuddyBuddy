@@ -1,9 +1,12 @@
 package Study.App.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Session {
@@ -17,6 +20,25 @@ public class Session {
     private int capacity;
     private String description;
     private int attendees;
+
+    @ManyToOne
+    private Participant participant;
+
+    @OneToOne (cascade = CascadeType.REMOVE)
+    private SessionInformation sessionInformation;
+
+    public Participant getParticipant() {
+        return participant;
+    }
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+    public SessionInformation getSessionInformation() {
+        return sessionInformation;
+    }
+    public void setSessionInformation(SessionInformation sessionInformation) {
+        this.sessionInformation = sessionInformation;
+    }
     public int getSessionId() {
         return sessionId;
     }

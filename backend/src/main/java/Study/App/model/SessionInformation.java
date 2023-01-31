@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class SessionInformation {
@@ -24,6 +25,28 @@ public class SessionInformation {
     private boolean isOnline = false;
 
     private List<String> materialUrl;
+
+    @ManyToOne
+    private Education education;
+
+    @ManyToOne
+    private Location location;
+
+    public Education getEducation() {
+        return education;
+    }
+
+    public void setEducation(Education education) {
+        this.education = education;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public int getSessionInformationId() {
         return sessionInformationId;
