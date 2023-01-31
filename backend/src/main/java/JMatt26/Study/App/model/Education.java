@@ -1,8 +1,8 @@
-package JMatt26.Study.model;
+package JMatt26.Study.App.model;
 
-import JMatt26.Study.model.enums.Degree;
-import JMatt26.Study.model.enums.Department;
-import JMatt26.Study.model.enums.Program;
+import JMatt26.Study.App.model.enums.Degree;
+import JMatt26.Study.App.model.enums.Department;
+import JMatt26.Study.App.model.enums.Program;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

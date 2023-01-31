@@ -1,4 +1,4 @@
-package JMatt26.Study.model;
+package JMatt26.Study.App.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

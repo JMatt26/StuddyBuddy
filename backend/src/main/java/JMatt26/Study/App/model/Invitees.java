@@ -1,7 +1,7 @@
-package JMatt26.Study.model;
+package JMatt26.Study.App.model;
 
-import JMatt26.Study.model.enums.InvitationRole;
-import JMatt26.Study.model.enums.InvitationStatus;
+import JMatt26.Study.App.model.enums.InvitationRole;
+import JMatt26.Study.App.model.enums.InvitationStatus;
 
 public class Invitees {
     private InvitationRole role;

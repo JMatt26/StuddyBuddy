@@ -1,20 +1,35 @@
-package JMatt26.Study.model;
+package JMatt26.Study.App.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import JMatt26.Study.App.model.enums.ParticipationRole;
 
 @Entity
+@Table(name="appuser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
+    private Set<ParticipationRole> roles = new HashSet<ParticipationRole>();
+
     private String name;
     private String username;
     private String password;
     
+    public Set<ParticipationRole> getRoles() {
+        return roles;
+    }
+    public void setRoles(Set<ParticipationRole> roles) {
+        this.roles = roles;
+    }
     public int getUserId() {
         return userId;
     }
