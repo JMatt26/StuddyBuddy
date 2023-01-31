@@ -1,4 +1,4 @@
-package JMatt26.Study.App.model;
+package Study.App.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
-import JMatt26.Study.App.model.enums.ParticipationRole;
+import Study.App.model.enums.ParticipationRole;
 
 @Entity
 @Table(name="appuser")

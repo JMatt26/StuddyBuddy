@@ -1,4 +1,4 @@
-package JMatt26.Study.App.model;
+package Study.App.model;
 
 import java.util.Date;
 import java.util.List;

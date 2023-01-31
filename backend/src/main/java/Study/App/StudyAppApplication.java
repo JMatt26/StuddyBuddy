@@ -1,4 +1,4 @@
-package JMatt26.Study.App;
+package Study.App;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

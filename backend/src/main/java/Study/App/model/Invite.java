@@ -1,6 +1,6 @@
-package JMatt26.Study.App.model;
+package Study.App.model;
 
-import JMatt26.Study.App.model.enums.InvitationType;
+import Study.App.model.enums.InvitationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

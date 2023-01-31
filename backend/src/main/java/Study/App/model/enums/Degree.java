@@ -1,4 +1,4 @@
-package JMatt26.Study.App.model.enums;
+package Study.App.model.enums;
 
 public enum Degree {
     BACHELOR,

@@ -1,6 +1,6 @@
-package JMatt26.Study.App.model;
+package Study.App.model;
 
-import JMatt26.Study.App.model.enums.ParticipationRole;
+import Study.App.model.enums.ParticipationRole;
 
 public class Participants {
     private ParticipationRole role;
