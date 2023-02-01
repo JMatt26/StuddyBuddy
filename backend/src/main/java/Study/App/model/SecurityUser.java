@@ -1,4 +1,4 @@
-package JMatt26.Study.App.model;
+package Study.App.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import JMatt26.Study.App.model.enums.ParticipationRole;
+import Study.App.model.enums.ParticipationRole;
 
 // not an entity : not stored in the database
 public class SecurityUser implements UserDetails {
@@ -24,7 +24,8 @@ public class SecurityUser implements UserDetails {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (ParticipationRole role : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.toString()));
-        };
+        }
+        ;
         return authorities;
     }
 

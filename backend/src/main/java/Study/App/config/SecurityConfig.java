@@ -1,4 +1,4 @@
-package JMatt26.Study.App.config;
+package Study.App.config;
 
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
@@ -22,7 +22,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import JMatt26.Study.App.model.enums.ParticipationRole;
+import Study.App.model.enums.ParticipationRole;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -34,27 +34,27 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 @Configuration
 public class SecurityConfig {
 
-    @Bean 
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf().disable()
-            .oauth2ResourceServer().jwt()
-            .jwtAuthenticationConverter(new AuthConverter()).and().and()
-            .authorizeHttpRequests().anyRequest().authenticated().and()
-            .httpBasic().and()
-            .build();
+                .csrf().disable()
+                .oauth2ResourceServer().jwt()
+                .jwtAuthenticationConverter(new AuthConverter()).and().and()
+                .authorizeHttpRequests().anyRequest().authenticated().and()
+                .httpBasic().and()
+                .build();
     }
 
     // HARD CODED USER IN SYSTEM FOR TESTING
     // @Bean
     // UserDetailsService userDetailsService() {
 
-    //     UserDetails u = User.withUsername("bob").password(passwordEncoder()
-    //         .encode("pass"))
-    //         .authorities(ParticipationRole.ADMIN.toString())
-    //         .build();
+    // UserDetails u = User.withUsername("bob").password(passwordEncoder()
+    // .encode("pass"))
+    // .authorities(ParticipationRole.ADMIN.toString())
+    // .build();
 
-    //     return new InMemoryUserDetailsManager(u);
+    // return new InMemoryUserDetailsManager(u);
     // }
 
     @Bean
@@ -68,8 +68,8 @@ public class SecurityConfig {
         kg.initialize(2048);
         var kp = kg.generateKeyPair();
 
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)kp.getPrivate();
-        RSAPublicKey rsaPublicKey = (RSAPublicKey)kp.getPublic();
+        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) kp.getPrivate();
+        RSAPublicKey rsaPublicKey = (RSAPublicKey) kp.getPublic();
 
         return new JWTKeys(rsaPrivateKey, rsaPublicKey);
     }

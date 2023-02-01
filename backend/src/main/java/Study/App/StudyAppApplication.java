@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import JMatt26.Study.App.model.User;
-import JMatt26.Study.App.model.enums.ParticipationRole;
-import JMatt26.Study.App.repository.UserRepository;
+import Study.App.model.User;
+import Study.App.model.enums.ParticipationRole;
+import Study.App.repository.UserRepository;
 
 @SpringBootApplication
 public class StudyAppApplication {
@@ -19,9 +19,8 @@ public class StudyAppApplication {
 
 	@Bean
 	CommandLineRunner commandLineRunner(
-		UserRepository userRepository,
-		PasswordEncoder passwordEncoder
-	){
+			UserRepository userRepository,
+			PasswordEncoder passwordEncoder) {
 		return (args) -> {
 			User parsa = new User();
 			parsa.setUsername("parsa");

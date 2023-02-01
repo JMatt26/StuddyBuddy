@@ -1,4 +1,4 @@
-package JMatt26.Study.App.config;
+package Study.App.config;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;

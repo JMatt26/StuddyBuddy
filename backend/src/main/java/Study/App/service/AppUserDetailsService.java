@@ -1,4 +1,4 @@
-package JMatt26.Study.App.service;
+package Study.App.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import JMatt26.Study.App.model.SecurityUser;
-import JMatt26.Study.App.model.User;
-import JMatt26.Study.App.model.enums.ParticipationRole;
-import JMatt26.Study.App.repository.UserRepository;
+import Study.App.model.SecurityUser;
+import Study.App.model.User;
+import Study.App.model.enums.ParticipationRole;
+import Study.App.repository.UserRepository;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -18,8 +18,8 @@ public class AppUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     public AppUserDetailsService(
-        PasswordEncoder passwordEncoder,
-        UserRepository userRepository) {
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
@@ -30,10 +30,9 @@ public class AppUserDetailsService implements UserDetailsService {
 
         if (user == null) {
             throw new UsernameNotFoundException(
-                "Cannot find user with username: " + username
-            );
+                    "Cannot find user with username: " + username);
         }
         return new SecurityUser(user);
     }
-    
+
 }

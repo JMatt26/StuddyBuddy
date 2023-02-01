@@ -1,4 +1,4 @@
-package JMatt26.Study.App.controller;
+package Study.App.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

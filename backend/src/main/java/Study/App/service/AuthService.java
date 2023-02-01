@@ -1,4 +1,4 @@
-package JMatt26.Study.App.service;
+package Study.App.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
