@@ -18,7 +18,7 @@ import java.util.Set;
 import Study.App.model.enums.ParticipationRole;
 
 @Entity
-@Table(name="User")
+@Table(name="AppUser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package Study.repositories;
+package Study.App.repository;
 
 import java.util.List;
 
@@ -16,7 +16,8 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
 
     public List<SessionInformation> findAllSessionInformationByCourse(String course);
 
-    public List<SessionInformation> findAllSessionInformationByIsOnline();
+    public List<SessionInformation> findAllSessionInformationByIsOnlineTrue();
+    public List<SessionInformation> findAllSessionInformationByIsOnlineFalse();
 
     public List<SessionInformation> findAllSessionInformationByEducation(Education education);
 

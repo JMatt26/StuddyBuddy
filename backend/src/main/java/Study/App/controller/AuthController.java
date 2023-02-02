@@ -24,5 +24,4 @@ public class AuthController {
         String token = authService.generateToken(authentication);
         return new ResponseEntity<String>(token, HttpStatus.OK);
     }
-
 }
