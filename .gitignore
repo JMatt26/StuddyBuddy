@@ -1,5 +1,5 @@
 ##Postgres Database##
-application.properties
+**/application.properties
 
 HELP.md
 .gradle
