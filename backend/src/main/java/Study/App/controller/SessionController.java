@@ -55,6 +55,7 @@ public class SessionController {
     }
 
     @PutMapping("/joinSession")
-    public ResponseEntity<String> joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
+    public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
+    
     }
 }
