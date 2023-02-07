@@ -1,5 +1,5 @@
 ##Postgres Database##
-**/application.properties
+application.properties
 
 HELP.md
 .gradle
@@ -39,5 +39,4 @@ out/
 ### VS Code ###
 .vscode/
 
-backend/src/main/resources/application.properties
-backend/src/main/resources/application.properties
+
