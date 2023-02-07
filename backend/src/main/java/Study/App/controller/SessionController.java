@@ -6,8 +6,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Study.App.controller.TOs.SessionTORequest;
@@ -50,5 +52,9 @@ public class SessionController {
         }
 
         return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(newSession.getSessionId(), newSession.isPrivate(), newSession.getTitle(), newSession.getCapacity(), newSession.getDescription(), newSession.getAttendees(), newSession.getParticipant().getParticipantId(), newSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
+    }
+
+    @PutMapping("/joinSession")
+    public ResponseEntity<String> joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
     }
 }
