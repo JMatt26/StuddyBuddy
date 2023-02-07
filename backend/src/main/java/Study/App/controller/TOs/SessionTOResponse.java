@@ -1,6 +1,6 @@
 package Study.App.controller.TOs;
 
-public class SessionTORequest {
+public class SessionTOResponse {
     public Integer sessionId;
     public Boolean isPrivate;
     public String title;
@@ -10,7 +10,7 @@ public class SessionTORequest {
     public Integer participantId;
     public Integer sessionInformationId;
 
-    public SessionTORequest(Integer sessionId, Boolean isPrivate, String title, Integer capacity, String description, Integer attendees, Integer participantId, Integer sessionInformationId) {
+    public SessionTOResponse(Integer sessionId, Boolean isPrivate, String title, Integer capacity, String description, Integer attendees, Integer participantId, Integer sessionInformationId) {
         this.sessionId = sessionId;
         this.isPrivate = isPrivate;
         this.title = title;
@@ -21,6 +21,6 @@ public class SessionTORequest {
         this.sessionInformationId = sessionInformationId;
     }
 
-    public SessionTORequest() {
+    public SessionTOResponse() {
     }
 }
