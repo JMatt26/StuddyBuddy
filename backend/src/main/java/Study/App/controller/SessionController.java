@@ -54,7 +54,4 @@ public class SessionController {
         return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(newSession.getSessionId(), newSession.isPrivate(), newSession.getTitle(), newSession.getCapacity(), newSession.getDescription(), newSession.getAttendees(), newSession.getParticipant().getParticipantId(), newSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
     }
 
-    @PutMapping("/joinSession")
-    public ResponseEntity<String> joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
-    }
 }
