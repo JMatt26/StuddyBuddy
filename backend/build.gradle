@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.0'
 	id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
 }
 
 group = 'JMatt26'
@@ -37,7 +38,7 @@ jacocoTestCoverageVerification {
             enabled = true
             element = 'CLASS'
             includes = [
-              'api.museumplanner.services.*',
+              'Study.App.services.*',
             ]
             limit {
                 value = 'TOTALCOUNT'
@@ -48,7 +49,7 @@ jacocoTestCoverageVerification {
 
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: 'api.museumplanner.controllers**')
+            fileTree(dir: it, exclude: 'Study.App.controllers**')
         }))
     }
 }
