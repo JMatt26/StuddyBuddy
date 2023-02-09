@@ -44,7 +44,10 @@ public class SessionController {
     }
 
     @PostMapping("/createSession")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<SessionTOResponse> createSession(@RequestBody SessionTORequest incoming) {
+
+        String adminUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         
         Session newSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, incoming.participantId, incoming.sessionInformationId);
 
@@ -56,7 +59,9 @@ public class SessionController {
     }
 
     @PutMapping("/joinSession")
-    public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
+    public void joinSession(@RequestParam Integer sessionId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
     }
 }

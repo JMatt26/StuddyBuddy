@@ -14,4 +14,5 @@ public interface ParticipantRepository extends CrudRepository<Participant, Integ
     public List<Participant> findAllParticipantByRole(ParticipationRole role);
     public List<Participant> findAllParticipantByIsGoingTrue();
     public List<Participant> findAllParticipantByIsGoingFalse();
+    public Participant findParticipantByUsername(String username);
 }
