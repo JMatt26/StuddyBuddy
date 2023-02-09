@@ -49,7 +49,7 @@ public class SessionController {
 
         String adminUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         
-        Session newSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, incoming.participantId, incoming.sessionInformationId);
+        Session newSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, adminUsername, incoming.sessionInformationId);
 
         if (newSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

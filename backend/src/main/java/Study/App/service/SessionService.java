@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 public class SessionService {
     private SessionRepository sessionRepository;
     private SessionInformationRepository sessionInformationRepository;
+    private ParticipantRepository participantRepository;
 
     public SessionService(SessionRepository sessionRepository, ParticipantRepository participantRepository, SessionInformationRepository sessionInformationRepository) {
         this.sessionRepository = sessionRepository;
+        this.participantRepository = participantRepository;
         this.sessionInformationRepository = sessionInformationRepository;
     }
 
@@ -27,6 +29,7 @@ public class SessionService {
         Participant admin = new Participant();
         admin.setUsername(adminUsername);
         admin.setRole(ParticipationRole.ADMIN);
+        participantRepository.save(admin);
 
         var sessionInformation = sessionInformationRepository.findSessionInformationBySessionInformationId(sessionInformationId);
 
