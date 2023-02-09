@@ -24,12 +24,12 @@ public class UserService {
     @Transactional
     public User signUpUser(String name, String username, String password){
         if (name == null || username == null || password == null){
-            return null;
+            throw new IllegalStateException("Name, username and password cannot be null");
         }
 
         User user = userRepository.findUserByUsername(username);
         if (user != null){
-            return null;
+            throw new IllegalStateException("User with username " + username + " already exists");
         }
         User newUser = new User();
         newUser.setName(name);

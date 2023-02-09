@@ -69,32 +69,70 @@ public class UserServiceTest {
                     return user1; 
                 } else if (invocation.getArgument(0).equals(user2Username)) {
                     return user2;
-                } else if (invocation.getArgument(0).equals(user3Username)) {
+                } else{
+                    return null;
+                }
+            }
+        );
+        lenient().when(
+            userRepository.findUserByName(anyString())
+        ).thenAnswer(
+            (InvocationOnMock invocation) -> {
+                if(invocation.getArgument(0).equals(user1Name)){
+                    return user1; 
+                } else if (invocation.getArgument(0).equals(user2Name)) {
+                    return user2;
+                } else if (invocation.getArgument(0).equals(user3Name)) {
                     return user3;
                 } else{
                     return null;
                 }
             }
         );
+        lenient().when(userRepository.save(any(User.class))).thenAnswer((InvocationOnMock invocation) -> {
+            return invocation.getArgument(0);
+        });
     }
 
     @Test
     public void createUserTest1(){
         assertEquals(0 , userRepository.count());
-        User user = null;
-
+        
         try{
-            userService.signUpUser(user1Username, user1Password, user1Name);
+            userService.signUpUser(user3Name, user3Username, user3Password);
         }catch(Exception e){
             e.printStackTrace();
             fail();
         }
 
-        // assertNotNull(employee);
-        // assertEquals(employeeName, employee.getName());
-        // assertEquals(museumID, employee.getMuseum().getMuseumID());
-        // assertEquals(employeeUserName, employee.getUsername());
-        // assertEquals(employeeEmail, employee.getEmail());
+        User user = userRepository.findUserByName(user3Name);
+
+        System.out.println("not null checking");        
+        assertNotNull(user);
+        System.out.println("not null asserted");        
+        assertEquals(user3Name, user.getName());
+        assertEquals(user3Username, user.getUsername());
+        assertEquals(user3Password, user.getPassword());
     } 
+
+    // @Test
+    // public void createDuplicateUserNameTest1(){
+    //     assertEquals(0 , userRepository.count());
+    //     User user = null;
+
+    //     try{
+    //         userService.signUpUser(user1Name, user1Username, user1Password);
+    //     }catch(Exception e){
+    //         e.printStackTrace();
+    //         fail();
+    //     }
+
+    //     user = userRepository.findUserByUsername(user1Name);
+
+    //     assertNotNull(user);
+    //     assertEquals(user1Name, user.getName());
+    //     assertEquals(user1Username, user.getUsername());
+    //     assertEquals(user1Password, user.getPassword());
+    // } 
 
 }

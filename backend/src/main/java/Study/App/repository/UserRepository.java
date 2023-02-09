@@ -19,6 +19,8 @@ public interface UserRepository extends CrudRepository<User, Integer>{
 
     public User findUserByUsername(String username);
 
+    public User findUserByName(String name);
+
     public List<User> findAllUserByFriends(User user);  // Have to think about this. Will it give what we want?
 
     public List<User> findAllUserByInvitee(Invitee invitee);
