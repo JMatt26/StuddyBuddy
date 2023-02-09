@@ -55,6 +55,7 @@ public class SessionController {
         return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(aNewSession.getSessionId(), aNewSession.isPrivate(), aNewSession.getTitle(), aNewSession.getCapacity(), aNewSession.getDescription(), aNewSession.getAttendees(), aNewSession.getParticipant().getParticipantId(), aNewSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
     }
 
+
     @PutMapping("/joinSession")
     public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

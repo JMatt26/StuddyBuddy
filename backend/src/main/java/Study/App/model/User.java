@@ -24,6 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
+    // 
     private Set<ParticipationRole> roles = new HashSet<ParticipationRole>();
 
     private String name;
