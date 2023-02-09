@@ -5,8 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import Study.App.model.User;
+import Study.App.controller.TOs.UserTORequest;
 import Study.App.service.AuthService;
 import Study.App.service.UserService;
 
@@ -30,9 +33,13 @@ public class AuthController {
 
     // TODO: Consider if this endpoint should be here or not
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = authService.generateToken(authentication);
-        return new ResponseEntity<String>(token, HttpStatus.OK);
+    public ResponseEntity<String> signUp(@RequestBody UserTORequest incoming){
+       User newUser = userService.signUpUser(incoming.name, incoming.username, incoming.password);
+       
+       if (newUser == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+       } else{
+            return new ResponseEntity<String>("signup successful", HttpStatus.OK);
+       }
     }
 }
