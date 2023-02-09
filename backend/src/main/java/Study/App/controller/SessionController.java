@@ -44,15 +44,15 @@ public class SessionController {
     }
 
     @PostMapping("/createSession")
-    public ResponseEntity<SessionTOResponse> createSession(@RequestBody SessionTORequest incoming) {
+    public ResponseEntity<SessionTOResponse> createTheSession(@RequestBody SessionTORequest incoming) {
         
-        Session newSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, incoming.participantId, incoming.sessionInformationId);
+        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, incoming.participantId, incoming.sessionInformationId);
 
-        if (newSession == null) {
+        if (aNewSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(newSession.getSessionId(), newSession.isPrivate(), newSession.getTitle(), newSession.getCapacity(), newSession.getDescription(), newSession.getAttendees(), newSession.getParticipant().getParticipantId(), newSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
+        return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(aNewSession.getSessionId(), aNewSession.isPrivate(), aNewSession.getTitle(), aNewSession.getCapacity(), aNewSession.getDescription(), aNewSession.getAttendees(), aNewSession.getParticipant().getParticipantId(), aNewSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
     }
 
     @PutMapping("/joinSession")
