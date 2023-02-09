@@ -44,7 +44,6 @@ public class SessionController {
     }
 
     @PostMapping("/createSession")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<SessionTOResponse> createSession(@RequestBody SessionTORequest incoming) {
 
         String adminUsername = SecurityContextHolder.getContext().getAuthentication().getName();
