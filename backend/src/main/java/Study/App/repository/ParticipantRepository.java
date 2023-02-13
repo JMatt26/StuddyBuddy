@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import Study.App.model.Participant;
+import Study.App.model.Participation;
 import Study.App.model.enums.ParticipationRole;
 
 @Repository
-public interface ParticipantRepository extends CrudRepository<Participant, Integer>{
-    public Participant findParticipantByParticipantId(int id);
-    public List<Participant> findAllParticipantByRole(ParticipationRole role);
-    public List<Participant> findAllParticipantByIsGoingTrue();
-    public List<Participant> findAllParticipantByIsGoingFalse();
+public interface ParticipantRepository extends CrudRepository<Participation, Integer>{
+    public Participation findParticipantByParticipantId(int id);
+    public List<Participation> findAllParticipantByRole(ParticipationRole role);
+    public List<Participation> findAllParticipantByIsGoingTrue();
+    public List<Participation> findAllParticipantByIsGoingFalse();
 }

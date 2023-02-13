@@ -5,19 +5,19 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import Study.App.model.Invite;
-import Study.App.model.Invitee;
+import Study.App.model.Invitation;
+import Study.App.model.InvitationDestination;
 import Study.App.model.Session;
 import Study.App.model.enums.InvitationType;
 
 @Repository
-public interface InviteRepository extends CrudRepository<Invite, Integer>{
+public interface InviteRepository extends CrudRepository<Invitation, Integer>{
     
-    public Invite findInviteByInviteId(int id);
+    public Invitation findInviteByInviteId(int id);
 
-    public List<Invite> findAllInviteByInvitationType(InvitationType type);
+    public List<Invitation> findAllInviteByInvitationType(InvitationType type);
 
-    public List<Invite> findAllInviteByInvitee(Invitee invitee);
+    public List<Invitation> findAllInviteByInvitee(InvitationDestination invitationDestination);
 
-    public List<Invite> findAllInviteBySession(Session session);
+    public List<Invitation> findAllInviteBySession(Session session);
 }

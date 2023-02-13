@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import Study.App.model.Invitee;
-import Study.App.model.Participant;
+import Study.App.model.InvitationDestination;
+import Study.App.model.Participation;
 import Study.App.model.User;
 import Study.App.model.enums.ParticipationRole;
 
@@ -21,7 +21,7 @@ public interface UserRepository extends CrudRepository<User, Integer>{
 
     public List<User> findAllUserByFriends(User user);  // Have to think about this. Will it give what we want?
 
-    public List<User> findAllUserByInvitee(Invitee invitee);
+    public List<User> findAllUserByInvitee(InvitationDestination invitationDestination);
 
-    public List<User> findAllUserByParticipants(Participant participant);
+    public List<User> findAllUserByParticipation(Participation participation);
 }

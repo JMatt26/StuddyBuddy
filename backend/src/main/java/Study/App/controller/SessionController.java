@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Study.App.controller.TOs.SessionTORequest;
-import Study.App.controller.TOs.SessionTOResponse;
+import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
 import Study.App.service.SessionService;
 
@@ -44,15 +43,15 @@ public class SessionController {
     }
 
     @PostMapping("/createSession")
-    public ResponseEntity<SessionTOResponse> createTheSession(@RequestBody SessionTORequest incoming) {
+    public ResponseEntity<SessionTO> createTheSession(@RequestBody SessionTO incoming) {
         
-        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.attendees, incoming.participantId, incoming.sessionInformationId);
+        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.participationIds, incoming.sessionInformationId);
 
         if (aNewSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SessionTOResponse>(new SessionTOResponse(aNewSession.getSessionId(), aNewSession.isPrivate(), aNewSession.getTitle(), aNewSession.getCapacity(), aNewSession.getDescription(), aNewSession.getAttendees(), aNewSession.getParticipant().getParticipantId(), aNewSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
+        return new ResponseEntity<SessionTO>(new SessionTO(aNewSession.getSessionId(), aNewSession.isPrivate(), aNewSession.getTitle(), aNewSession.getCapacity(), aNewSession.getDescription(), null, null, aNewSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
     }
 
     @PutMapping("/joinSession")
