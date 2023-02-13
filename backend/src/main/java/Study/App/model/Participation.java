@@ -11,7 +11,7 @@ public class Participation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private int participationID;
 
     private ParticipationRole role;
 
@@ -33,13 +33,12 @@ public class Participation {
         this.isGoing = isGoing;
     }
 
-    public int getParticipantId() {
-        return ID;
+    public int getParticipationID() {
+        return participationID;
     }
 
-    public void setParticipantId(int ID) {
-        this.ID = ID;
+    public void setParticipationId(int participationID) {
+        this.participationID = participationID;
     }
 
-    
 }

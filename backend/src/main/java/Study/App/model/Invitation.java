@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Invitation {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int inviteId;
@@ -17,17 +17,17 @@ public class Invitation {
     private InvitationType invitationType;
 
     @ManyToOne
-    private InvitationDestination invitationDestination;
+    private InvitationDestination invitee;
 
     @ManyToOne
     private Session session;
 
     public InvitationDestination getInvitee() {
-        return invitationDestination;
+        return invitee;
     }
 
     public void setInvitee(InvitationDestination invitee) {
-        this.invitationDestination = invitee;
+        this.invitee = invitee;
     }
 
     public Session getSession() {
@@ -54,5 +54,4 @@ public class Invitation {
         this.invitationType = invitationType;
     }
 
-    
 }
