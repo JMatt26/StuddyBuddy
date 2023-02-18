@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Invitee {
+public class InvitationDestination {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

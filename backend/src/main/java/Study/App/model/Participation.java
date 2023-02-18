@@ -7,17 +7,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Participant {
+public class Participation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int participantId;
+    private int participationID;
 
     private String username;
 
     private ParticipationRole role;
 
-    private boolean isGoing = false;
+    private Boolean isGoing = false;
 
     public ParticipationRole getRole() {
         return role;
@@ -35,23 +35,12 @@ public class Participant {
         this.isGoing = isGoing;
     }
 
-    public int getParticipantId() {
-        return participantId;
+    public int getParticipationID() {
+        return participationID;
     }
 
-    public void setParticipantId(int participantId) {
-        this.participantId = participantId;
+    public void setParticipationId(int participationID) {
+        this.participationID = participationID;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    
-
-    
 }

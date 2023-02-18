@@ -1,11 +1,15 @@
 package Study.App.model;
 
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -13,25 +17,24 @@ public class Session {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sessionId;
+    private Integer sessionId;
 
-    private boolean isPrivate = false;
+    private Boolean isPrivate = false;
     private String title;
-    private int capacity;
+    private Integer capacity;
     private String description;
-    private int attendees;
 
-    @ManyToOne
-    private Participant participant;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Participation> participations;
 
     @OneToOne (cascade = CascadeType.REMOVE)
     private SessionInformation sessionInformation;
 
-    public Participant getParticipant() {
-        return participant;
+    public Set<Participation> getParticipants() {
+        return participations;
     }
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
+    public void setParticipants(Set<Participation> participations) {
+        this.participations = participations;
     }
     public SessionInformation getSessionInformation() {
         return sessionInformation;
@@ -69,12 +72,5 @@ public class Session {
     public void setDescription(String description) {
         this.description = description;
     }
-    public int getAttendees() {
-        return attendees;
-    }
-    public void setAttendees(int attendees) {
-        this.attendees = attendees;
-    }
-
     
 }
