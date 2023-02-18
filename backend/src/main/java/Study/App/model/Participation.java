@@ -13,6 +13,8 @@ public class Participation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int participationID;
 
+    private String username;
+
     private ParticipationRole role;
 
     private Boolean isGoing = false;
@@ -40,5 +42,27 @@ public class Participation {
     public void setParticipationId(int participationID) {
         this.participationID = participationID;
     }
+
+    public void setParticipationID(int participationID) {
+        this.participationID = participationID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Boolean getIsGoing() {
+        return isGoing;
+    }
+
+    public void setIsGoing(Boolean isGoing) {
+        this.isGoing = isGoing;
+    }
+
+    
 
 }

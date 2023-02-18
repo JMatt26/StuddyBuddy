@@ -55,4 +55,9 @@ public class SessionService {
 
         return sessionRepository.save(session);
     }
+
+     public String joinSession(int sessionId, String username) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        return "";
+     }
 }
