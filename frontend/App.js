@@ -3,8 +3,9 @@ import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from "./src/Main";
-import Dev from "./src/Dev";
+import Login from "./src/Login";
 import Events from "./src/Events";
+import SignUp from "./src/SignUp";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,19 +13,19 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{
-          headerShown: true,
-          tabBarStyle: { height: '13%'},
-          style: {
-            backgroundColor: '#FFFFFF',
-            borderTopLeftRadius: 50,
-            borderTopRightRadius: 50,
-          }
-        }}>
+        headerShown: true,
+        tabBarStyle: { height: '13%' },
+        style: {
+          backgroundColor: '#FFFFFF',
+          borderTopLeftRadius: 50,
+          borderTopRightRadius: 50,
+        }
+      }}>
         <Tab.Screen name='Main'>
           {() => <Main />}
         </Tab.Screen>
         <Tab.Screen name="DEVELOPMENT">
-          {() => <Dev />}
+          {() => <Login />}
         </Tab.Screen>
         <Tab.Screen name="Events">
           {() => <Events />}
@@ -35,5 +36,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  
+
 });
