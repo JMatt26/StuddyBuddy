@@ -1,8 +1,11 @@
 package Study.App.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import Study.App.model.User;
 import org.springframework.stereotype.Service;
 
 import Study.App.model.Participation;
@@ -55,4 +58,21 @@ public class SessionService {
 
         return sessionRepository.save(session);
     }
+    @Transactional
+    public List<User> displayUsersInSession(Integer sessionId){
+        Session searchedSession = sessionRepository.findSessionBySessionId(sessionId);
+        Set<Participation> participationList =  searchedSession.getParticipants();
+        for(Participation participation: participationList){
+            int participationUsername = 0;
+        }
+        return null;
+    }
+
+//    private <T> List<T> toList(Iterable<T> iterable){
+//        List<T> resultList = new ArrayList<T>();
+//        for(T t : iterable){
+//            resultList.add(t);
+//        }
+//        return resultList;
+//    }
 }
