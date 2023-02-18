@@ -19,7 +19,6 @@ import Study.App.service.SessionService;
 
 @RestController
 @RequestMapping("/session")
-
 public class SessionController {
 
     private SessionService sessionService;

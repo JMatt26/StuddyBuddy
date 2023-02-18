@@ -20,8 +20,6 @@ public interface SessionRepository extends CrudRepository<Session, Integer> {
 
     public List<Session> findAllSessionByTitle(String title);
 
-    public List<Session> findAllSessionByParticipations(Participation participation);
-
     public List<Session> findAllSessionBySessionInformation(SessionInformation sessionInformation);
 
 }
