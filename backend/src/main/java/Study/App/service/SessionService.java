@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import Study.App.model.User;
+
 import org.springframework.stereotype.Service;
 
 import Study.App.model.Participation;
@@ -14,6 +15,7 @@ import Study.App.model.SessionInformation;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
+import Study.App.repository.UserRepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -21,12 +23,16 @@ public class SessionService {
     private SessionRepository sessionRepository;
     private ParticipationRepository participationRepository;
     private SessionInformationRepository sessionInformationRepository;
+    private UserRepository userRepository;
+
 
     public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository,
-            SessionInformationRepository sessionInformationRepository) {
+                          SessionInformationRepository sessionInformationRepository, UserRepository userRepository) {
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
+        this.userRepository = userRepository;
+
     }
 
     @Transactional
@@ -62,10 +68,16 @@ public class SessionService {
     public List<User> displayUsersInSession(Integer sessionId){
         Session searchedSession = sessionRepository.findSessionBySessionId(sessionId);
         Set<Participation> participationList =  searchedSession.getParticipants();
+        List<User> userList = new ArrayList<User>();
         for(Participation participation: participationList){
-            int participationUsername = 0;
-        }
-        return null;
+            String participantUsername = participation.getUsername();
+            User user = userRepository.findUserByUsername(participantUsername);
+            if(user != null){
+                userList.add(user);
+            }
+
+            return userList;
+
     }
 
 //    private <T> List<T> toList(Iterable<T> iterable){
