@@ -1,6 +1,7 @@
 package Study.App.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -55,4 +56,34 @@ public class SessionService {
 
         return sessionRepository.save(session);
     }
+
+    public Boolean isSessionFull(Session session) {
+        
+        // List<Participation> participations = participationRepository.findAllParticipationsBySession(session);
+        // int numAttendees = 0;
+        // for (Participation participation : participations) {
+        //     if (participation.isGoing()) {
+        //         numAttendees++;
+        //     }
+        // }
+        int numAttendees = getNumAttendees(session);
+        if (numAttendees >= session.getCapacity()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+     }
+
+     public Integer getNumAttendees(Session session) {
+        List<Participation> participations = participationRepository.findAllParticipationsBySession(session);
+        int numAttendees = 0;
+        for (Participation participation : participations) {
+            if (participation.isGoing()) {
+                numAttendees++;
+            }
+        }
+
+        return numAttendees;
+     }
 }

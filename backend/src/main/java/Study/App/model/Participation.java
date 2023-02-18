@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Participation {
@@ -16,6 +17,9 @@ public class Participation {
     private ParticipationRole role;
 
     private Boolean isGoing = false;
+
+    @ManyToOne
+    private Session session;
 
     public ParticipationRole getRole() {
         return role;

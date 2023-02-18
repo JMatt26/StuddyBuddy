@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import Study.App.model.Participation;
+import Study.App.model.Session;
 import Study.App.model.enums.ParticipationRole;
 
 @Repository
@@ -17,4 +18,5 @@ public interface ParticipationRepository extends CrudRepository<Participation, I
     public List<Participation> findAllParticipationByIsGoingTrue();
 
     public List<Participation> findAllParticipationByIsGoingFalse();
+    public List<Participation> findAllParticipationsBySession(Session session);
 }

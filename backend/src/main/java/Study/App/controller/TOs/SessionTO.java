@@ -11,6 +11,7 @@ public class SessionTO {
     public Integer numberOfAttendees;
     public Set<Integer> participationIds;
     public Integer sessionInformationId;
+    //add Boolean isFull param
 
     public SessionTO(Integer sessionId, Boolean isPrivate, String title, Integer capacity, String description, Integer numberOfAttendees, Set<Integer> participationIds, Integer sessionInformationId) {
         this.sessionId = sessionId;
