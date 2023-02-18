@@ -41,11 +41,11 @@ public class UserInformation {
         this.friends = friends;
     }
 
-    public Set<Participation> getParticipants() {
+    public Set<Participation> getParticipation() {
         return participations;
     }
 
-    public void setParticipants(Set<Participation> participations) {
+    public void setParticipation(Set<Participation> participations) {
         this.participations = participations;
     }
 

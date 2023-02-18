@@ -29,7 +29,6 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -70,7 +69,6 @@ public class SessionService {
             Participation userParticipation = new Participation();
             userParticipation.setRole(ParticipationRole.MEMBER);
             userParticipation.setIsGoing(true);
-            userParticipation.setUsername(username);
 
             session.getParticipants().add(userParticipation);
 
