@@ -23,18 +23,10 @@ public class Session {
     private Integer capacity;
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Participation> participations;
 
     @OneToOne (cascade = CascadeType.REMOVE)
     private SessionInformation sessionInformation;
-
-    public Set<Participation> getParticipants() {
-        return participations;
-    }
-    public void setParticipants(Set<Participation> participations) {
-        this.participations = participations;
-    }
+    
     public SessionInformation getSessionInformation() {
         return sessionInformation;
     }
