@@ -65,19 +65,23 @@ public class SessionService {
         return sessionRepository.save(session);
     }
     @Transactional
-    public List<User> displayUsersInSession(Integer sessionId){
+    public List<User> displayUsersInSession(Integer sessionId) {
         Session searchedSession = sessionRepository.findSessionBySessionId(sessionId);
-        Set<Participation> participationList =  searchedSession.getParticipants();
+
+        Set<Participation> participationList = searchedSession.getParticipants();
         List<User> userList = new ArrayList<User>();
-        for(Participation participation: participationList){
+        for (Participation participation : participationList) {
+
             String participantUsername = participation.getUsername();
             User user = userRepository.findUserByUsername(participantUsername);
-            if(user != null){
+            if (user != null) {
                 userList.add(user);
             }
 
-            return userList;
 
+
+        }
+        return userList;
     }
 
 //    private <T> List<T> toList(Iterable<T> iterable){

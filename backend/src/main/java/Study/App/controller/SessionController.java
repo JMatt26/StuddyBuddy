@@ -1,5 +1,7 @@
 package Study.App.controller;
 
+import Study.App.controller.TOs.UserTO;
+import Study.App.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
 import Study.App.service.SessionService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/session")
@@ -57,5 +61,17 @@ public class SessionController {
     @PutMapping("/joinSession")
     public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    @GetMapping("/displayUsersInSession")
+    public List<UserTO> displayUsersInSession(@RequestParam Integer sessionId){
+
+    }
+
+    private UserTO convertToDTO(User u){
+        if (u == null){
+            throw new IllegalArgumentException("There is no such User");
+        }
+        UserTO userTO = new UserTO(u.getName(),u.getUsername(), null);
+        return userTO;
     }
 }
