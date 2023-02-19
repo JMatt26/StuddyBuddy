@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,34 +27,34 @@ public class UserInformation {
     @JoinColumn(name = "friends")
     private Set<UserInformation> friends = new HashSet<UserInformation>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participation")
-    private Set<Participation> participations = new HashSet<Participation>();
-
+    @OneToOne
+    @JoinColumn(name = "appuser")
+    private User user;
+    
     @ManyToOne
     private InvitationDestination invitationDestination;
-
+    
     public Set<UserInformation> getFriends() {
         return friends;
     }
-
+    
     public void setFriends(Set<UserInformation> friends) {
         this.friends = friends;
     }
-
-    public Set<Participation> getParticipation() {
-        return participations;
-    }
-
-    public void setParticipation(Set<Participation> participations) {
-        this.participations = participations;
-    }
-
+    
     public InvitationDestination getInvitee() {
         return invitationDestination;
     }
-
+    
     public void setInvitee(InvitationDestination invitationDestination) {
         this.invitationDestination = invitationDestination;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -19,7 +19,6 @@ import Study.App.service.SessionService;
 
 @RestController
 @RequestMapping("/session")
-
 public class SessionController {
 
     private SessionService sessionService;
@@ -44,8 +43,10 @@ public class SessionController {
 
     @PostMapping("/createSession")
     public ResponseEntity<SessionTO> createTheSession(@RequestBody SessionTO incoming) {
+
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
         
-        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, incoming.participationIds, incoming.sessionInformationId);
+        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, username, incoming.sessionInformationId);
 
         if (aNewSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

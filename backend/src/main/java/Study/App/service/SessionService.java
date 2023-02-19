@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import Study.App.model.Participation;
 import Study.App.model.Session;
 import Study.App.model.SessionInformation;
+import Study.App.model.User;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
@@ -24,25 +25,29 @@ public class SessionService {
     private SessionInformationRepository sessionInformationRepository;
     private UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository,
-            SessionInformationRepository sessionInformationRepository) {
+    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository, SessionInformationRepository sessionInformationRepository, UserRepository userRepository) {
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description,
-            Set<Integer> participationIds, Integer sessionInformationId) {
+    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username, Integer sessionInformationId) {
+
         Session session = new Session();
 
-        Set<Participation> participations = new HashSet<Participation>();
-
-        for (Integer participationId : participationIds) {
-            Participation participation = participationRepository.findParticipationByParticipationID(participationId);
-            if (participation != null)
-                participations.add(participation);
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
         }
+        Participation sessionParticipation = new Participation();
+        sessionParticipation.setRole(ParticipationRole.ADMIN);
+        sessionParticipation.setIsGoing(true);
+        sessionParticipation.setSession(session);
+        sessionParticipation.setUserInformation(user.getUserInformation());
+
+
 
         SessionInformation sessionInformation = sessionInformationRepository
                 .findSessionInformationBySessionInformationId(sessionInformationId);
@@ -66,11 +71,11 @@ public class SessionService {
         var user = userRepository.findUserByUsername(username);
 
         if (session != null && user != null) {
-            Participation userParticipation = new Participation();
-            userParticipation.setRole(ParticipationRole.MEMBER);
-            userParticipation.setIsGoing(true);
-
-            session.getParticipants().add(userParticipation);
+            Participation sessionParticipation = new Participation();
+            sessionParticipation.setRole(ParticipationRole.MEMBER);
+            sessionParticipation.setIsGoing(true);
+            sessionParticipation.setSession(session);
+            sessionParticipation.setUserInformation(user.getUserInformation());
 
             return true;
         } else if (session == null) {
