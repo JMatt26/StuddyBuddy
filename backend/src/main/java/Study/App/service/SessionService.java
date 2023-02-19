@@ -84,4 +84,14 @@ public class SessionService {
             throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
         }
      }
+
+    public Boolean deleteSession(int sessionId) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        if (session != null) {
+            sessionRepository.delete(session);
+            return true;
+        } else {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
