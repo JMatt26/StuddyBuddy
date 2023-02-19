@@ -56,7 +56,17 @@ public class SessionController {
     }
 
     @PutMapping("/joinSession")
-    public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
+    public ResponseEntity<String> joinSession(@RequestParam Integer sessionId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var joinStatus = sessionService.joinSession(sessionId, username);
+
+        if (joinStatus == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (joinStatus == false) {
+            return new ResponseEntity<String>("Failed to join session", HttpStatus.BAD_REQUEST);
+        } else{
+            return new ResponseEntity<String>("Joined session", HttpStatus.OK);
+        }
     }
 }
