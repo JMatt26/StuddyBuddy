@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     StyleSheet,
     Text,
@@ -7,8 +7,10 @@ import {
     TextInput,
     TouchableOpacity,
 } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login({ navigation }) {
+    const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -35,6 +37,7 @@ export default function Login({ navigation }) {
                     style={styles.TextInput}
                     placeholder="Email"
                     placeholderTextColor="#003f5c"
+                    value={email}
                     onChangeText={(email) => setEmail(email)}
                 />
             </View>
@@ -44,18 +47,19 @@ export default function Login({ navigation }) {
                     placeholder="Password"
                     placeholderTextColor="#003f5c"
                     secureTextEntry={true}
+                    value={password}
                     onChangeText={(password) => setPassword(password)}
                 />
             </View>
             <TouchableOpacity>
                 <Text style={styles.forgot_button}>Forgot Password?</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(email, password) } }}>
                 <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity>
             <Button
                 title="Sign Up"
-                onPress={() => navigation.navigate("SingUp")}
+                onPress={() => navigation.navigate("SignUp")}
             />
         </View>
     );
