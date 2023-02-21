@@ -62,7 +62,7 @@ public class SessionController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
     }
     @GetMapping("/getAllUsersInSession")
-    public List<UserTO> getAllUsersInSession(@RequestParam Integer sessionId){
+    public ResponseEntity<List<UserTO>> getAllUsersInSession(@RequestParam Integer sessionId){
         List<User> userList = sessionService.getAllUsersInSession(sessionId);
         List<UserTO> userTOList = new ArrayList<>();
         if(userList != null){
@@ -70,8 +70,11 @@ public class SessionController {
                 UserTO userTO = convertToDTO(user);
                 userTOList.add(userTO);
             }
+            return new ResponseEntity<List<UserTO>>(userTOList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<UserTO>>(HttpStatus.BAD_REQUEST);
         }
-        return userTOList;
+
     }
 
     private UserTO convertToDTO(User u){

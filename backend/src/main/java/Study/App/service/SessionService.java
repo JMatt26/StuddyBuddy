@@ -91,7 +91,7 @@ public class SessionService {
         for(Participation participation: participationList) {
             UserInformation userInformation = participation.getUserInformation();
             User user = userInformation.getUser();
-            if(user != null){
+            if(user != null && participation.isGoing()){
                 userList.add(user);
             }
         }
