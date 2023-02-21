@@ -19,18 +19,16 @@ import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
 import Study.App.service.SessionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/session")
 public class SessionController {
-
     private SessionService sessionService;
-
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
-
     @GetMapping("/sess1")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getS1(Authentication authentication) {
@@ -63,9 +61,17 @@ public class SessionController {
     public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
     }
-    @GetMapping("/displayUsersInSession")
-    public List<UserTO> displayUsersInSession(@RequestParam Integer sessionId){
-
+    @GetMapping("/getAllUsersInSession")
+    public List<UserTO> getAllUsersInSession(@RequestParam Integer sessionId){
+        List<User> userList = sessionService.getAllUsersInSession(sessionId);
+        List<UserTO> userTOList = new ArrayList<>();
+        if(userList != null){
+            for(User user : userList){
+                UserTO userTO = convertToDTO(user);
+                userTOList.add(userTO);
+            }
+        }
+        return userTOList;
     }
 
     private UserTO convertToDTO(User u){
