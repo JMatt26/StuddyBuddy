@@ -1,5 +1,7 @@
 package Study.App.controller;
 
+import Study.App.controller.TOs.UserTO;
+import Study.App.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,16 +20,16 @@ import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
 import Study.App.service.SessionService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/session")
 public class SessionController {
-
     private SessionService sessionService;
-
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
-
     @GetMapping("/sess1")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getS1(Authentication authentication) {
@@ -86,5 +88,28 @@ public class SessionController {
             return new ResponseEntity<String>("Session Deleted", HttpStatus.OK);
         }
 
+    }
+    @GetMapping("/getAllUsersInSession")
+    public ResponseEntity<List<UserTO>> getAllUsersInSession(@RequestParam Integer sessionId){
+        List<User> userList = sessionService.getAllUsersInSession(sessionId);
+        List<UserTO> userTOList = new ArrayList<>();
+        if(userList != null){
+            for(User user : userList){
+                UserTO userTO = convertToDTO(user);
+                userTOList.add(userTO);
+            }
+            return new ResponseEntity<List<UserTO>>(userTOList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<UserTO>>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    private UserTO convertToDTO(User u){
+        if (u == null){
+            throw new IllegalArgumentException("There is no such User");
+        }
+        UserTO userTO = new UserTO(u.getName(),u.getUsername(), null);
+        return userTO;
     }
 }

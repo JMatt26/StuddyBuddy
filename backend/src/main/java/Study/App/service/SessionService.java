@@ -1,14 +1,14 @@
 package Study.App.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import Study.App.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import Study.App.model.Participation;
-import Study.App.model.Session;
-import Study.App.model.SessionInformation;
-import Study.App.model.User;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
@@ -101,5 +101,20 @@ public class SessionService {
         } else {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @Transactional
+    public List<User> getAllUsersInSession(Integer sessionId){
+        List<Participation> participationList =  participationRepository.findAllParticipationBySessionSessionId(sessionId);
+        List<User> userList = new ArrayList<User>();
+        for(Participation participation: participationList) {
+            UserInformation userInformation = participation.getUserInformation();
+            User user = userInformation.getUser();
+            if(user != null && participation.isGoing()){
+                userList.add(user);
+            }
+        }
+
+        return userList;
     }
 }
