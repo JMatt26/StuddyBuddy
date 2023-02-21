@@ -59,6 +59,16 @@ public class Participation {
         this.session = session;
     }
 
+    public Boolean getIsGoing() {
+        return isGoing;
+    }
+
+    public void setIsGoing(Boolean isGoing) {
+        this.isGoing = isGoing;
+    }
+
+    
+
     public UserInformation getUserInformation() {
         return userInformation;
     }

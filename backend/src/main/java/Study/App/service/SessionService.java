@@ -1,16 +1,20 @@
 package Study.App.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import Study.App.model.Participation;
 import Study.App.model.Session;
 import Study.App.model.SessionInformation;
+import Study.App.model.User;
+import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
+import Study.App.repository.UserRepository;
+import Study.exceptions.IncorrectDataException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -18,26 +22,31 @@ public class SessionService {
     private SessionRepository sessionRepository;
     private ParticipationRepository participationRepository;
     private SessionInformationRepository sessionInformationRepository;
+    private UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository,
-            SessionInformationRepository sessionInformationRepository) {
+    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository, SessionInformationRepository sessionInformationRepository, UserRepository userRepository) {
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description,
-            Set<Integer> participationIds, Integer sessionInformationId) {
+    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username, Integer sessionInformationId) {
+
         Session session = new Session();
 
-        Set<Participation> participations = new HashSet<Participation>();
-
-        for (Integer participationId : participationIds) {
-            Participation participation = participationRepository.findParticipationByParticipationID(participationId);
-            if (participation != null)
-                participations.add(participation);
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
         }
+        Participation sessionParticipation = new Participation();
+        sessionParticipation.setRole(ParticipationRole.ADMIN);
+        sessionParticipation.setIsGoing(true);
+        sessionParticipation.setSession(session);
+        sessionParticipation.setUserInformation(user.getUserInformation());
+
+
 
         SessionInformation sessionInformation = sessionInformationRepository
                 .findSessionInformationBySessionInformationId(sessionInformationId);
@@ -54,5 +63,43 @@ public class SessionService {
             session.setTitle(title);
 
         return sessionRepository.save(session);
+    }
+
+     public Boolean joinSession(int sessionId, String username) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        var user = userRepository.findUserByUsername(username);
+
+        if (session != null && user != null) {
+            Participation sessionParticipation = new Participation();
+            sessionParticipation.setRole(ParticipationRole.MEMBER);
+            sessionParticipation.setIsGoing(true);
+            sessionParticipation.setSession(session);
+            sessionParticipation.setUserInformation(user.getUserInformation());
+
+            return true;
+        } else if (session == null) {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        } else {
+            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+        }
+     }
+
+    public Boolean deleteSession(int sessionId, String username) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
+
+        Integer userID = userRepository.findUserByUsername(username).getUserId();
+
+        List<Participation> participations = participationRepository.findAllParticipationBySessionSessionId(sessionId);
+        Integer adminID = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
+        
+        if (userID != adminID) {
+            throw new IncorrectDataException("You are not admin of this session", HttpStatus.BAD_REQUEST);
+        }
+        if (session != null) {
+            sessionRepository.delete(session);
+            return true;
+        } else {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        }
     }
 }
