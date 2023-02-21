@@ -117,4 +117,17 @@ public class SessionService {
 
         return userList;
     }
+
+    @Transactional
+    public List<Session> getAllSessionsFromCourseName(String courseName){
+        List<SessionInformation> sessionInformationList = sessionInformationRepository.findAllSessionInformationByCourse(courseName);
+        List<Session> sessionList = new ArrayList<Session>();
+        for(SessionInformation sessionInformation: sessionInformationList) {
+            Session session = sessionRepository.findSessionBySessionInformation(sessionInformation);
+            if(session != null) {
+                sessionList.add(session);
+            }
+        }
+        return sessionList;
+    }
 }
