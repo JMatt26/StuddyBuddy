@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View, Text, Pressable } from "react-native"
 import { isNil } from "../utils/isNil"
 
 export default function SearchSessoionCard({sessionTitle, sessionLocation, numberOfAttendees, tagNames }){
