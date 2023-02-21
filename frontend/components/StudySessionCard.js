@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 
-const assets = require('../assets/assets.js')
-
+const assets = require("../assets/assets.js");
 
 //to pass an image, add the image to the object in assets.js in the assets folder and pass the value related to the image as the prop
 export default function StudySessionCard({
@@ -9,16 +8,13 @@ export default function StudySessionCard({
   sessionTitle,
   sessionLocation,
   numberOfAttendees,
-  image
+  image,
 }) {
   return (
     <View>
       <View style={styles.container}>
         <View style={styles.image}>
-          <Image
-            source={image}
-            style={styles.image}
-          />
+          <Image source={image} style={styles.image} />
         </View>
         <View style={styles.sessionInfoContainer}>
           <View style={styles.courseTitleContainer}>
@@ -31,7 +27,7 @@ export default function StudySessionCard({
           <Pressable>
             <Image source={require("../assets/plusbutton.png")}></Image>
           </Pressable>
-          <Text style={{fontSize: 10}}>{numberOfAttendees + " going"}</Text>
+          <Text style={{ fontSize: 10 }}>{numberOfAttendees + " going"}</Text>
         </View>
       </View>
     </View>
@@ -44,7 +40,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 10,
     padding: 10,
-    //maxHeight: "85%",
     height: 115,
     borderRadius: 10,
     backgroundColor: "#FFFFFF",
@@ -61,7 +56,6 @@ const styles = StyleSheet.create({
   },
   sessionInfoContainer: {
     marginLeft: 10,
-    //backgroundColor: "black"
   },
   courseTitleContainer: {
     margin: 5,
@@ -89,7 +83,5 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "15%",
     justifyContent: "space-between",
-
-    //backgroundColor: "black"
   },
 });
