@@ -74,8 +74,9 @@ public class SessionController {
     @DeleteMapping("/deleteSession")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteSession(@RequestParam Integer sessionId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        var deleteStatus = sessionService.deleteSession(sessionId);
+        var deleteStatus = sessionService.deleteSession(sessionId, username);
 
         if (deleteStatus == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

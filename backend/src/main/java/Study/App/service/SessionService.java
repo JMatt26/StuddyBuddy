@@ -1,7 +1,6 @@
 package Study.App.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -85,8 +84,17 @@ public class SessionService {
         }
      }
 
-    public Boolean deleteSession(int sessionId) {
+    public Boolean deleteSession(int sessionId, String username) {
         Session session = sessionRepository.findSessionBySessionId(sessionId);
+
+        Integer userID = userRepository.findUserByUsername(username).getUserId();
+
+        List<Participation> participations = participationRepository.findAllParticipationBySessionSessionId(sessionId);
+        Integer adminID = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
+        
+        if (userID != adminID) {
+            throw new IncorrectDataException("You are not admin of this session", HttpStatus.BAD_REQUEST);
+        }
         if (session != null) {
             sessionRepository.delete(session);
             return true;
