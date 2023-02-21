@@ -6,10 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import Study.App.model.Session;
 import Study.App.model.SessionInformation;
 import Study.App.model.User;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.SessionInformationRepository;
+import Study.App.repository.SessionRepository;
 import Study.App.repository.UserRepository;
 
 @SpringBootApplication
@@ -23,7 +25,7 @@ public class StudyAppApplication {
 	CommandLineRunner commandLineRunner(
 			UserRepository userRepository,
 			SessionInformationRepository sessionInformationRepository,
-			
+			SessionRepository sessionRepository,
 			PasswordEncoder passwordEncoder) {
 		return (args) -> {
 			User parsa = new User();
@@ -43,6 +45,9 @@ public class StudyAppApplication {
 			sessionInformation.setCourse("ECSE 428");
 			sessionInformationRepository.save(sessionInformation);
 
+			Session session = new Session();
+			sessionRepository.save(session);
+			
 		};
 	}
 

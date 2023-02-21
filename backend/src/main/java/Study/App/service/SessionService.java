@@ -83,11 +83,30 @@ public class SessionService {
             throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
         }
      }
+
+    public Boolean deleteSession(int sessionId, String username) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
+
+        Integer userID = userRepository.findUserByUsername(username).getUserId();
+
+        List<Participation> participations = participationRepository.findAllParticipationBySessionSessionId(sessionId);
+        Integer adminID = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
+        
+        if (userID != adminID) {
+            throw new IncorrectDataException("You are not admin of this session", HttpStatus.BAD_REQUEST);
+        }
+        if (session != null) {
+            sessionRepository.delete(session);
+            return true;
+        } else {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
     @Transactional
     public List<User> getAllUsersInSession(Integer sessionId){
-        Session searchedSession = sessionRepository.findSessionBySessionId(sessionId);
         List<Participation> participationList =  participationRepository.findAllParticipationBySessionSessionId(sessionId);
-        List<User> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<User>();
         for(Participation participation: participationList) {
             UserInformation userInformation = participation.getUserInformation();
             User user = userInformation.getUser();

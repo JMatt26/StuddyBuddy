@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,8 +59,35 @@ public class SessionController {
     }
 
     @PutMapping("/joinSession")
-    public void joinSession(@RequestParam Integer sessionId, @RequestParam Integer userId) {
+    public ResponseEntity<String> joinSession(@RequestParam Integer sessionId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var joinStatus = sessionService.joinSession(sessionId, username);
+
+        if (joinStatus == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (joinStatus == false) {
+            return new ResponseEntity<String>("Failed to join session", HttpStatus.BAD_REQUEST);
+        } else{
+            return new ResponseEntity<String>("Joined session", HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/deleteSession")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> deleteSession(@RequestParam Integer sessionId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var deleteStatus = sessionService.deleteSession(sessionId, username);
+
+        if (deleteStatus == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (deleteStatus == false) {
+            return new ResponseEntity<String>("Failed to delete session", HttpStatus.BAD_REQUEST);
+        } else{
+            return new ResponseEntity<String>("Session Deleted", HttpStatus.OK);
+        }
+
     }
     @GetMapping("/getAllUsersInSession")
     public ResponseEntity<List<UserTO>> getAllUsersInSession(@RequestParam Integer sessionId){
