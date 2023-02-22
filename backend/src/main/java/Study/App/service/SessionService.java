@@ -119,7 +119,7 @@ public class SessionService {
     }
 
     @Transactional
-    public List<Session> getAllSessionsFromCourseName(String courseName){
+    public List<Session> getAllSessionsByCourseName(String courseName){
         List<SessionInformation> sessionInformationList = sessionInformationRepository.findAllSessionInformationByCourse(courseName);
         List<Session> sessionList = new ArrayList<Session>();
         for(SessionInformation sessionInformation: sessionInformationList) {
