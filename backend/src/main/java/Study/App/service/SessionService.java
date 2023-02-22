@@ -31,6 +31,11 @@ public class SessionService {
         this.userRepository = userRepository;
     }
 
+    // Get all sessions by session name
+    public List<Session> getSessionsBySessionName(String title) {
+        return sessionRepository.findAllSessionByTitle(title);
+    }
+
     @Transactional
     public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username, Integer sessionInformationId) {
 

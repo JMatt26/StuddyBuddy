@@ -124,6 +124,32 @@ public class SessionController {
 
     }
 
+    // GET all sessions by session name
+    @GetMapping("/getAllSessionsBySessionName")
+    public ResponseEntity<List<SessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName){
+        List<Session> sessionList = sessionService.getSessionsBySessionName(sessionName);
+        List<SessionTO> sessionTOList = new ArrayList<>();
+        if(sessionList != null){
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                    session.getSessionId(), 
+                    session.isPrivate(), 
+                    session.getTitle(), 
+                    session.getCapacity(), 
+                    session.getDescription(), 
+                    null, 
+                    null, 
+                    session.getSessionInformation() == null ? 
+                        null : 
+                        session.getSessionInformation().getSessionInformationId()
+                ));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private UserTO convertToDTO(User u){
         if (u == null){
             throw new IllegalArgumentException("There is no such User");
