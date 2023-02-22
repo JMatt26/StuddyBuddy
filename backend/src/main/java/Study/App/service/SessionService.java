@@ -46,12 +46,13 @@ public class SessionService {
         sessionParticipation.setSession(session);
         sessionParticipation.setUserInformation(user.getUserInformation());
 
-
-
-        SessionInformation sessionInformation = sessionInformationRepository
-                .findSessionInformationBySessionInformationId(sessionInformationId);
-        if (isPrivate != null)
-            session.setSessionInformation(sessionInformation);
+        if (sessionInformationId != null) {
+            SessionInformation sessionInformation = sessionInformationRepository
+                    .findSessionInformationBySessionInformationId(sessionInformationId);
+            if (sessionInformation != null){
+                session.setSessionInformation(sessionInformation);
+            }
+        }
 
         if (isPrivate != null)
             session.setPrivate(isPrivate);

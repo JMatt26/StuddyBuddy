@@ -49,13 +49,32 @@ public class SessionController {
 
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         
-        Session aNewSession = sessionService.createSession(incoming.isPrivate, incoming.title, incoming.capacity, incoming.description, username, incoming.sessionInformationId);
+        Session aNewSession = sessionService.createSession(
+            incoming.isPrivate, 
+            incoming.title, 
+            incoming.capacity, 
+            incoming.description, 
+            username, 
+            incoming.sessionInformationId
+        );
 
         if (aNewSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<SessionTO>(new SessionTO(aNewSession.getSessionId(), aNewSession.isPrivate(), aNewSession.getTitle(), aNewSession.getCapacity(), aNewSession.getDescription(), null, null, aNewSession.getSessionInformation().getSessionInformationId()), HttpStatus.OK);
+        return new ResponseEntity<SessionTO>(
+            new SessionTO(
+                aNewSession.getSessionId(), 
+                aNewSession.isPrivate(), 
+                aNewSession.getTitle(), 
+                aNewSession.getCapacity(), 
+                aNewSession.getDescription(), 
+                null, 
+                null, 
+                aNewSession.getSessionInformation() == null ? 
+                    null : 
+                    aNewSession.getSessionInformation().getSessionInformationId()
+            ), HttpStatus.OK);
     }
 
     @PutMapping("/joinSession")
