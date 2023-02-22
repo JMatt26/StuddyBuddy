@@ -77,7 +77,7 @@ public class SessionController {
             ), HttpStatus.OK);
     }
 
-    @PutMapping("/joinSession")
+    @PostMapping("/joinSession")
     public ResponseEntity<String> joinSession(@RequestParam Integer sessionId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -88,7 +88,7 @@ public class SessionController {
         } else if (joinStatus == false) {
             return new ResponseEntity<String>("Failed to join session", HttpStatus.BAD_REQUEST);
         } else{
-            return new ResponseEntity<String>("Joined session", HttpStatus.OK);
+            return new ResponseEntity<String>(HttpStatus.OK);
         }
     }
 

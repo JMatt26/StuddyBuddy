@@ -27,7 +27,7 @@ public class UserInformation {
     @JoinColumn(name = "friends")
     private Set<UserInformation> friends = new HashSet<UserInformation>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appuser")
     private User user;
     

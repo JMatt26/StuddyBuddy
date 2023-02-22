@@ -13,6 +13,7 @@ import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
+import Study.App.repository.UserInformationRepository;
 import Study.App.repository.UserRepository;
 import Study.exceptions.IncorrectDataException;
 import jakarta.transaction.Transactional;
@@ -23,12 +24,20 @@ public class SessionService {
     private ParticipationRepository participationRepository;
     private SessionInformationRepository sessionInformationRepository;
     private UserRepository userRepository;
+    private UserInformationRepository userInformationRepository;
 
-    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository, SessionInformationRepository sessionInformationRepository, UserRepository userRepository) {
+    public SessionService(
+        SessionRepository sessionRepository, 
+        ParticipationRepository participationRepository, 
+        SessionInformationRepository sessionInformationRepository, 
+        UserRepository userRepository,
+        UserInformationRepository userInformationRepository) {
+
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
         this.userRepository = userRepository;
+        this.userInformationRepository = userInformationRepository;
     }
 
     // Get all sessions by session name
@@ -45,11 +54,12 @@ public class SessionService {
         if (user == null) {
             throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
         }
+        UserInformation userInformation = userInformationRepository.findUserInformationByUserUsername(user.getUsername());
         Participation sessionParticipation = new Participation();
         sessionParticipation.setRole(ParticipationRole.ADMIN);
         sessionParticipation.setIsGoing(true);
         sessionParticipation.setSession(session);
-        sessionParticipation.setUserInformation(user.getUserInformation());
+        sessionParticipation.setUserInformation(userInformation);
 
         if (sessionInformationId != null) {
             SessionInformation sessionInformation = sessionInformationRepository
@@ -71,22 +81,20 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-     public Boolean joinSession(int sessionId, String username) {
-        Session session = sessionRepository.findSessionBySessionId(sessionId);
-        var user = userRepository.findUserByUsername(username);
-
-        if (session != null && user != null) {
+     public Boolean joinSession(Integer sessionId, String username) {
+        Session session = this.sessionRepository.findSessionBySessionId(sessionId);
+        User user = this.userRepository.findUserByUsername(username);
+        UserInformation userInformation = this.userInformationRepository.findUserInformationByUserUsername(user.getUsername());
+        if (session != null && user != null && userInformation != null) {
             Participation sessionParticipation = new Participation();
             sessionParticipation.setRole(ParticipationRole.MEMBER);
             sessionParticipation.setIsGoing(true);
             sessionParticipation.setSession(session);
-            sessionParticipation.setUserInformation(user.getUserInformation());
-
+            sessionParticipation.setUserInformation(userInformation);
+            participationRepository.save(sessionParticipation);
             return true;
-        } else if (session == null) {
-            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
         } else {
-            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+            throw new IncorrectDataException("Session, user, or User information was not found", HttpStatus.BAD_REQUEST);
         }
      }
 
@@ -115,7 +123,10 @@ public class SessionService {
         List<User> userList = new ArrayList<User>();
         for(Participation participation: participationList) {
             UserInformation userInformation = participation.getUserInformation();
-            User user = userInformation.getUser();
+            User user = null;
+            if (userInformation != null) {
+                user = userInformation.getUser();
+            };
             if(user != null && participation.isGoing()){
                 userList.add(user);
             }

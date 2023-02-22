@@ -63,5 +63,11 @@ public class Session {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Session [sessionId=" + sessionId + ", isPrivate=" + isPrivate + ", title=" + title + ", capacity="
+                + capacity + ", description=" + description + "]";
+    }
     
 }
