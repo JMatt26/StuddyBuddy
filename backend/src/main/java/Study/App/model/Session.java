@@ -23,7 +23,9 @@ public class Session {
     private Integer capacity;
     private String description;
 
-
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Participation> participations;
+    
     @OneToOne (cascade = CascadeType.REMOVE)
     private SessionInformation sessionInformation;
     
@@ -63,11 +65,17 @@ public class Session {
     public void setDescription(String description) {
         this.description = description;
     }
+    public Set<Participation> getParticipations() {
+        return participations;
+    }
+    public void setParticipations(Set<Participation> participations) {
+        this.participations = participations;
+    }
 
     @Override
     public String toString() {
         return "Session [sessionId=" + sessionId + ", isPrivate=" + isPrivate + ", title=" + title + ", capacity="
-                + capacity + ", description=" + description + "]";
+        + capacity + ", description=" + description + "]";
     }
     
 }

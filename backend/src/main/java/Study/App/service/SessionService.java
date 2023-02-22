@@ -60,6 +60,7 @@ public class SessionService {
         sessionParticipation.setIsGoing(true);
         sessionParticipation.setSession(session);
         sessionParticipation.setUserInformation(userInformation);
+        participationRepository.save(sessionParticipation);
 
         if (sessionInformationId != null) {
             SessionInformation sessionInformation = sessionInformationRepository
@@ -85,14 +86,17 @@ public class SessionService {
         Session session = this.sessionRepository.findSessionBySessionId(sessionId);
         User user = this.userRepository.findUserByUsername(username);
         UserInformation userInformation = this.userInformationRepository.findUserInformationByUserUsername(user.getUsername());
-        if (session != null && user != null && userInformation != null) {
-            Participation sessionParticipation = new Participation();
-            sessionParticipation.setRole(ParticipationRole.MEMBER);
-            sessionParticipation.setIsGoing(true);
-            sessionParticipation.setSession(session);
-            sessionParticipation.setUserInformation(userInformation);
-            participationRepository.save(sessionParticipation);
+        Participation existingParticipation = this.participationRepository.findAllParticipationBySessionSessionId(sessionId).stream().filter(p -> p.getUserInformation().getUser().getUsername().equals(username)).findFirst().orElse(null);
+        if (session != null && user != null && userInformation != null && existingParticipation == null) {
+            existingParticipation = new Participation();
+            existingParticipation.setRole(ParticipationRole.MEMBER);
+            existingParticipation.setIsGoing(true);
+            existingParticipation.setSession(session);
+            existingParticipation.setUserInformation(userInformation);
+            participationRepository.save(existingParticipation);
             return true;
+        } else if (existingParticipation != null) {
+            throw new IncorrectDataException("You are already in this session", HttpStatus.BAD_REQUEST);
         } else {
             throw new IncorrectDataException("Session, user, or User information was not found", HttpStatus.BAD_REQUEST);
         }
@@ -102,11 +106,10 @@ public class SessionService {
         Session session = sessionRepository.findSessionBySessionId(sessionId);
 
         Integer userID = userRepository.findUserByUsername(username).getUserId();
-
         List<Participation> participations = participationRepository.findAllParticipationBySessionSessionId(sessionId);
-        Integer adminID = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
-        
-        if (userID != adminID) {
+        Integer adminId = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
+
+        if (userID != adminId) {
             throw new IncorrectDataException("You are not admin of this session", HttpStatus.BAD_REQUEST);
         }
         if (session != null) {

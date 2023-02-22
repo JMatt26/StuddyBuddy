@@ -19,10 +19,10 @@ public class Participation {
 
     private ParticipationRole role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Session session;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserInformation userInformation;
     
     private Boolean isGoing = false;
@@ -77,4 +77,9 @@ public class Participation {
         this.userInformation = userInformation;
     }
     
+    @Override
+    public String toString() {
+        return "Participation [participationID=" + participationID + ", role=" + role + ", session=" + session
+                + ", userInformation=" + userInformation + ", isGoing=" + isGoing + "]";
+    }
 }
