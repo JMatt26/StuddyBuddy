@@ -1,4 +1,5 @@
 import { View, Text } from "react-native"
+import ActiveSessions from "../components/ActiveSessions"
 import Categories from "../components/Categories"
 import CategoryButton from "../components/CategoryButton"
 export default function Dev(){
@@ -7,7 +8,6 @@ export default function Dev(){
             ! FOR DEVELOPMENT ONLY !
         </Text>
         <Categories />
-        <Categories />
-        <Categories />
+        <ActiveSessions />
     </View>)
 }
