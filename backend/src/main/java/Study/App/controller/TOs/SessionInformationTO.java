@@ -1,17 +1,18 @@
 package Study.App.controller.TOs;
 
+import java.util.List;
+
 public class SessionInformationTO {
     public Integer sessionInformationId;
     public String startTime;
     public String endTime;
     public String course;
     public Boolean isOnline;
-    public String materialUrl;
+    public List<String> materialUrl;
     public Integer sessionId;
-    public Integer educationId;
     public Integer locationId;
 
-    public SessionInformationTO(Integer sessionInformationId, String startTime, String endTime, String course, Boolean isOnline, String materialUrl, Integer sessionId, Integer educationId, Integer locationId) {
+    public SessionInformationTO(Integer sessionInformationId, String startTime, String endTime, String course, Boolean isOnline, List<String> materialUrl, Integer sessionId, Integer locationId) {
         this.sessionInformationId = sessionInformationId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -19,7 +20,6 @@ public class SessionInformationTO {
         this.isOnline = isOnline;
         this.materialUrl = materialUrl;
         this.sessionId = sessionId;
-        this.educationId = educationId;
         this.locationId = locationId;
     }
 
