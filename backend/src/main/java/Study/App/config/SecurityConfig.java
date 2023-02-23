@@ -37,12 +37,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()
-                .oauth2ResourceServer().jwt()
-                .jwtAuthenticationConverter(new AuthConverter()).and().and()
-                .authorizeHttpRequests().anyRequest().authenticated().and()
-                .httpBasic().and()
-                .build();
+            .csrf().disable()
+            .oauth2ResourceServer().jwt()
+            .jwtAuthenticationConverter(new AuthConverter()).and().and()
+            .authorizeHttpRequests().anyRequest().authenticated().and()
+            .httpBasic().and()
+            .build();
     }
 
     // HARD CODED USER IN SYSTEM FOR TESTING

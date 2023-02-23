@@ -8,7 +8,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -24,18 +23,12 @@ public class Session {
     private Integer capacity;
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Participation> participations;
-
+    
     @OneToOne (cascade = CascadeType.REMOVE)
     private SessionInformation sessionInformation;
-
-    public Set<Participation> getParticipants() {
-        return participations;
-    }
-    public void setParticipants(Set<Participation> participations) {
-        this.participations = participations;
-    }
+    
     public SessionInformation getSessionInformation() {
         return sessionInformation;
     }
@@ -51,7 +44,7 @@ public class Session {
     public boolean isPrivate() {
         return isPrivate;
     }
-    public void setPrivate(boolean isPrivate) {
+    public void setPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
     public String getTitle() {
@@ -71,6 +64,18 @@ public class Session {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public Set<Participation> getParticipations() {
+        return participations;
+    }
+    public void setParticipations(Set<Participation> participations) {
+        this.participations = participations;
+    }
+
+    @Override
+    public String toString() {
+        return "Session [sessionId=" + sessionId + ", isPrivate=" + isPrivate + ", title=" + title + ", capacity="
+        + capacity + ", description=" + description + "]";
     }
     
 }

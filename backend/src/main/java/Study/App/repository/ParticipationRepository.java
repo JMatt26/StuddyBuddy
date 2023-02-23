@@ -16,5 +16,9 @@ public interface ParticipationRepository extends CrudRepository<Participation, I
 
     public List<Participation> findAllParticipationByIsGoingTrue();
 
+    public List<Participation> findAllParticipationBySessionSessionId(Integer sessionId);
+
+    public List<Participation> findAllParticipationByUserInformationUserUserId(Integer userId);
+
     public List<Participation> findAllParticipationByIsGoingFalse();
 }

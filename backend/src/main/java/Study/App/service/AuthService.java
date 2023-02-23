@@ -32,7 +32,7 @@ public class AuthService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(2, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(120, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("authorities", authorities)
                 .build();
