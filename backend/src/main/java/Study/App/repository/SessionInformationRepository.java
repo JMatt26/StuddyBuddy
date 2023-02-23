@@ -2,6 +2,8 @@ package Study.App.repository;
 
 import java.util.List;
 
+import Study.App.model.enums.Tag;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +24,6 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     public List<SessionInformation> findAllSessionInformationByEducation(Education education);
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
+
+    public List<SessionInformation> findAllSessionInformationByTags(Tag tags);
 }

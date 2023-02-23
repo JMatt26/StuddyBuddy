@@ -1,5 +1,8 @@
 package Study.App.model;
 
+import Study.App.model.enums.Tag;
+
+
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +38,18 @@ public class SessionInformation {
     
     @ManyToOne
     private Location location;
+
+    @ManyToOne
+    private Tag tags;
     
+    public Tag getTag() {
+        return tags;
+    }
+
+    public void setTag(Tag tags) {
+        this.tags = tags;
+    }
+
     public Education getEducation() {
         return education;
     }
