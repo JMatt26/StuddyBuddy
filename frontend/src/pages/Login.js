@@ -57,10 +57,17 @@ export default function Login({ navigation }) {
             <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(email, password) } }}>
                 <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity>
-            <Button
-                title="Sign Up"
-                onPress={() => navigation.navigate("SignUp")}
-            />
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: 30,
+                }}>
+                <Text>New to the app?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                    <Text style={{ color: '#7ecd32', fontWeight: '700' }}> Sign Up</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }

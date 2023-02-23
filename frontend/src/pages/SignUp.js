@@ -8,27 +8,30 @@ import {
 } from "react-native";
 
 export default function SignUp() {
-    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     return (
         <View style={styles.container}>
-            <View style={styles.thirdPartyLogin}>
-                <TextInput
-
-                />
+            <View>
+                <Text style={styles.title}>Create an account today!</Text>
             </View>
-            <View style={styles.thirdPartyLogin}>
+            <View style={styles.inputView}>
                 <TextInput
-
+                    style={styles.TextInput}
+                    placeholder="Name"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={(name) => setName(name)}
                 />
             </View>
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
-                    placeholder="Email"
+                    placeholder="Username"
                     placeholderTextColor="#003f5c"
-                    onChangeText={(email) => setEmail(email)}
+                    secureTextEntry={true}
+                    onChangeText={(username) => setUsername(username)}
                 />
             </View>
             <View style={styles.inputView}>
@@ -36,15 +39,11 @@ export default function SignUp() {
                     style={styles.TextInput}
                     placeholder="Password"
                     placeholderTextColor="#003f5c"
-                    secureTextEntry={true}
                     onChangeText={(password) => setPassword(password)}
                 />
             </View>
-            <TouchableOpacity>
-                <Text style={styles.forgot_button}>Forgot Password?</Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText}>LOGIN</Text>
+                <Text style={styles.loginText}>Sign Up</Text>
             </TouchableOpacity>
         </View>
     );
@@ -54,18 +53,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
-        justifyContent: "center",
+        paddingTop: 50,
     },
-    thirdPartyLogin: {
-        backgroundColor: "#7ecd32",
-        opacity: .3,
-        borderStyle: "solid",
-        borderRadius: 30,
-        width: "70%",
-        height: 45,
-        marginBottom: 15,
-        marginTop: 5,
+    title: {
+        backgroundColor: "#fff",
         alignItems: "center",
+        paddingBottom: 50,
+        fontSize: 20
     },
     inputView: {
         opacity: .3,
@@ -81,7 +75,6 @@ const styles = StyleSheet.create({
         height: 50,
         flex: 1,
         padding: 10,
-        marginLeft: 20,
     },
     forgot_button: {
         height: 30,
