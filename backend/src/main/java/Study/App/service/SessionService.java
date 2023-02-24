@@ -137,4 +137,23 @@ public class SessionService {
 
         return userList;
     }
+
+    @Transactional
+    public List<Session> getAllSessionsByUserFriends(String username){
+        UserInformation userInformation = userInformationRepository.findUserInformationByUserUsername(username);
+        Set<UserInformation> friends = userInformation.getFriends();
+        List<Session> sessions = new ArrayList<Session>();
+        for(UserInformation friend: friends){
+            List<Participation> participationList = participationRepository.findAllParticipationByUserInformationUserUserId(friend.getUser().getUserId());
+            for(Participation participation: participationList){
+                Session session = participation.getSession();
+                if(session != null && !sessions.contains(session)){
+                    sessions.add(session);
+                }
+            }
+        }
+        return sessions;
+    }
+
+    }
 }
