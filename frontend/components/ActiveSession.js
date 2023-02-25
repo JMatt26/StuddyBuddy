@@ -1,18 +1,18 @@
-import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
+import {StyleSheet, Text, View, Button, Image, Pressable, TouchableOpacity} from 'react-native';
 import React, { Component } from 'react';
 
 export default function ActiveSession() {
    
         return (
-            <View>
-                <Pressable style={styles.container}>
+
+                <TouchableOpacity style={styles.container}>
                     <Image 
                     style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
                     <Text style={styles.sessionName}>Study Session</Text>
                     <Text style={styles.location}>Location</Text>
                     <Text style={styles.going}>50 going</Text>
-                </Pressable>
-            </View>
+                </TouchableOpacity>
+
         );
     };
 const styles = StyleSheet.create ({

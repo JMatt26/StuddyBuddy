@@ -53,7 +53,19 @@ public class StudyAppApplication {
 			sessionInformation.setCourse("ECSE 428");
 			sessionInformationRepository.save(sessionInformation);
 
-			Session session = new Session();
+			Session session1 = new Session();
+			session1.getSessionInformation().setOnline(true);
+			session1.getSessionInformation().setCourse("ECSE 428");
+			sessionRepository.save(session);
+
+			Session session2 = new Session();
+			session1.getSessionInformation().setOnline(true);
+			session1.getSessionInformation().setCourse("ECSE 428");
+			sessionRepository.save(session);
+
+			Session session3 = new Session();
+			session1.getSessionInformation().setOnline(true);
+			session1.getSessionInformation().setCourse("ECSE 428");
 			sessionRepository.save(session);
 			
 		};
