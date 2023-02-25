@@ -1,22 +1,20 @@
-import { View, Text } from "react-native";
-import SearchSessionCard from "../components/SearchSessionCard";
-import StudySessionCard from "../components/StudySessionCard";
+import { View, Text } from "react-native"
+import ActiveSessions from "../../components/ActiveSessions"
+import Categories from "../../components/Categories"
+import CategoryButton from "../../components/CategoryButton"
+import { Pressable } from "react-native"
+import { AddUser } from "../../utils/AddUser"
 
-const assets = require("../assets/assets.js");
+export default function Dev(){
+    
 
-export default function Dev() {
-  return (
-    <View>
-      <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center" }}>
-        ! FOR DEVELOPMENT ONLY !
-      </Text>
-      <StudySessionCard
-        courseTitle={"ECSE 324"}
-        sessionTitle={"Exam Study Session"}
-        sessionLocation={"ENGTR-200"}
-        numberOfAttendees={19}
-        image={assets["mcgillPhoto"]}
-      />
-    </View>
-  );
+    return(<View>
+        <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center" }}>
+            ! FOR DEVELOPMENT ONLY !
+        </Text>
+        <Categories />
+        <Categories />
+        <Categories />
+        <Pressable onPress={() => AddUser(1)}><Text>Test</Text></Pressable>
+    </View>)
 }
