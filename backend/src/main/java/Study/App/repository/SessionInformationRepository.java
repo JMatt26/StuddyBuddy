@@ -3,6 +3,7 @@ package Study.App.repository;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
 import Study.App.model.Education;
@@ -14,7 +15,7 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     
     public SessionInformation findSessionInformationBySessionInformationId(int id);
 
-    public List<SessionInformation> findAllSessionInformationByCourse(String course);
+    public Streamable<SessionInformation> findAllSessionInformationByCoursesContaining(String courses);
 
     public List<SessionInformation> findAllSessionInformationByIsOnlineTrue();
     public List<SessionInformation> findAllSessionInformationByIsOnlineFalse();
@@ -23,5 +24,5 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
 
-    public List<SessionInformation> findAllSessionInformationByTagIn(String tag);
+    public Streamable<SessionInformation> findAllSessionInformationByTagsContaining(String tags);
 }

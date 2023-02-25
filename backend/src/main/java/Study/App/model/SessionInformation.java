@@ -113,7 +113,7 @@ public class SessionInformation {
     }
     
     public Session getSession() {
-        return session;
+        return session;  
     }
     
     public void setSession(Session session) {
