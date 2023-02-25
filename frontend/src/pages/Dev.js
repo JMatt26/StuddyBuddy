@@ -1,7 +1,7 @@
-import { View, Text, Pressable } from "react-native"
-import Categories from "../components/Categories"
-import CategoryButton from "../components/CategoryButton"
-import { AddUser } from "../helper/AddUser"
+import { View, Text } from "react-native"
+import ActiveSessions from "../../components/ActiveSessions"
+import Categories from "../../components/Categories"
+import CategoryButton from "../../components/CategoryButton"
 export default function Dev(){
     let test = async () => {
         console.log("Hello")
