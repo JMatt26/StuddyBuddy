@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
 
 import Study.App.model.*;
 import org.springframework.http.HttpStatus;
@@ -136,5 +137,31 @@ public class SessionService {
         }
 
         return userList;
+    }
+
+    @Transactional
+    public List<SessionInformation>  getAllActiveSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <SessionInformation> sessionInfoFiltered = new ArrayList<SessionInformation>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
+                sessionInfoFiltered.add(sessionInfo);
+            }
+        }
+        return sessionInfoFiltered;
+    }
+
+    @Transactional
+    public List<SessionInformation> getAllUpcomingSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <SessionInformation> sessionInfoFiltered = new ArrayList<SessionInformation>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().after(date)){
+                sessionInfoFiltered.add(sessionInfo);
+            }
+        }
+        return sessionInfoFiltered;
     }
 }
