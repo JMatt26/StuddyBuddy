@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     // TODO: Consider if this endpoint should be here or not
-    @PostMapping("/signup")
+    @PostMapping("/signup/")
     public ResponseEntity<String> signUp(@RequestBody UserTO incoming){
        User newUser = userService.signUpUser(incoming.name, incoming.username, incoming.password);
        

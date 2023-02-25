@@ -92,6 +92,7 @@ public class SessionController {
         }
     }
 
+
     @DeleteMapping("/deleteSession")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteSession(@RequestParam Integer sessionId){
