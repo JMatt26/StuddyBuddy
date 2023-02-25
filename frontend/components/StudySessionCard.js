@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
+import { isNil } from "../utils/isNil.js";
 
 const assets = require("../assets/assets.js");
 
@@ -16,19 +17,23 @@ export default function StudySessionCard({
         <View style={styles.image}>
           <Image source={image} style={styles.image} />
         </View>
-        <View style={styles.sessionInfoContainer}>
-          <View style={styles.courseTitleContainer}>
+
+        <View style={isNil(courseTitle) ? 
+        styles.sessionInfoContainerNoTag: styles.sessionInfoContainerTag}>
+          {!isNil(courseTitle) && <View style={styles.courseTitleContainer}>
             <Text>{courseTitle}</Text>
-          </View>
+          </View>}
           <Text style={styles.sessionTitle}>{sessionTitle}</Text>
           <Text style={styles.sessionLocation}>{sessionLocation}</Text>
         </View>
+
         <View style={styles.sessionButtonContainer}>
-          <Pressable>
+          <Pressable style={styles.sessionButton}>
             <Image source={require("../assets/plusbutton.png")}></Image>
           </Pressable>
-          <Text style={{ fontSize: 10 }}>{numberOfAttendees + " going"}</Text>
+          <Text style={styles.numberOfAttendees}>{numberOfAttendees + " going"}</Text>
         </View>
+
       </View>
     </View>
   );
@@ -43,7 +48,7 @@ const styles = StyleSheet.create({
     height: 115,
     borderRadius: 10,
     backgroundColor: "#FFFFFF",
-    alignItems: "center",
+    alignItems: "space-evenly"
   },
   image: {
     width: 120,
@@ -54,8 +59,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
-  sessionInfoContainer: {
+  sessionInfoContainerTag: {
     marginLeft: 10,
+  },
+  sessionInfoContainerNoTag: {
+    marginLeft: 10,
+    flexDirection: "column",
+    alignItems: "flex-start"
   },
   courseTitleContainer: {
     margin: 5,
@@ -81,7 +91,19 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     height: "90%",
-    width: "15%",
+    width: "25%",
     justifyContent: "space-between",
   },
+  sessionButton: {
+    position: "absolute",
+    top: 0,
+    right: 45
+  },
+  numberOfAttendees: {
+    position: "absolute",
+    fontSize: 16,
+    fontWeight: "bold",
+    top: 70,
+    right: 50
+  }
 });
