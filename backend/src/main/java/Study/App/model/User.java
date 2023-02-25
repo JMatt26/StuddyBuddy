@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.util.HashSet;
@@ -30,6 +31,7 @@ public class User {
     @Column (unique = true)
     private String username;
     private String password;
+
 
     public Set<ParticipationRole> getRoles() {
         return roles;
@@ -60,5 +62,10 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", name=" + name + ", username=" + username + ", password=" + password + "]";
     }
 }

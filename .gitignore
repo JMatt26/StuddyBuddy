@@ -40,8 +40,6 @@ out/
 ### VS Code ###
 .vscode/
 
-backend/src/main/resources/application.properties
+application.properties
 backend/src/main/resources/application.properties
 *.properties
-backend/src/main/resources/application.properties
-backend/src/main/resources/application.properties
