@@ -75,7 +75,7 @@ public class UserServiceTest {
             }
         );
         lenient().when(
-            userRepository.findUserByName(anyString())
+            userRepository.findUserByUsername(anyString())
         ).thenAnswer(
             (InvocationOnMock invocation) -> {
                 if(invocation.getArgument(0).equals(user1Name)){
@@ -105,7 +105,7 @@ public class UserServiceTest {
             fail();
         }
 
-        User user = userRepository.findUserByName(user3Name);
+        User user = userRepository.findUserByUsername(user3Name);
 
         System.out.println("not null checking");        
         assertNotNull(user);
