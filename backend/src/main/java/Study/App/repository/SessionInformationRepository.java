@@ -1,6 +1,7 @@
 package Study.App.repository;
 
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,8 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     public List<SessionInformation> findAllSessionInformationByEducation(Education education);
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
+
+    public List<SessionInformation> findAllSessionInformationByStartTime(Date startTime);
+
+
 }
