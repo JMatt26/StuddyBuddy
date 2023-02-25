@@ -29,8 +29,7 @@ public class AppUserDetailsService implements UserDetailsService {
         User user = userRepository.findUserByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(
-                    "Cannot find user with username: " + username);
+            throw new UsernameNotFoundException("Cannot find user with username: " + username);
         }
         return new SecurityUser(user);
     }

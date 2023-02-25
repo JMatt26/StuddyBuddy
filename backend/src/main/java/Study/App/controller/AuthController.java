@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import Study.App.model.User;
-import Study.App.controller.TOs.UserTORequest;
+import Study.App.controller.TOs.UserTO;
 import Study.App.service.AuthService;
 import Study.App.service.UserService;
 
@@ -32,8 +32,8 @@ public class AuthController {
     }
 
     // TODO: Consider if this endpoint should be here or not
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody UserTORequest incoming){
+    @PostMapping("/signup/")
+    public ResponseEntity<String> signUp(@RequestBody UserTO incoming){
        User newUser = userService.signUpUser(incoming.name, incoming.username, incoming.password);
        
        if (newUser == null){

@@ -1,26 +1,28 @@
 package Study.App.controller.TOs;
 
-public class SessionTOResponse {
+import java.util.Set;
+
+public class SessionTO {
     public Integer sessionId;
     public Boolean isPrivate;
     public String title;
     public Integer capacity;
     public String description;
-    public Integer attendees;
-    public Integer participantId;
+    public Integer numberOfAttendees;
+    public Set<Integer> participationIds;
     public Integer sessionInformationId;
 
-    public SessionTOResponse(Integer sessionId, Boolean isPrivate, String title, Integer capacity, String description, Integer attendees, Integer participantId, Integer sessionInformationId) {
+    public SessionTO(Integer sessionId, Boolean isPrivate, String title, Integer capacity, String description, Integer numberOfAttendees, Set<Integer> participationIds, Integer sessionInformationId) {
         this.sessionId = sessionId;
         this.isPrivate = isPrivate;
         this.title = title;
         this.capacity = capacity;
         this.description = description;
-        this.attendees = attendees;
-        this.participantId = participantId;
+        this.numberOfAttendees = numberOfAttendees;
+        this.participationIds = participationIds;
         this.sessionInformationId = sessionInformationId;
     }
 
-    public SessionTOResponse() {
+    public SessionTO() {
     }
 }
