@@ -2,6 +2,8 @@ package Study.App.controller;
 
 import Study.App.controller.TOs.UserTO;
 import Study.App.model.User;
+import Study.App.repository.SessionRepository;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
+import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,7 @@ import java.util.List;
 @RequestMapping("/session")
 public class SessionController {
     private SessionService sessionService;
+    private SessionRepository sessionRepository;
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
@@ -45,21 +51,41 @@ public class SessionController {
     }
 
     @PostMapping("/createSession")
-    public ResponseEntity<SessionTO> createTheSession(@RequestBody SessionTO incoming) {
+    public ResponseEntity<SessionTO> createTheSession(@RequestBody SessionTO incoming, @RequestBody SessionInformationTO incomingInfo) {
 
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        
+   
         Session aNewSession = sessionService.createSession(
             incoming.isPrivate, 
             incoming.title, 
             incoming.capacity, 
             incoming.description, 
-            username, 
-            incoming.sessionInformationId
+            username
         );
 
         if (aNewSession == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        var startTime = Date.valueOf(incomingInfo.startTime);
+        var endTime = Date.valueOf(incomingInfo.endTime);
+        var sessionId = aNewSession.getSessionId();
+
+        SessionInformation newSessionInfo = sessionService.addInfoToSession(
+            sessionId,
+            startTime,
+            endTime,
+            incomingInfo.course,
+            incomingInfo.isOnline,
+            incomingInfo.materialUrl,
+            incomingInfo.locationId
+        );
+
+        if (newSessionInfo == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            aNewSession.setSessionInformation(newSessionInfo);
+            sessionRepository.save(aNewSession);
         }
 
         return new ResponseEntity<SessionTO>(

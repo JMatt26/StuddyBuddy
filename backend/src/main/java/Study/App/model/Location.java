@@ -12,11 +12,49 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationid;
 
+    private String streetAddress;
+
+    private String city;
+
+    private String province;
+
+    private String postalCode;
+
     private String buildingName;
 
-    private String address;
-
     private String roomNumber;
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
     public int getLocationid() {
         return locationid;
@@ -32,14 +70,6 @@ public class Location {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getRoomNumber() {
