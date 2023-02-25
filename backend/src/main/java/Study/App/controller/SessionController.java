@@ -150,6 +150,11 @@ public class SessionController {
         }
     }
 
+    // @GetMapping("/getAllSessionsByTag")
+    // public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
+
+    // }
+
     private UserTO convertToDTO(User u){
         if (u == null){
             throw new IllegalArgumentException("There is no such User");

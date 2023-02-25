@@ -137,4 +137,20 @@ public class SessionService {
 
         return userList;
     }
+
+    @Transactional
+    public List<Session> getAllSessionsByTag(String tag){
+        List<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagIn(tag);
+        List<Session> sessionList = new ArrayList<Session>();
+        for(SessionInformation sessionInformation: sessionInformations) {
+            Session session = null;
+            if(sessionInformation != null) {
+                session = sessionInformation.getSession();
+            }
+            if(session != null) {
+                sessionList.add(session);
+            }
+        }
+        return sessionList;
+    }
 }
