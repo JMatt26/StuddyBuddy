@@ -190,7 +190,6 @@ public class SessionServiceTest {
         assertNotNull(session);
         assertEquals(title, session.getTitle());
     }
-    //Test deleteSession
     @Test
     public void testDeleteSession(){
         Boolean session = null;
@@ -237,7 +236,7 @@ public class SessionServiceTest {
             sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, course, isOnline, null, 1);
         } catch (Exception e) {
             error = e.getMessage();
-            
+
         }
         assertNull(sessionInformation);
         assertEquals("Session not found", error);

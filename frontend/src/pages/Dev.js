@@ -4,6 +4,8 @@ import Categories from "../../components/Categories"
 import CategoryButton from "../../components/CategoryButton"
 import { Pressable } from "react-native"
 import { AddUser } from "../../utils/AddUser"
+import StudySessionCard from "../../components/StudySessionCard"
+import assetsObject from "../../assets/assets"
 
 export default function Dev(){
     
@@ -12,9 +14,6 @@ export default function Dev(){
         <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center" }}>
             ! FOR DEVELOPMENT ONLY !
         </Text>
-        <Categories />
-        <Categories />
-        <Categories />
-        <Pressable onPress={() => AddUser(1)}><Text>Test</Text></Pressable>
+        <StudySessionCard tag={"ECSE-324"} sessionTitle={"Studying Session"} sessionLocation={"Trottier"} numberOfAttendees={12} image={assetsObject.mcgillPhoto}/>
     </View>)
 }

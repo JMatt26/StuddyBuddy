@@ -107,5 +107,10 @@ public class SessionInformation {
     public void setSession(Session session) {
         this.session = session;
     }
+
+    @Override
+    public String toString() {
+        return "SessionInformation [course=" + course + ", endTime=" + endTime + ", isOnline=" + isOnline + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+    }
     
 }

@@ -25,4 +25,12 @@ public class SessionTO {
 
     public SessionTO() {
     }
+
+    @Override
+    public String toString() {
+        return "SessionTO [capacity=" + capacity + ", description=" + description + ", isPrivate=" + isPrivate
+                + ", numberOfAttendees=" + numberOfAttendees + ", participationIds=" + participationIds
+                + ", sessionInformationId=" + sessionInformationId + ", sessionId=" + sessionId + ", title=" + title
+                + "]";
+    }
 }

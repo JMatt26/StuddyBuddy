@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
@@ -25,64 +26,67 @@ import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/session")
 public class SessionController {
     private SessionService sessionService;
     private SessionRepository sessionRepository;
-    public SessionController(SessionService sessionService) {
+
+    public SessionController(SessionService sessionService, SessionRepository sessionRepository) {
         this.sessionService = sessionService;
+        this.sessionRepository = sessionRepository;
     }
+
     @GetMapping("/sess1")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getS1(Authentication authentication) {
         System.out.println(authentication.getAuthorities().toString());
         return "Hell";
     }
-    
+
     @GetMapping("/sess2")
     @PreAuthorize("hasAuthority('MEMBER')")
-    public String getS2(Authentication authentication){
+    public String getS2(Authentication authentication) {
         System.out.println(authentication.getAuthorities().toString());
         return "Hell";
     }
 
     @PostMapping("/createSession")
-    public ResponseEntity<SessionTO> createTheSession(@RequestBody SessionTO incoming, @RequestBody SessionInformationTO incomingInfo) {
+    public ResponseEntity<SessionTO> createTheSession(@RequestBody CreateSessionTO createSessionTO) {
 
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-   
+
+        SessionTO incoming = createSessionTO.incoming;
+        SessionInformationTO incomingInfo = createSessionTO.incomingInfo;
+
         Session aNewSession = sessionService.createSession(
-            incoming.isPrivate, 
-            incoming.title, 
-            incoming.capacity, 
-            incoming.description, 
+            incoming.isPrivate,
+            incoming.title,
+            incoming.capacity,
+            incoming.description,
             username
         );
-
-        if (aNewSession == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        var startTime = Date.valueOf(incomingInfo.startTime);
-        var endTime = Date.valueOf(incomingInfo.endTime);
+        Date startDate = stringToDate(incomingInfo.startTime);
+        Date endDate = stringToDate(incomingInfo.endTime);
         var sessionId = aNewSession.getSessionId();
 
         SessionInformation newSessionInfo = sessionService.addInfoToSession(
-            sessionId,
-            startTime,
-            endTime,
-            incomingInfo.course,
-            incomingInfo.isOnline,
-            incomingInfo.materialUrl,
-            incomingInfo.locationId
-        );
+                sessionId,
+                startDate,
+                endDate,
+                incomingInfo.course,
+                incomingInfo.isOnline,
+                incomingInfo.materialUrl,
+                incomingInfo.locationId);
 
         if (newSessionInfo == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
             aNewSession.setSessionInformation(newSessionInfo);
             sessionRepository.save(aNewSession);
@@ -90,17 +94,18 @@ public class SessionController {
 
         return new ResponseEntity<SessionTO>(
             new SessionTO(
-                aNewSession.getSessionId(), 
-                aNewSession.isPrivate(), 
-                aNewSession.getTitle(), 
-                aNewSession.getCapacity(), 
-                aNewSession.getDescription(), 
-                null, 
-                null, 
-                aNewSession.getSessionInformation() == null ? 
-                    null : 
-                    aNewSession.getSessionInformation().getSessionInformationId()
-            ), HttpStatus.OK);
+                aNewSession.getSessionId(),
+                aNewSession.isPrivate(),
+                aNewSession.getTitle(),
+                aNewSession.getCapacity(),
+                aNewSession.getDescription(),
+                null,
+                null,
+                aNewSession.getSessionInformation() == null ? null
+                        : aNewSession.getSessionInformation().getSessionInformationId()),
+            HttpStatus.OK
+        );
+        
     }
 
     @PostMapping("/joinSession")
@@ -113,15 +118,14 @@ public class SessionController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (joinStatus == false) {
             return new ResponseEntity<String>("Failed to join session", HttpStatus.BAD_REQUEST);
-        } else{
+        } else {
             return new ResponseEntity<String>(HttpStatus.OK);
         }
     }
 
-
     @DeleteMapping("/deleteSession")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteSession(@RequestParam Integer sessionId){
+    public ResponseEntity<String> deleteSession(@RequestParam Integer sessionId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         var deleteStatus = sessionService.deleteSession(sessionId, username);
@@ -130,22 +134,23 @@ public class SessionController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (deleteStatus == false) {
             return new ResponseEntity<String>("Failed to delete session", HttpStatus.BAD_REQUEST);
-        } else{
+        } else {
             return new ResponseEntity<String>("Session Deleted", HttpStatus.OK);
         }
 
     }
+
     @GetMapping("/getAllUsersInSession")
-    public ResponseEntity<List<UserTO>> getAllUsersInSession(@RequestParam Integer sessionId){
+    public ResponseEntity<List<UserTO>> getAllUsersInSession(@RequestParam Integer sessionId) {
         List<User> userList = sessionService.getAllUsersInSession(sessionId);
         List<UserTO> userTOList = new ArrayList<>();
-        if(userList != null){
-            for(User user : userList){
+        if (userList != null) {
+            for (User user : userList) {
                 UserTO userTO = convertToDTO(user);
                 userTOList.add(userTO);
             }
             return new ResponseEntity<List<UserTO>>(userTOList, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<List<UserTO>>(HttpStatus.BAD_REQUEST);
         }
 
@@ -153,35 +158,55 @@ public class SessionController {
 
     // GET all sessions by session name
     @GetMapping("/getAllSessionsBySessionName")
-    public ResponseEntity<List<SessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName){
+    public ResponseEntity<List<SessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName) {
         List<Session> sessionList = sessionService.getSessionsBySessionName(sessionName);
         List<SessionTO> sessionTOList = new ArrayList<>();
-        if(sessionList != null){
+        if (sessionList != null) {
             sessionList.stream().forEach(session -> {
                 sessionTOList.add(new SessionTO(
-                    session.getSessionId(), 
-                    session.isPrivate(), 
-                    session.getTitle(), 
-                    session.getCapacity(), 
-                    session.getDescription(), 
-                    null, 
-                    null, 
-                    session.getSessionInformation() == null ? 
-                        null : 
-                        session.getSessionInformation().getSessionInformationId()
-                ));
+                        session.getSessionId(),
+                        session.isPrivate(),
+                        session.getTitle(),
+                        session.getCapacity(),
+                        session.getDescription(),
+                        null,
+                        null,
+                        session.getSessionInformation() == null ? null
+                                : session.getSessionInformation().getSessionInformationId()));
             });
             return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    private UserTO convertToDTO(User u){
-        if (u == null){
+    private UserTO convertToDTO(User u) {
+        if (u == null) {
             throw new IllegalArgumentException("There is no such User");
         }
-        UserTO userTO = new UserTO(null, u.getName(),u.getUsername(), null);
+        UserTO userTO = new UserTO(null, u.getName(), u.getUsername(), null);
         return userTO;
+    }
+
+    public static String dateToString(Date date) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
+        return sf.format(date);
+    }
+
+    public static Date stringToDate(String date) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
+
+        try {
+            return (Date) sf.parse(date);
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+            try {
+                SimpleDateFormat sfOther = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA_FRENCH);
+                return (Date) sf.parse(date);
+            } catch (ParseException e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
     }
 }
