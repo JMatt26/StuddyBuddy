@@ -54,7 +54,11 @@ public class SessionControllerTest {
 	}
 
     private SessionTO testCreateSession() {
-        ResponseEntity<SessionTO> response = client.postForEntity("/createSession", new SessionTO(1234, false, "league", 10, "tutorial", 6, null, null), SessionTO.class);
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token);
+		HttpEntity req = new HttpEntity(headers);
+
+        ResponseEntity<SessionTO> response = client.postForEntity("/createSession", new SessionTO(1234, false, "league", 10, "tutorial", null, null, null), SessionTO.class);
 		assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
 		assertNotNull(response.getBody(), "Response has body");
