@@ -57,7 +57,7 @@ public class SessionService {
 
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
-            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+            throw new IncorrectDataException("User not found", HttpStatus.NOT_FOUND);
         }
         UserInformation userInformation = userInformationRepository.findUserInformationByUserUsername(user.getUsername());
         Participation sessionParticipation = new Participation();
