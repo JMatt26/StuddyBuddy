@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.session.SessionRegistry;
 
+import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
 import Study.App.repository.SessionRepository;
 
@@ -47,8 +48,13 @@ public class SessionControllerTest {
 
     @Test
 	public void testCreateAndGetSession() {
-
+        testCreateSession();
 	}
+
+    private SessionTO testCreateSession() {
+        
+        return response.getBody();
+    }
 
     private String getToken() {
 		HttpHeaders headers = new HttpHeaders();
