@@ -11,6 +11,7 @@ import org.springframework.data.util.Streamable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -40,8 +41,8 @@ public class SessionServiceTest {
         sessionInfo2Tags.add("Movies");
         sessionInfo2.setTag(sessionInfo1Tags);
 
-        when(sessionInformationRepository.findAllSessionInformationByTagsContaining(anyString()))
-        .thenReturn(Streamable.of(sessionInfo1, sessionInfo2));
+        when(sessionInformationRepository.findAllSessionInformationByTagsIn(anyList()))
+        .thenReturn(List.of(sessionInfo1, sessionInfo2));
     }
     
     @Test

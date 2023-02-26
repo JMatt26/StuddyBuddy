@@ -144,8 +144,10 @@ public class SessionService {
     public List<Session> getAllSessionsByTag(List<String> tags){
         List<Session> sessionList = new ArrayList<Session>();            
         for(String tag: tags){
-            Streamable<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagsContaining(tag);
-            sessionInformations.forEach(sessionInformation -> {
+            List<String> tagList = new ArrayList<String>();
+            tagList.add(tag);
+            List<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagsIn(tagList);
+            sessionInformations.stream().forEach(sessionInformation -> {
                 Session session = null;
                 if(sessionInformation != null) {
                     session = sessionInformation.getSession();
