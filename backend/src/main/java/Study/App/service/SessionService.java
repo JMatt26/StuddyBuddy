@@ -1,6 +1,7 @@
 package Study.App.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import Study.App.model.enums.ParticipationRole;
+import Study.App.repository.LocationRepository;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
@@ -25,19 +27,22 @@ public class SessionService {
     private SessionInformationRepository sessionInformationRepository;
     private UserRepository userRepository;
     private UserInformationRepository userInformationRepository;
+    private LocationRepository locationRepository;
 
     public SessionService(
         SessionRepository sessionRepository, 
         ParticipationRepository participationRepository, 
         SessionInformationRepository sessionInformationRepository, 
         UserRepository userRepository,
-        UserInformationRepository userInformationRepository) {
+        UserInformationRepository userInformationRepository,
+        LocationRepository locationRepository) {
 
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
         this.userRepository = userRepository;
         this.userInformationRepository = userInformationRepository;
+        this.locationRepository = locationRepository;
     }
 
     // Get all sessions by session name
@@ -46,13 +51,13 @@ public class SessionService {
     }
 
     @Transactional
-    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username, Integer sessionInformationId) {
+    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username) {
 
         Session session = new Session();
 
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
-            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+            throw new IncorrectDataException("User not found", HttpStatus.NOT_FOUND);
         }
         UserInformation userInformation = userInformationRepository.findUserInformationByUserUsername(user.getUsername());
         Participation sessionParticipation = new Participation();
@@ -62,13 +67,13 @@ public class SessionService {
         sessionParticipation.setUserInformation(userInformation);
         participationRepository.save(sessionParticipation);
 
-        if (sessionInformationId != null) {
-            SessionInformation sessionInformation = sessionInformationRepository
-                    .findSessionInformationBySessionInformationId(sessionInformationId);
-            if (sessionInformation != null){
-                session.setSessionInformation(sessionInformation);
-            }
-        }
+        // if (sessionInformationId != null) {
+        //     SessionInformation sessionInformation = sessionInformationRepository
+        //             .findSessionInformationBySessionInformationId(sessionInformationId);
+        //     if (sessionInformation != null){
+        //         session.setSessionInformation(sessionInformation);
+        //     }
+        // }
 
         if (isPrivate != null)
             session.setPrivate(isPrivate);
@@ -136,5 +141,22 @@ public class SessionService {
         }
 
         return userList;
+    }
+
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+        SessionInformation sessionInformation = new SessionInformation();
+
+        if (sessionRepository.findSessionBySessionId(sessionId) != null) {
+            sessionInformation.setCourses(courses);
+            sessionInformation.setStartTime(startTime);
+            sessionInformation.setEndTime(endTime);
+            sessionInformation.setOnline(isOnline);
+            sessionInformation.setMaterialUrl(materialUrl);
+            sessionInformation.setLocation(locationRepository.findLocationByLocationid(locationId));
+            sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
+            return sessionInformationRepository.save(sessionInformation);
+        } else {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        }
     }
 }
