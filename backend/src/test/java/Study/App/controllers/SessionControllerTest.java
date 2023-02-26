@@ -54,12 +54,16 @@ public class SessionControllerTest {
 
     @Test 
     public void testGetSessionByName() {
+        // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
+
         // STEP 1: Creating headers that contain the brearer token
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token);
 
         // STEP 2: Creating the request with above headers 
 		HttpEntity req = new HttpEntity(headers);
+
+        // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
         ResponseEntity<List<SessionTO>> response = client.exchange(
