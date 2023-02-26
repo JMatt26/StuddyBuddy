@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     StyleSheet,
     Text,
@@ -6,8 +6,10 @@ import {
     TextInput,
     TouchableOpacity,
 } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 export default function SignUp() {
+    const { signup } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -30,7 +32,6 @@ export default function SignUp() {
                     style={styles.TextInput}
                     placeholder="Username"
                     placeholderTextColor="#003f5c"
-                    secureTextEntry={true}
                     onChangeText={(username) => setUsername(username)}
                 />
             </View>
@@ -38,11 +39,12 @@ export default function SignUp() {
                 <TextInput
                     style={styles.TextInput}
                     placeholder="Password"
+                    secureTextEntry={true}
                     placeholderTextColor="#003f5c"
                     onChangeText={(password) => setPassword(password)}
                 />
             </View>
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity style={styles.signupBtn} onPress={() => { { signup(name, username, password) } }}>
                 <Text style={styles.loginText}>Sign Up</Text>
             </TouchableOpacity>
         </View>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
         height: 30,
         marginBottom: 30,
     },
-    loginBtn: {
+    signupBtn: {
         width: "80%",
         borderRadius: 25,
         height: 50,
