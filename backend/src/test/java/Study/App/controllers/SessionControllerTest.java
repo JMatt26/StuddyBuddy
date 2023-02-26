@@ -15,7 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.session.SessionRegistry;
 
 import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
