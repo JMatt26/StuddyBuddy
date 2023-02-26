@@ -33,13 +33,18 @@ public class AuthController {
 
     // TODO: Consider if this endpoint should be here or not
     @PostMapping("/signup/")
-    public ResponseEntity<String> signUp(@RequestBody UserTO incoming){
+    public ResponseEntity<UserTO> signUp(@RequestBody UserTO incoming){
        User newUser = userService.signUpUser(incoming.name, incoming.username, incoming.password);
        
        if (newUser == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
        } else{
-            return new ResponseEntity<String>("signup successful", HttpStatus.OK);
+            return new ResponseEntity<UserTO>(new UserTO(
+                newUser.getUserId(),
+                newUser.getName(),
+                newUser.getUsername(),
+                newUser.getPassword()
+            ), HttpStatus.OK);
        }
     }
 }

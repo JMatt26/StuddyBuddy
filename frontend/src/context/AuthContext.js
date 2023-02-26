@@ -30,6 +30,25 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(false);
     }
 
+    const signup = (name, username, password) => {
+        setIsLoading(true);
+        axios.post('http://localhost:8080/signup/', {
+            name,
+            username,
+            password
+        })
+            .then(res => {
+                let userInfo = res.data;
+                console.log(res.data);
+            })
+            .catch(e => {
+                console.log(`Login error ${e}`);
+            });
+        setIsLoading(false);
+    }
+
+
+
     const logout = () => {
         setIsLoading(true);
         setUserToken(null);
@@ -52,7 +71,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn();
     }, [])
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, userToken }} >
+        <AuthContext.Provider value={{ login, signup, logout, isLoading, userToken }} >
             {children}
         </AuthContext.Provider >
     )
