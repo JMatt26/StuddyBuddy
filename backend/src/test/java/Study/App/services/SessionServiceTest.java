@@ -84,7 +84,7 @@ public class SessionServiceTest {
         session2.setPrivate(false);
         session3.setPrivate(false);
 
-        List<Session> sessionList = new ArrayList<>();
+        List<Session> sessionList = new ArrayList<Session>();
         sessionList.add(session1);
         sessionList.add(session2);
         sessionList.add(session3);
@@ -135,11 +135,11 @@ public class SessionServiceTest {
         participation2.setUserInformation(userInformation2);
         participation2.setIsGoing(true);
 
-        List<Participation> participationList = new ArrayList<>();
+        List<Participation> participationList = new ArrayList<Participation>();
         participationList.add(participation1);
         participationList.add(participation2);
 
-        List<User> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<User>();
         userList.add(user1);
         userList.add(user2);
 
