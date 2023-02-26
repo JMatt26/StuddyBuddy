@@ -20,6 +20,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import Study.App.controller.TOs.CreateSessionTO;
+import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
 import Study.App.controller.TOs.UserTO;
 import Study.App.model.Session;
@@ -123,10 +125,34 @@ public class SessionControllerTest {
     public SessionTO testCreateSession() {
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token);
-		HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
-
+        CreateSessionTO body = new CreateSessionTO();
+        body.incoming = new SessionTO(
+            null, 
+            false, 
+            "league", 
+            10, 
+            "tutorial", 
+            null, 
+            null, 
+            null
+        );
+        body.incomingInfo = new SessionInformationTO(
+            null,
+            "2001-01-01",
+            "2001-01-03",
+            "ECSE-321",
+            false,
+            null,
+            null,
+            null
+        );
+		HttpEntity req = new HttpEntity(
+            body, 
+            headers
+        );
         ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
 		assertNotNull(response);
+        System.out.println("Body " + response.getBody().toString());
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
 		assertNotNull(response.getBody(), "Response has body");
 		assertEquals("league", response.getBody().title, "Response has correct title");

@@ -25,4 +25,9 @@ public class SessionInformationTO {
 
     public SessionInformationTO() {
     }
+
+    @Override
+    public String toString() {
+        return "SessionInformationTO [course=" + course + ", endTime=" + endTime + ", isOnline=" + isOnline + ", locationId=" + locationId + ", materialUrl=" + materialUrl + ", sessionId=" + sessionId + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+    }
 }

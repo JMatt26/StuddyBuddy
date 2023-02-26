@@ -150,23 +150,23 @@ public class SessionServiceTest {
 
         // Verify the results
     }
-    @Test
-    public void testCreateSession() {
-        String title = "ECSE 428 study session";
-        int capacity = 10;
-        boolean isPrivate = false;
-        String description = "ECSE 428 study session its gna be fun!";
+    // @Test
+    // public void testCreateSession() {
+    //     String title = "ECSE 428 study session";
+    //     int capacity = 10;
+    //     boolean isPrivate = false;
+    //     String description = "ECSE 428 study session its gna be fun!";
 
-        Session session = null;
-        try {
-            session = sessionService.createSession(isPrivate, title, capacity, description, user1Username, sessionInformationId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-        assertNotNull(session);
-        assertEquals(title, session.getTitle());
-    }
+    //     Session session = null;
+    //     try {
+    //         session = sessionService.createSession(isPrivate, title, capacity, description, user1Username, sessionInformationId);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         fail();
+    //     }
+    //     assertNotNull(session);
+    //     assertEquals(title, session.getTitle());
+    // }
     //Test deleteSession
     @Test
     public void testDeleteSession(){

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
 import Study.App.model.Session;
@@ -88,19 +89,46 @@ public class SessionController {
             sessionRepository.save(aNewSession);
         }
 
+        System.out.println("Session created: " + aNewSession.toString());
+        System.out.println("Session info created: " + newSessionInfo.toString());
+
+        CreateSessionTO createSessionTO = new CreateSessionTO();
+        createSessionTO.incoming = new SessionTO(
+            aNewSession.getSessionId(), 
+            aNewSession.isPrivate(), 
+            aNewSession.getTitle(), 
+            aNewSession.getCapacity(), 
+            aNewSession.getDescription(), 
+            null, 
+            null, 
+            aNewSession.getSessionInformation() == null ? 
+                null : 
+                aNewSession.getSessionInformation().getSessionInformationId()
+        );
+
+        createSessionTO.incomingInfo = new SessionInformationTO(
+            newSessionInfo.getSessionInformationId(),
+            newSessionInfo.getStartTime().toString(),
+            newSessionInfo.getEndTime().toString(),
+            newSessionInfo.getCourse(),
+            newSessionInfo.isOnline(),
+            newSessionInfo.getMaterialUrl(),
+            newSessionInfo.getSession().getSessionId(),
+            null
+        );
         return new ResponseEntity<SessionTO>(
             new SessionTO(
-                aNewSession.getSessionId(), 
-                aNewSession.isPrivate(), 
-                aNewSession.getTitle(), 
-                aNewSession.getCapacity(), 
-                aNewSession.getDescription(), 
-                null, 
-                null, 
-                aNewSession.getSessionInformation() == null ? 
-                    null : 
-                    aNewSession.getSessionInformation().getSessionInformationId()
-            ), HttpStatus.OK);
+            aNewSession.getSessionId(), 
+            aNewSession.isPrivate(), 
+            aNewSession.getTitle(), 
+            aNewSession.getCapacity(), 
+            aNewSession.getDescription(), 
+            null, 
+            null, 
+            aNewSession.getSessionInformation() == null ? 
+                null : 
+                aNewSession.getSessionInformation().getSessionInformationId()
+        ), HttpStatus.OK);
     }
 
     @PostMapping("/joinSession")
