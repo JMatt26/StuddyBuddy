@@ -94,19 +94,6 @@ public class SessionControllerTest {
         testGetAllUsersInSession(sessionId);
     }
 
-    // public int testCreateSession() {
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.set("Authorization", "Bearer " + token1);
-    //     HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
-
-    //     ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
-    //     assertNotNull(response);
-    //     assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
-    //     assertNotNull(response.getBody(), "Response has body");
-    //     assertEquals("league", response.getBody().title, "Response has correct title");
-    //     System.out.println("Finished create session test");
-    //     return response.getBody().sessionId;
-    // }
 
     public void testJoinSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
