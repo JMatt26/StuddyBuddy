@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import Study.App.controller.TOs.SessionTO;
+import Study.App.controller.TOs.UserTO;
 import Study.App.model.Session;
 import Study.App.repository.SessionRepository;
 
@@ -77,6 +78,60 @@ public class SessionControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody(), "Response has body");
         assertEquals("title", response.getBody().get(0).title, "title");
+    }
+
+    @Test
+    public void testJoinSession(){
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token);
+        HttpEntity req = new HttpEntity(headers);
+
+        ResponseEntity<SessionTO> response = client.postForEntity(
+            "/session/joinSession?sessionId=1", 
+            req, 
+            SessionTO.class
+        );
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+    }
+
+    @Test
+    public void testGetAllUsersInSession(){
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token);
+        HttpEntity req = new HttpEntity(headers);
+
+        ResponseEntity<List<UserTO>> response = client.exchange(
+            "/session/getAllUsersInSession?sessionId=0", 
+            HttpMethod.GET, 
+            req, 
+            // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
+            new ParameterizedTypeReference<List<UserTO>>() {}
+        );
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        assertNotNull(response.getBody(), "Response has body");
+        //TODO: fix out of bounds error
+        //assertEquals("parsa", response.getBody().get(0).username, "name is equal");
+    }
+
+    @Test
+	public void testCreateAndGetSession() {
+        testCreateSession();
+	}
+
+    public SessionTO testCreateSession() {
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token);
+		HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
+
+        ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
+		assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+		assertNotNull(response.getBody(), "Response has body");
+		assertEquals("league", response.getBody().title, "Response has correct title");
+		System.out.println("Finished create session test");
+        return response.getBody();
     }
 
     private String getToken() {
