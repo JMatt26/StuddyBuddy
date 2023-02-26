@@ -164,6 +164,8 @@ public class SessionServiceTest {
         lenient().when(userRepository.save(any(User.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userInformationRepository.save(any(UserInformation.class))).thenAnswer(returnParameterAsAnswer);
     }
+
+    // Letao
     @Test
     public void testGetSessionsBySessionName() {
         // Setup
@@ -174,6 +176,8 @@ public class SessionServiceTest {
 
         // Verify the results
     }
+
+    // Letao
     @Test
     public void testCreateSession() {
         String title = "ECSE 428 study session";
@@ -191,6 +195,7 @@ public class SessionServiceTest {
         assertNotNull(session);
         assertEquals(title, session.getTitle());
     }
+    // Letao
     @Test
     public void testDeleteSession(){
         Boolean session = null;
@@ -204,6 +209,7 @@ public class SessionServiceTest {
 //        assertTrue(session);
     }
 
+    // Letao
     @Test
     public void testGetAllUsersInSession(){
         List<User> userList = null;
@@ -217,6 +223,7 @@ public class SessionServiceTest {
         assertEquals(2, userList.size());
     }
 
+    // Letao
     @Test
     public void testAddInfoToSession(){
         SessionInformation sessionInformation = null;
@@ -229,6 +236,7 @@ public class SessionServiceTest {
         assertNotNull(sessionInformation);
     }
 
+    // Letao
     @Test
     public void testAddInfoToInvalidSession(){
         SessionInformation sessionInformation = null;

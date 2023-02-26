@@ -60,6 +60,7 @@ public class SessionControllerTest {
         sessionRepository.save(session);
     }
 
+    // Parsa
     @Test 
     public void testGetSessionByName() {
         // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
@@ -94,7 +95,7 @@ public class SessionControllerTest {
         testGetAllUsersInSession(sessionId);
     }
 
-
+    // Murphy
     public void testJoinSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token2);
@@ -109,6 +110,7 @@ public class SessionControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
     }
 
+    // Murphy
     public void testGetAllUsersInSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token2);
@@ -127,7 +129,7 @@ public class SessionControllerTest {
         assertEquals("gig", response.getBody().get(1).username, "name is equal");
     }
 
-
+    // Murphy and Parsa
     public int testCreateSession() {
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token1);
@@ -168,6 +170,7 @@ public class SessionControllerTest {
         return response.getBody().sessionId;
     }
 
+    // TASK NAME: Setup testresttemplate with autentication token -> done by Parsa
     private String getToken1() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("parsa", "pass");
