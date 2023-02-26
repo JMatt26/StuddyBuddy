@@ -107,9 +107,9 @@ public class UserServiceTest {
 
         User user = userRepository.findUserByUsername(user3Name);
 
-        System.out.println("not null checking");        
+        System.out.println("not null checking");
         assertNotNull(user);
-        System.out.println("not null asserted");        
+        System.out.println("not null asserted");
         assertEquals(user3Name, user.getName());
         assertEquals(user3Username, user.getUsername());
         assertEquals(user3Password, user.getPassword());
