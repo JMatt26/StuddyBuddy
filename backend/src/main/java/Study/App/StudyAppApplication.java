@@ -55,6 +55,17 @@ public class StudyAppApplication {
 
 			Session session = new Session();
 			sessionRepository.save(session);
+			Session session1 = new Session();
+			session1.setTitle("ECSE 428");
+			sessionRepository.save(session1);
+
+			Session session2 = new Session();
+			session2.setTitle("ECSE 310");
+			sessionRepository.save(session2);
+
+			Session session3 = new Session();
+			session3.setTitle("COMP 251");
+			sessionRepository.save(session3);
 			
 		};
 	}
