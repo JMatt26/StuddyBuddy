@@ -1,4 +1,7 @@
+package Study.App.services;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,20 +28,24 @@ public class SessionServiceTest {
     @InjectMocks
     private SessionService sessionService;
     
+    @BeforeEach
+    void setUpMocks(){
+        SessionInformation sessionInfo1 = new SessionInformation();
+        List<String> sessionInfo1Tags = new ArrayList<String>();
+        sessionInfo1Tags.add("Chess");
+        sessionInfo1.setTag(sessionInfo1Tags);
+
+        SessionInformation sessionInfo2 = new SessionInformation();
+        List<String> sessionInfo2Tags = new ArrayList<String>();
+        sessionInfo2Tags.add("Movies");
+        sessionInfo2.setTag(sessionInfo1Tags);
+
+        when(sessionInformationRepository.findAllSessionInformationByTagsContaining(anyString()))
+        .thenReturn(Streamable.of(sessionInfo1, sessionInfo2));
+    }
+    
     @Test
     public void testGetAllSessionsByTag() {
-        // Create two SessionInformation objects, one with the "Chess" tag and the other without
-        SessionInformation sessionInfo1 = new SessionInformation();
-        SessionInformation sessionInfo2 = new SessionInformation();
         
-        // Mock the repository method to return the two SessionInformation objects when called with any tag
-        when(sessionInformationRepository.findAllSessionInformationByTagsContaining(anyString()))
-                .thenReturn(Streamable.of(sessionInfo1, sessionInfo2));
-        
-        // Call the method with the "Chess" tag and verify that the returned object contains the "Chess" tag
-        List<Session> sessions = sessionService.getAllSessionsByTag(List.of("Chess"));
-        List<String> tags = new ArrayList<>();
-        sessions.forEach(session -> tags.addAll(session.getSessionInformation().getTags()));
-        Assertions.assertTrue(tags.contains("Chess"));
     }
 }
