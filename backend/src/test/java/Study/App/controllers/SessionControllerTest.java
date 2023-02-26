@@ -57,6 +57,23 @@ public class SessionControllerTest {
         sessionRepository.save(session);
     }
 
+    @Test
+    public void testCreateAndDeleteSession(){
+        int sessionId = testCreateSession();
+        testDeleteSession(sessionId);
+    }
+
+    public void testDeleteSession(int sessionId) {
+        // STEP 1: Creating headers that contain the brearer token
+        // copy paste line 76-77
+
+        // STEP 2: Create request object and attach header object above to the request using the constructor
+
+        // STEP 3: Send the request to the server to correct URL: note that url contains the reqest parameters
+
+        // STEP 4: Check the response status code and any other assertions
+    }
+
     @Test 
     public void testGetSessionByName() {
         // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
@@ -72,8 +89,11 @@ public class SessionControllerTest {
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
         ResponseEntity<List<SessionTO>> response = client.exchange(
+            // you can add any request params here
             "/session/getAllSessionsBySessionName?sessionName=title", 
+            // specify the request method
             HttpMethod.GET, 
+            // insert the request object
             req, 
             // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
             new ParameterizedTypeReference<List<SessionTO>>() {}
@@ -94,7 +114,17 @@ public class SessionControllerTest {
     public int testCreateSession() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token1);
-        HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
+        HttpEntity req = new HttpEntity(
+            new SessionTO(
+                null, 
+                false, 
+                "league", 
+                10, 
+                "tutorial", 
+                null, 
+                null, 
+                null), 
+            headers);
 
         ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
         assertNotNull(response);
