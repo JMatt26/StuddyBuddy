@@ -148,10 +148,7 @@ public class SessionService {
             tagList.add(tag);
             List<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagsIn(tagList);
             sessionInformations.stream().forEach(sessionInformation -> {
-                Session session = null;
-                if(sessionInformation != null) {
-                    session = sessionInformation.getSession();
-                }
+                Session session = this.sessionRepository.findAllSessionBySessionInformation(sessionInformation).get(0);
                 if(session != null && !sessionList.contains(session)) {
                     sessionList.add(session);
                 }
