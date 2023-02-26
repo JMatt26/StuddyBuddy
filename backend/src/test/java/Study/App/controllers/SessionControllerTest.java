@@ -52,7 +52,12 @@ public class SessionControllerTest {
 	}
 
     private SessionTO testCreateSession() {
-        
+        ResponseEntity<SessionTO> response = client.postForEntity("/createSession", new SessionTO(1234, false, "league", 10, "tutorial", 6, null, null), SessionTO.class);
+		assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+		assertNotNull(response.getBody(), "Response has body");
+		assertEquals(1234, response.getBody().sessionId, "Response has correct Id");
+		System.out.println("Finished create session test");
         return response.getBody();
     }
 
