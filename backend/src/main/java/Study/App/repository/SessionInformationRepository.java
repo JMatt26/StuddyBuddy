@@ -15,7 +15,7 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     
     public SessionInformation findSessionInformationBySessionInformationId(int id);
 
-    public Streamable<SessionInformation> findAllSessionInformationByCoursesContaining(String courses);
+    public List<SessionInformation> findAllSessionInformationByCoursesIn(List<String> courses);
 
     public List<SessionInformation> findAllSessionInformationByIsOnlineTrue();
     public List<SessionInformation> findAllSessionInformationByIsOnlineFalse();
@@ -24,5 +24,5 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
 
-    public Streamable<SessionInformation> findAllSessionInformationByTagsContaining(String tags);
+    public List<SessionInformation> findAllSessionInformationByTagsIn(List<String> tags);
 }
