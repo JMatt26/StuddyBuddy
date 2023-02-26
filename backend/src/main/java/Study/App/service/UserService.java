@@ -1,9 +1,6 @@
 package Study.App.service;
 
-<<<<<<< HEAD
-=======
-import org.springframework.security.access.method.P;
->>>>>>> login-page
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
