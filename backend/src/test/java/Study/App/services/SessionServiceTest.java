@@ -11,6 +11,7 @@ import org.springframework.data.util.Streamable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -47,6 +48,8 @@ public class SessionServiceTest {
     
     @Test
     public void testGetAllSessionsByTag() {
-        
+        List<String> testTags = new ArrayList<String>();
+        testTags.add("Chess");
+        assertEquals(1, sessionService.getAllSessionsByTag(testTags).size());
     }
 }
