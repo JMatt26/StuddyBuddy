@@ -5,7 +5,7 @@ const assets = require("../assets/assets.js");
 
 //to pass an image, add the image to the object in assets.js in the assets folder and pass the value related to the image as the prop
 export default function StudySessionCard({
-  courseTitle,
+  tag,
   sessionTitle,
   sessionLocation,
   numberOfAttendees,
@@ -18,10 +18,10 @@ export default function StudySessionCard({
           <Image source={image} style={styles.image} />
         </View>
 
-        <View style={isNil(courseTitle) ? 
+        <View style={isNil(tag) ? 
         styles.sessionInfoContainerNoTag: styles.sessionInfoContainerTag}>
-          {!isNil(courseTitle) && <View style={styles.courseTitleContainer}>
-            <Text>{courseTitle}</Text>
+          {!isNil(tag) && <View style={styles.tagContainer}>
+            <Text>{tag}</Text>
           </View>}
           <Text style={styles.sessionTitle}>{sessionTitle}</Text>
           <Text style={styles.sessionLocation}>{sessionLocation}</Text>
@@ -67,12 +67,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start"
   },
-  courseTitleContainer: {
+  tagContainer: {
     margin: 5,
     padding: 5,
     backgroundColor: "#03B0A9",
     borderRadius: 10,
-    maxWidth: "50%",
+    width: 80,
+    //maxWidth: "50%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -93,6 +94,9 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "25%",
     justifyContent: "space-between",
+    position: "absolute",
+    right: -40,
+    top: 12
   },
   sessionButton: {
     position: "absolute",
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     fontSize: 16,
     fontWeight: "bold",
-    top: 70,
+    top: 77,
     right: 50
   }
 });
