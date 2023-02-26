@@ -17,16 +17,7 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-<<<<<<< HEAD
-    public UserService(
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder
-        ) {
-=======
-    private PasswordEncoder passwordEncoder;
-
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
->>>>>>> login-page
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

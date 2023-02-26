@@ -155,7 +155,7 @@ public class SessionController {
         if (u == null){
             throw new IllegalArgumentException("There is no such User");
         }
-        UserTO userTO = new UserTO(u.getName(),u.getUsername(), null);
+        UserTO userTO = new UserTO(null, u.getName(),u.getUsername(), null);
         return userTO;
     }
 }
