@@ -80,7 +80,7 @@ public class SessionController {
                 sessionId,
                 startDate,
                 endDate,
-                incomingInfo.course,
+                incomingInfo.courses,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
                 incomingInfo.locationId);

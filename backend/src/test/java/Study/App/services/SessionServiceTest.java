@@ -53,7 +53,7 @@ public class SessionServiceTest {
 
     private static final Integer sessionInformationId = 1;
 
-    private static final String course = "ECSE 428";
+    private static final List courses = new ArrayList<String>();
     private static final Date startTime = new Date(2023, 2, 14, 12, 0);
     private static final Date endTime = new Date(2023, 2, 14, 14, 0);
     private static final Boolean isOnline = false;
@@ -63,6 +63,7 @@ public class SessionServiceTest {
 
     @BeforeEach
     void setUpMocks(){
+        courses.add("ECSE-324");
         Session session1 = new Session();
         Session session2 = new Session();
         Session session3 = new Session();
@@ -98,7 +99,7 @@ public class SessionServiceTest {
 
 
         SessionInformation sessionInformation1 = new SessionInformation();
-        sessionInformation1.setCourse(course);
+        sessionInformation1.setCourses(courses);
         sessionInformation1.setStartTime(startTime);
         sessionInformation1.setEndTime(endTime);
         sessionInformation1.setOnline(isOnline);
@@ -220,7 +221,7 @@ public class SessionServiceTest {
     public void testAddInfoToSession(){
         SessionInformation sessionInformation = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, course, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, isOnline, null, 1);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -233,7 +234,7 @@ public class SessionServiceTest {
         SessionInformation sessionInformation = null;
         String error = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, course, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, isOnline, null, 1);
         } catch (Exception e) {
             error = e.getMessage();
 

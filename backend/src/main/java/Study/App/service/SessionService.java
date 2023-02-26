@@ -143,11 +143,11 @@ public class SessionService {
         return userList;
     }
 
-    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, String course, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
         SessionInformation sessionInformation = new SessionInformation();
 
         if (sessionRepository.findSessionBySessionId(sessionId) != null) {
-            sessionInformation.setCourse(course);
+            sessionInformation.setCourses(courses);
             sessionInformation.setStartTime(startTime);
             sessionInformation.setEndTime(endTime);
             sessionInformation.setOnline(isOnline);

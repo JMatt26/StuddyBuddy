@@ -3,6 +3,7 @@ package Study.App.controllers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -154,11 +155,13 @@ public class SessionControllerTest {
             null, 
             null
         );
+        List<String> courses = new ArrayList<>();
+        courses.add("ECSE-321");
         body.incomingInfo = new SessionInformationTO(
             null,
             "2001-01-01",
             "2001-01-03",
-            "ECSE-321",
+            courses,
             false,
             null,
             null,
