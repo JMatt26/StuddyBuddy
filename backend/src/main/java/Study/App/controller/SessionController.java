@@ -26,8 +26,11 @@ import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/session")
@@ -57,67 +60,51 @@ public class SessionController {
     @PostMapping("/createSession")
     public ResponseEntity<SessionTO> createTheSession(@RequestBody CreateSessionTO createSessionTO) {
 
-        try {
-            var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-            SessionTO incoming = createSessionTO.incoming;
-            SessionInformationTO incomingInfo = createSessionTO.incomingInfo;
+        SessionTO incoming = createSessionTO.incoming;
+        SessionInformationTO incomingInfo = createSessionTO.incomingInfo;
 
-            Session aNewSession = sessionService.createSession(
+        Session aNewSession = sessionService.createSession(
             incoming.isPrivate,
             incoming.title,
             incoming.capacity,
             incoming.description,
-            username);
-            var sessionId = aNewSession.getSessionId();
+            username
+        );
+        Date startDate = stringToDate(incomingInfo.startTime);
+        Date endDate = stringToDate(incomingInfo.endTime);
+        var sessionId = aNewSession.getSessionId();
 
-            SessionInformation newSessionInfo = sessionService.addInfoToSession(
-                    sessionId,
-                    null,
-                    null,
-                    incomingInfo.course,
-                    incomingInfo.isOnline,
-                    incomingInfo.materialUrl,
-                    incomingInfo.locationId);
-    
-            if (newSessionInfo == null) {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
-            } else {
-                aNewSession.setSessionInformation(newSessionInfo);
-                sessionRepository.save(aNewSession);
-            }
-    
-            System.out.println("Session created: " + aNewSession.toString());
-            System.out.println("Session info created: " + newSessionInfo.toString());
+        SessionInformation newSessionInfo = sessionService.addInfoToSession(
+                sessionId,
+                startDate,
+                endDate,
+                incomingInfo.course,
+                incomingInfo.isOnline,
+                incomingInfo.materialUrl,
+                incomingInfo.locationId);
 
-            return new ResponseEntity<SessionTO>(
-                    new SessionTO(
-                            aNewSession.getSessionId(),
-                            aNewSession.isPrivate(),
-                            aNewSession.getTitle(),
-                            aNewSession.getCapacity(),
-                            aNewSession.getDescription(),
-                            null,
-                            null,
-                            aNewSession.getSessionInformation() == null ? null
-                                    : aNewSession.getSessionInformation().getSessionInformationId()),
-                    HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<SessionTO>(new SessionTO(
-                null,
-                null,
-                e.getMessage(),
-                null,
-                null,
-                null,
-                null,
-                null
-            ), HttpStatus.I_AM_A_TEAPOT);
+        if (newSessionInfo == null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } else {
+            aNewSession.setSessionInformation(newSessionInfo);
+            sessionRepository.save(aNewSession);
         }
 
-        // var startTime = Date.valueOf(incomingInfo.startTime);
-        // var endTime = Date.valueOf(incomingInfo.endTime);
+        return new ResponseEntity<SessionTO>(
+            new SessionTO(
+                aNewSession.getSessionId(),
+                aNewSession.isPrivate(),
+                aNewSession.getTitle(),
+                aNewSession.getCapacity(),
+                aNewSession.getDescription(),
+                null,
+                null,
+                aNewSession.getSessionInformation() == null ? null
+                        : aNewSession.getSessionInformation().getSessionInformationId()),
+            HttpStatus.OK
+        );
         
     }
 
@@ -199,5 +186,27 @@ public class SessionController {
         }
         UserTO userTO = new UserTO(null, u.getName(), u.getUsername(), null);
         return userTO;
+    }
+
+    public static String dateToString(Date date) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
+        return sf.format(date);
+    }
+
+    public static Date stringToDate(String date) {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
+
+        try {
+            return (Date) sf.parse(date);
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+            try {
+                SimpleDateFormat sfOther = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA_FRENCH);
+                return (Date) sf.parse(date);
+            } catch (ParseException e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
     }
 }
