@@ -37,12 +37,16 @@ public class SessionControllerTest {
     @Autowired
     private SessionRepository sessionRepository;
 
-    private static String token;
+    private static String token1;
+
+    private static String token2;
     
     @BeforeAll
     public void setup() {
-        String token = getToken();
-        SessionControllerTest.token = token;
+        String token1 = getToken1();
+        SessionControllerTest.token1 = token1;
+        String token2 = getToken2();
+        SessionControllerTest.token2 = token2;
     }
 
     @BeforeEach
@@ -61,7 +65,7 @@ public class SessionControllerTest {
 
         // STEP 1: Creating headers that contain the brearer token
         HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + token);
+		headers.set("Authorization", "Bearer " + token1);
 
         // STEP 2: Creating the request with above headers 
 		HttpEntity req = new HttpEntity(headers);
@@ -83,13 +87,33 @@ public class SessionControllerTest {
     }
 
     @Test
-    public void testJoinSession(){
+    public void testCreateAndGetSession() {
+        int sessionId = testCreateSession();
+        testJoinSession(sessionId);
+        testGetAllUsersInSession(sessionId);
+    }
+
+    // public int testCreateSession() {
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.set("Authorization", "Bearer " + token1);
+    //     HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
+
+    //     ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
+    //     assertNotNull(response);
+    //     assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+    //     assertNotNull(response.getBody(), "Response has body");
+    //     assertEquals("league", response.getBody().title, "Response has correct title");
+    //     System.out.println("Finished create session test");
+    //     return response.getBody().sessionId;
+    // }
+
+    public void testJoinSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + token);
+		headers.set("Authorization", "Bearer " + token2);
         HttpEntity req = new HttpEntity(headers);
 
         ResponseEntity<SessionTO> response = client.postForEntity(
-            "/session/joinSession?sessionId=1", 
+            "/session/joinSession?sessionId=" + sessionId, 
             req, 
             SessionTO.class
         );
@@ -97,14 +121,13 @@ public class SessionControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
     }
 
-    @Test
-    public void testGetAllUsersInSession(){
+    public void testGetAllUsersInSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + token);
+		headers.set("Authorization", "Bearer " + token2);
         HttpEntity req = new HttpEntity(headers);
 
         ResponseEntity<List<UserTO>> response = client.exchange(
-            "/session/getAllUsersInSession?sessionId=0", 
+            "/session/getAllUsersInSession?sessionId=" + sessionId,  
             HttpMethod.GET, 
             req, 
             // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
@@ -113,18 +136,13 @@ public class SessionControllerTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody(), "Response has body");
-        //TODO: fix out of bounds error
-        //assertEquals("parsa", response.getBody().get(0).username, "name is equal");
+        assertEquals("gig", response.getBody().get(1).username, "name is equal");
     }
 
-    @Test
-	public void testCreateAndGetSession() {
-        testCreateSession();
-	}
 
-    public SessionTO testCreateSession() {
+    public int testCreateSession() {
         HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + token);
+		headers.set("Authorization", "Bearer " + token1);
         CreateSessionTO body = new CreateSessionTO();
         body.incoming = new SessionTO(
             null, 
@@ -157,12 +175,20 @@ public class SessionControllerTest {
 		assertNotNull(response.getBody(), "Response has body");
 		assertEquals("league", response.getBody().title, "Response has correct title");
 		System.out.println("Finished create session test");
-        return response.getBody();
+        return response.getBody().sessionId;
     }
 
-    private String getToken() {
+    private String getToken1() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("parsa", "pass");
+		HttpEntity req = new HttpEntity(headers);
+        ResponseEntity<String> response = client.postForEntity("/login", req, String.class);
+        return response.getBody();
+	}
+
+    private String getToken2() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setBasicAuth("gig", "pass");
 		HttpEntity req = new HttpEntity(headers);
         ResponseEntity<String> response = client.postForEntity("/login", req, String.class);
         return response.getBody();
