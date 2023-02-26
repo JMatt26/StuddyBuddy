@@ -21,7 +21,9 @@ public class SessionInformation {
 
     private Date endTime;
 
-    private String course;
+    private List<String> courses;
+
+    private List<String> tags;
 
     private boolean isOnline = false;
 
@@ -35,7 +37,17 @@ public class SessionInformation {
     
     @ManyToOne
     private Location location;
+
+ 
     
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTag(List<String> tags) {
+        this.tags = tags;
+    }
+
     public Education getEducation() {
         return education;
     }
@@ -76,12 +88,12 @@ public class SessionInformation {
         this.endTime = endTime;
     }
     
-    public String getCourse() {
-        return course;
+    public List<String> getCourses() {
+        return courses;
     }
     
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCourses(List<String> courses) {
+        this.courses = courses;
     }
     
     public boolean isOnline() {
@@ -101,7 +113,7 @@ public class SessionInformation {
     }
     
     public Session getSession() {
-        return session;
+        return session;  
     }
     
     public void setSession(Session session) {

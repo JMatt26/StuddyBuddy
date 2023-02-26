@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import Study.App.model.*;
+
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -136,5 +138,23 @@ public class SessionService {
         }
 
         return userList;
+    }
+
+    @Transactional
+    public List<Session> getAllSessionsByTag(List<String> tags){
+        List<Session> sessionList = new ArrayList<Session>();            
+        for(String tag: tags){
+            Streamable<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagsContaining(tag);
+            sessionInformations.forEach(sessionInformation -> {
+                Session session = null;
+                if(sessionInformation != null) {
+                    session = sessionInformation.getSession();
+                }
+                if(session != null && !sessionList.contains(session)) {
+                    sessionList.add(session);
+                }
+            });
+        }
+        return sessionList;
     }
 }
