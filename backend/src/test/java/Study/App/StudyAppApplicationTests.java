@@ -8,6 +8,7 @@ class StudyAppApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Testing right now!");
 	}
 
 }

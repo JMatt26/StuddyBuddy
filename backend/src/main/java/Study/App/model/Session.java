@@ -77,5 +77,24 @@ public class Session {
         return "Session [sessionId=" + sessionId + ", isPrivate=" + isPrivate + ", title=" + title + ", capacity="
         + capacity + ", description=" + description + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Session other = (Session) obj;
+        
+        if (sessionId == null) {
+            if (other.sessionId != null)
+                return false;
+        }
+        if (!sessionId.equals(other.sessionId))
+            return false;
+        return true;
+    }
     
 }
