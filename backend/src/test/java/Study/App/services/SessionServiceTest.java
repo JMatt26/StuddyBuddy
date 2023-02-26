@@ -33,14 +33,18 @@ public class SessionServiceTest {
     @BeforeEach
     void setUpMocks(){
         SessionInformation sessionInfo1 = new SessionInformation();
+        Session session1 = new Session();
         List<String> sessionInfo1Tags = new ArrayList<String>();
         sessionInfo1Tags.add("Chess");
         sessionInfo1.setTag(sessionInfo1Tags);
+        sessionInfo1.setSession(session1);
 
         SessionInformation sessionInfo2 = new SessionInformation();
+        Session session2 = new Session();
         List<String> sessionInfo2Tags = new ArrayList<String>();
         sessionInfo2Tags.add("Movies");
         sessionInfo2.setTag(sessionInfo1Tags);
+        sessionInfo1.setSession(session1);
 
         when(sessionInformationRepository.findAllSessionInformationByTagsIn(anyList()))
         .thenReturn(List.of(sessionInfo1, sessionInfo2));
