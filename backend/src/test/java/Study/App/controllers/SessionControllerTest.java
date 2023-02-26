@@ -2,6 +2,7 @@ package Study.App.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.refEq;
 
 import java.util.List;
 
@@ -65,13 +66,24 @@ public class SessionControllerTest {
 
     public void testDeleteSession(int sessionId) {
         // STEP 1: Creating headers that contain the brearer token
-        // copy paste line 76-77
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token1);
 
         // STEP 2: Create request object and attach header object above to the request using the constructor
-
+        HttpEntity req = new HttpEntity(headers);
+        
         // STEP 3: Send the request to the server to correct URL: note that url contains the reqest parameters
-
+        ResponseEntity<String> response = client.exchange(
+            "/session/deleteSession?sessionId=" + sessionId,
+            HttpMethod.DELETE,
+            req,
+            String.class
+        );
+    
         // STEP 4: Check the response status code and any other assertions
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        assertEquals("Session Deleted", response.getBody());
     }
 
     @Test 
