@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Text, TextInput, View, StyleSheet, Switch, TouchableOpacity, ScrollView } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import CalendarPicker from 'react-native-calendar-picker';
-//import SessionTO from "../../backend/src/main/java/Study/App/controller/TOs/SessionTO.java";
-//import SessionInformationTO from "../../backend/src/main/java/Study/App/controller/TOs/SessionInformationTO.java";
+
+
 
 export default function CreateSessionPage(){
 
@@ -62,26 +62,42 @@ export default function CreateSessionPage(){
 
 
     function onCreateSession() {
-        console.log(titleValue,capacityValue,descriptionValue,locationValue)
+        //console.log(titleValue,capacityValue,descriptionValue,locationValue)
         
         //let sessionInfo = SessionInformationTO(null, String startTime, String endTime, String course, Boolean isOnline, List<String> materialUrl, sessionId, locationId) 
 
-        // startDateValue.setHours(startHourValue)
-        // startDateValue.setMinutes(startMinValue)
-        // endDateValue.setHours(endHourValue)
-        // endDateValue.setMinutes(endMinValue)
+        startDateValue.setHours(startHourValue)
+        startDateValue.setMinutes(startMinValue)
+        endDateValue.setHours(endHourValue)
+        endDateValue.setMinutes(endMinValue)
         if(startDateValue > endDateValue){
             return setValidDate(false)
         }
         else{
-            return setValidDate(true)
-            //createSession        
-            //let sessionInfo = SessionInformationTO(null, null, null, null, null, null, null, null) 
-            //let session = SessionTO(null, isPrivate, titleValue, capacityValue, descriptionValue, 1 , null, null) 
+            setValidDate(true)
+            let startTime = startHourValue + ":" + startMinValue
+            let endTime = endHourValue + ":" + endMinValue
+            //createSession
+            console.log(startTime, endTime)       
+            let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
+            let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
+           
+            fetch("/createSession", {
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: sessionTO,sessionInformationTO
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
         
-        }
-        
-        
+            } 
     }
 
       
