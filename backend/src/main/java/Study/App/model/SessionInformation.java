@@ -21,7 +21,7 @@ public class SessionInformation {
 
     private Date endTime;
 
-    private String course;
+    private List<String> courses;
 
     private boolean isOnline = false;
 
@@ -76,12 +76,12 @@ public class SessionInformation {
         this.endTime = endTime;
     }
     
-    public String getCourse() {
-        return course;
+    public List<String> getCourse() {
+        return courses;
     }
     
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCourses(List<String> courses) {
+        this.courses = courses;
     }
     
     public boolean isOnline() {
@@ -106,6 +106,13 @@ public class SessionInformation {
     
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionInformation [courses=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline
+                + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session
+                + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
     }
     
 }

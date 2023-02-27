@@ -15,8 +15,6 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     
     public SessionInformation findSessionInformationBySessionInformationId(int id);
 
-    public List<SessionInformation> findAllSessionInformationByCourse(String course);
-
     public List<SessionInformation> findAllSessionInformationByIsOnlineTrue();
     public List<SessionInformation> findAllSessionInformationByIsOnlineFalse();
 
