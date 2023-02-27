@@ -140,28 +140,34 @@ public class SessionService {
     }
 
     @Transactional
-    public List<SessionInformation>  getAllActiveSessions(){
+    public List<Session>  getAllActiveSessions(){
         Date date = new Date();
         List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
-        List <SessionInformation> sessionInfoFiltered = new ArrayList<SessionInformation>();
+        List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
-                sessionInfoFiltered.add(sessionInfo);
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
             }
         }
-        return sessionInfoFiltered;
+        return sessions;
     }
 
     @Transactional
-    public List<SessionInformation> getAllUpcomingSessions(){
+    public List<Session> getAllUpcomingSessions(){
         Date date = new Date();
         List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
-        List <SessionInformation> sessionInfoFiltered = new ArrayList<SessionInformation>();
+        List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().after(date)){
-                sessionInfoFiltered.add(sessionInfo);
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
             }
         }
-        return sessionInfoFiltered;
+        return sessions;
     }
 }

@@ -14,6 +14,6 @@ import static org.mockito.Mockito.lenient;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class UserService {
+public class UserServiceTest {
     
 }
