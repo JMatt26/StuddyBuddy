@@ -49,7 +49,8 @@ public class SessionService {
 
     // Get all sessions by session name
     public List<Session> getSessionsBySessionName(String title) {
-        return sessionRepository.findAllSessionByTitle(title);
+        List<Session> result = sessionRepository.findAllSessionByTitle(title);
+        return result;
     }
 
     @Transactional
@@ -146,18 +147,22 @@ public class SessionService {
     }
 
     @Transactional
-    public List<Session> getAllSessionsByTag(List<String> tags){
-        List<Session> sessionList = new ArrayList<Session>();            
+    public Set<Session> getSessionsByTag(List<String> tags){
+        Set<Session> sessionList = new HashSet<Session>();            
         for(String tag: tags){
-            List<String> tagList = new ArrayList<String>();
-            tagList.add(tag);
-            List<SessionInformation> sessionInformations = sessionInformationRepository.findAllSessionInformationByTagsIn(tagList);
-            sessionInformations.stream().forEach(sessionInformation -> {
-                Session session = this.sessionRepository.findAllSessionBySessionInformation(sessionInformation).get(0);
-                if(session != null && !sessionList.contains(session)) {
-                    sessionList.add(session);
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getTags().contains(tag)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
                 }
-            });
+                
+            }
+
         }
         return sessionList;
     }

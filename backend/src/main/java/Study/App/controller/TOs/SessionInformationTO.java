@@ -6,17 +6,17 @@ public class SessionInformationTO {
     public Integer sessionInformationId;
     public String startTime;
     public String endTime;
-    public String course;
+    public List<String> courses;
     public Boolean isOnline;
     public List<String> materialUrl;
     public Integer sessionId;
     public Integer locationId;
 
-    public SessionInformationTO(Integer sessionInformationId, String startTime, String endTime, String course, Boolean isOnline, List<String> materialUrl, Integer sessionId, Integer locationId) {
+    public SessionInformationTO(Integer sessionInformationId, String startTime, String endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer sessionId, Integer locationId) {
         this.sessionInformationId = sessionInformationId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.course = course;
+        this.courses = courses;
         this.isOnline = isOnline;
         this.materialUrl = materialUrl;
         this.sessionId = sessionId;
@@ -28,6 +28,6 @@ public class SessionInformationTO {
 
     @Override
     public String toString() {
-        return "SessionInformationTO [course=" + course + ", endTime=" + endTime + ", isOnline=" + isOnline + ", locationId=" + locationId + ", materialUrl=" + materialUrl + ", sessionId=" + sessionId + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+        return "SessionInformationTO [course=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline + ", locationId=" + locationId + ", materialUrl=" + materialUrl + ", sessionId=" + sessionId + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
     }
 }

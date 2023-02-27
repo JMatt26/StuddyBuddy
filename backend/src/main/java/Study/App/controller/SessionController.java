@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/session")
@@ -80,7 +81,7 @@ public class SessionController {
                 sessionId,
                 startDate,
                 endDate,
-                incomingInfo.course,
+                incomingInfo.courses,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
                 incomingInfo.locationId);
@@ -182,7 +183,7 @@ public class SessionController {
 
     @GetMapping("/getAllSessionsByTag")
     public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
-        List<Session> sessionList = sessionService.getAllSessionsByTag(tags);
+        Set<Session> sessionList = sessionService.getSessionsByTag(tags);
         List<SessionTO> sessionTOList = new ArrayList<>();
         if(sessionList != null){
             sessionList.stream().forEach(session -> {

@@ -23,6 +23,4 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     public List<SessionInformation> findAllSessionInformationByEducation(Education education);
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
-
-    public List<SessionInformation> findAllSessionInformationByTagsIn(List<String> tags);
 }

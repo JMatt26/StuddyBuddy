@@ -2,6 +2,7 @@ package Study.App.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class SessionInformation {
 
     private List<String> courses;
 
-    private List<String> tags;
+    private Set<String> tags;
 
     private boolean isOnline = false;
 
@@ -37,14 +38,12 @@ public class SessionInformation {
     
     @ManyToOne
     private Location location;
-
- 
     
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTag(List<String> tags) {
+    public void setTag(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -122,7 +121,7 @@ public class SessionInformation {
 
     @Override
     public String toString() {
-        return "SessionInformation [course=" + course + ", endTime=" + endTime + ", isOnline=" + isOnline + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+        return "SessionInformation [course=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
     }
     
 }
