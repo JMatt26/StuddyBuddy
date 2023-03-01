@@ -10,9 +10,9 @@ export default function CreateSessionPage(){
     const [startDateOpen, setStartDateOpen] = useState(false);
     const [startHourOpen, setStartHourOpen] = useState(false);
     const [startMinOpen, setStartMinOpen] = useState(false);
-    const [endDateOpen, setEndDateOpen] = useState(false);
-    const [endHourOpen, setEndHourOpen] = useState(false);
-    const [endMinOpen, setEndMinOpen] = useState(false);
+    // const [endDateOpen, setEndDateOpen] = useState(false);
+    // const [endHourOpen, setEndHourOpen] = useState(false);
+    // const [endMinOpen, setEndMinOpen] = useState(false);
 
     const[titleValue, setTitleValue] = useState(null);
     const[capacityValue, setCapacityValue] = useState(null);
@@ -21,11 +21,12 @@ export default function CreateSessionPage(){
     const [locationValue, setLocationValue] = useState(null)
     const [isPrivate, setIsPrivate] = useState(false);
     const [startDateValue, setStartDateValue] = useState(new Date(0,0,0,0,0,0));
-    const [endDateValue, setEndDateValue] = useState(new Date(0,0,0,0,0,0));
     const [startHourValue, setStartHourValue] = useState(1);
-    const [endHourValue, setEndHourValue] = useState(1);
     const [startMinValue, setStartMinValue] = useState(0);
-    const [endMinValue, setEndMinValue] = useState(0);
+    const [sessionDurationValue, setSessionDurationValue] = useState(null);
+    //const [endDateValue, setEndDateValue] = useState(new Date(0,0,0,0,0,0));
+    //const [endHourValue, setEndHourValue] = useState(1);
+    //const [endMinValue, setEndMinValue] = useState(0);
 
     const [validDate, setValidDate] = useState(true);
 
@@ -34,11 +35,11 @@ export default function CreateSessionPage(){
         setStartDateOpen(false)
         setStartDateValue(new Date(date))
     }
-    const toggleCal2 = () => setEndDateOpen(previousState => !previousState);
-    const selectedEndDate = function(date){
-        setEndDateOpen(false)
-        setEndDateValue(new Date(date))
-    }
+    // const toggleCal2 = () => setEndDateOpen(previousState => !previousState);
+    // const selectedEndDate = function(date){
+    //     setEndDateOpen(false)
+    //     setEndDateValue(new Date(date))
+    // }
     const toggleOnlineSwitch = () => setIsOnline(previousState => !previousState);
     const toggleSwitch = () => setIsPrivate(previousState => !previousState);
 
@@ -68,36 +69,39 @@ export default function CreateSessionPage(){
 
         startDateValue.setHours(startHourValue)
         startDateValue.setMinutes(startMinValue)
-        endDateValue.setHours(endHourValue)
-        endDateValue.setMinutes(endMinValue)
-        if(startDateValue > endDateValue){
-            return setValidDate(false)
-        }
-        else{
-            setValidDate(true)
-            let startTime = startHourValue + ":" + startMinValue
-            let endTime = endHourValue + ":" + endMinValue
-            //createSession
-            console.log(startTime, endTime)       
-            let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
-            let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
+        let endDate = new Date(startDateValue)
+        endDate.setHours((startDateValue.getHours() + Number(sessionDurationValue)));
+        console.log(startDateValue.toString(), endDate.toString())
+        // endDateValue.setHours(endHourValue)
+        // endDateValue.setMinutes(endMinValue)
+        // if(startDate){
+        //     return setValidDate(false)
+        // }
+        // else{
+        //     setValidDate(true)
+        //     let startTime = startHourValue + ":" + startMinValue
+        //     let endTime = endHourValue + ":" + endMinValue
+        //     //createSession
+        //     console.log(startTime, endTime)       
+        //     let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
+        //     let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
            
-            fetch("/createSession", {
-                method: "POST", // or 'PUT'
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: sessionTO,sessionInformationTO
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+        //     fetch("/session/createSession", {
+        //         method: "POST", // or 'PUT'
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: sessionTO,sessionInformationTO
+        //         })
+        //         .then((response) => response.json())
+        //         .then((data) => {
+        //             console.log("Success:", data);
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error:", error);
+        //         });
         
-            } 
+        //     } 
     }
 
       
@@ -184,62 +188,10 @@ export default function CreateSessionPage(){
                 selectedDayTextColor={"#FFF"}
             />  
             </View>
-                <Text style={styles.timeText}>End Date and Time</Text>
+            <Text style={styles.timeText}> Session Duration</Text> 
+            <TextInput style={styles.capacity} placeholder="Duration(99 hours)" maxLength={2} value={sessionDurationValue} onChangeText={setSessionDurationValue}/>
 
-            <View style={styles.dropDown2}>
-                <TouchableOpacity /* EndDate */
-                        style={styles.date} 
-                        onPress={toggleCal2}
-                > 
-                    <Text style={styles.dateText}> {endDateValue.toDateString()}</Text>
-                </TouchableOpacity>
-                <Text style={styles.timeDotText}> </Text>
-                <DropDownPicker /* EndHour */
-                    labelField="label"
-                    valueField="value"
-                    indexField="key"
-                    listMode="SCROLLVIEW"
-                    style={styles.dropDownItem}
-                    open={endHourOpen}
-                    value={endHourValue}
-                    items={hourItems}
-                    setOpen={setEndHourOpen}
-                    setValue={setEndHourValue}
-                    setItems={setHourItems}
-                    maxHeight={120}
-                    containerStyle={{
-                        width: '25%',
-                        flex:5,
-                    }}
-                />
-                <Text style={styles.timeDotText}> :</Text>
-                <DropDownPicker /* EndMin */
-                    labelField="label"
-                    valueField="value"
-                    indexField="key"
-                    listMode="SCROLLVIEW"
-                    style={styles.dropDownItem}
-                    open={endMinOpen}
-                    value={endMinValue}
-                    items={minItems}
-                    setOpen={setEndMinOpen}
-                    setValue={setEndMinValue}
-                    setItems={setMinItems}
-                    maxHeight={120}
-                    containerStyle={{
-                        width: '25%',
-                        flex:5,
-                    }}
-                />
-                </View>
-                <View style={endDateOpen ? {display: "block"} : {display: "none"}}>
-                <CalendarPicker
-                    onDateChange={selectedEndDate}
-                    selectedDayColor={"#54B175"}
-                    selectedDayTextColor={"#FFF"}
-                />  
-                </View>
-                <Text style={[styles.error, validDate ? {display: "none"} : {display: "block"}]}> Start Date must be BEFORE End Date</Text>
+                {/* <Text style={[styles.error, validDate ? {display: "none"} : {display: "block"}]}> Start Date must be BEFORE End Date</Text> */}
                 <TouchableOpacity
                 style={styles.button}
                 title = {"Create Session"}
