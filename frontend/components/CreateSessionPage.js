@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, View, StyleSheet, Switch, TouchableOpacity, ScrollView } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import CalendarPicker from 'react-native-calendar-picker';
+import request_ressource from "../utils/fetchApi";
 
 
 
@@ -59,49 +60,42 @@ export default function CreateSessionPage(){
         {label: 45, value: 45, key: 3},
     ]);
 
+    function addZero(num){
+        if(num < 10){
+            return "0"+num
+        }
+        else{
+            return num;
+        }
+    }
 
 
 
-    function onCreateSession() {
+   async function onCreateSession() {
         //console.log(titleValue,capacityValue,descriptionValue,locationValue)
         
         //let sessionInfo = SessionInformationTO(null, String startTime, String endTime, String course, Boolean isOnline, List<String> materialUrl, sessionId, locationId) 
 
         startDateValue.setHours(startHourValue)
         startDateValue.setMinutes(startMinValue)
-        let endDate = new Date(startDateValue)
-        endDate.setHours((startDateValue.getHours() + Number(sessionDurationValue)));
-        console.log(startDateValue.toString(), endDate.toString())
-        // endDateValue.setHours(endHourValue)
-        // endDateValue.setMinutes(endMinValue)
-        // if(startDate){
-        //     return setValidDate(false)
-        // }
-        // else{
-        //     setValidDate(true)
-        //     let startTime = startHourValue + ":" + startMinValue
-        //     let endTime = endHourValue + ":" + endMinValue
-        //     //createSession
-        //     console.log(startTime, endTime)       
-        //     let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
-        //     let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
-           
-        //     fetch("/session/createSession", {
-        //         method: "POST", // or 'PUT'
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: sessionTO,sessionInformationTO
-        //         })
-        //         .then((response) => response.json())
-        //         .then((data) => {
-        //             console.log("Success:", data);
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error:", error);
-        //         });
+        let endDateValue = new Date(startDateValue)
+        endDateValue.setHours((startDateValue.getHours() + Number(sessionDurationValue)));
         
-        //     } 
+        let startTime = startDateValue.getFullYear()+ "-" + addZero(startDateValue.getMonth()+1) + "-" + addZero(startDateValue.getDate()) + " " + addZero(startDateValue.getHours()) + ":" + addZero(startDateValue.getMinutes())+ ":" + addZero(startDateValue.getSeconds())
+        let endTime = endDateValue.getFullYear()+ "-" + addZero(endDateValue.getMonth()+1) + "-" + addZero(endDateValue.getDate()) + " " + addZero(endDateValue.getHours()) + ":" + addZero(endDateValue.getMinutes())+ ":" + addZero(endDateValue.getSeconds())
+        
+        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
+        let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
+
+        let createSessionTO = {incoming: sessionTO, incomingInfo: sessionInformationTO}
+       
+        try {
+            let response = await request_ressource("/session/createSession", "POST", {} , createSessionTO);
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
       
