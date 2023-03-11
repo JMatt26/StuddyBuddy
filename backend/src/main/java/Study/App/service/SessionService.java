@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
 
 import Study.App.model.*;
 import org.springframework.http.HttpStatus;
@@ -141,6 +142,38 @@ public class SessionService {
         }
 
         return userList;
+    }
+
+    @Transactional
+    public List<Session>  getAllActiveSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
+            }
+        }
+        return sessions;
+    }
+
+    @Transactional
+    public List<Session> getAllUpcomingSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
+            }
+        }
+        return sessions;
     }
 
     public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
