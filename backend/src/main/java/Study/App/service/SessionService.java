@@ -165,6 +165,10 @@ public class SessionService {
         Location location = locationRepository.findLocationByBuildingName(buildingName);
         List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(location);
         
-        return sessions;
+        for (SessionInformation sessionInfo: sessionsInfo) {
+            sessionsAtLocation.add(sessionInfo.getSession());
+        }
+
+        return sessionsAtLocation;
     }
 }
