@@ -159,4 +159,12 @@ public class SessionService {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public List<Session> getSessionsAtLocation(String buildingName) {
+        List<Session> sessionsAtLocation = new ArrayList<Session>();
+        Location location = locationRepository.findLocationByBuildingName(buildingName);
+        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(location);
+        
+        return sessions;
+    }
 }
