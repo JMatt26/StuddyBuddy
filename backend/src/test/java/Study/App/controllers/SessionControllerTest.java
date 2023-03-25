@@ -2,6 +2,7 @@ package Study.App.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.refEq;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,36 @@ public class SessionControllerTest {
         sessionRepository.save(session);
     }
 
+    @Test
+    public void testCreateAndDeleteSession(){
+        int sessionId = testCreateSession();
+        testDeleteSession(sessionId);
+    }
+
+    // Jasmine
+    public void testDeleteSession(int sessionId) {
+        // STEP 1: Creating headers that contain the brearer token
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token1);
+
+        // STEP 2: Create request object and attach header object above to the request using the constructor
+        HttpEntity req = new HttpEntity(headers);
+        
+        // STEP 3: Send the request to the server to correct URL: note that url contains the reqest parameters
+        ResponseEntity<String> response = client.exchange(
+            "/session/deleteSession?sessionId=" + sessionId,
+            HttpMethod.DELETE,
+            req,
+            String.class
+        );
+    
+        // STEP 4: Check the response status code and any other assertions
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        assertEquals("Session Deleted", response.getBody());
+    }
+
+    // Parsa
     @Test 
     public void testGetSessionByName() {
         // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
@@ -75,8 +106,11 @@ public class SessionControllerTest {
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
         ResponseEntity<List<SessionTO>> response = client.exchange(
+            // you can add any request params here
             "/session/getAllSessionsBySessionName?sessionName=title", 
+            // specify the request method
             HttpMethod.GET, 
+            // insert the request object
             req, 
             // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
             new ParameterizedTypeReference<List<SessionTO>>() {}
@@ -94,20 +128,7 @@ public class SessionControllerTest {
         testGetAllUsersInSession(sessionId);
     }
 
-    // public int testCreateSession() {
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.set("Authorization", "Bearer " + token1);
-    //     HttpEntity req = new HttpEntity(new SessionTO(null, false, "league", 10, "tutorial", null, null, null), headers);
-
-    //     ResponseEntity<SessionTO> response = client.postForEntity("/session/createSession", req, SessionTO.class);
-    //     assertNotNull(response);
-    //     assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
-    //     assertNotNull(response.getBody(), "Response has body");
-    //     assertEquals("league", response.getBody().title, "Response has correct title");
-    //     System.out.println("Finished create session test");
-    //     return response.getBody().sessionId;
-    // }
-
+    // Murphy
     public void testJoinSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token2);
@@ -122,6 +143,7 @@ public class SessionControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
     }
 
+    // Murphy
     public void testGetAllUsersInSession(int sessionId){
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token2);
@@ -140,7 +162,7 @@ public class SessionControllerTest {
         assertEquals("gig", response.getBody().get(1).username, "name is equal");
     }
 
-
+    // Murphy and Parsa
     public int testCreateSession() {
         HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + token1);
@@ -182,6 +204,7 @@ public class SessionControllerTest {
         return response.getBody().sessionId;
     }
 
+    // TASK NAME: Setup testresttemplate with autentication token -> done by Parsa
     private String getToken1() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("parsa", "pass");

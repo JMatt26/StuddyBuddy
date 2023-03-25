@@ -21,12 +21,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import Study.App.model.User;
 import Study.App.repository.UserRepository;
 import Study.App.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @InjectMocks
     private UserService userService;
 

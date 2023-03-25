@@ -5,6 +5,7 @@ import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
 import Study.App.service.ParticipationService;
 import Study.App.service.SessionService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +48,8 @@ public class SessionServiceTest {
     private UserRepository userRepository;
     @Mock
     private UserInformationRepository userInformationRepository;
+    @Mock
+    private LocationRepository locationRepository;
 
     private static final String user1Username = "testUsername1";
     private static final String user2Username = "testUsername2";
@@ -54,6 +57,11 @@ public class SessionServiceTest {
     private static final String user2Password = "testPassword2";
 
     private static final Integer sessionInformationId = 1;
+
+    private static final List courses = new ArrayList<String>();
+    private static final Date startTime = new Date(2023, 2, 14, 12, 0);
+    private static final Date endTime = new Date(2023, 2, 14, 14, 0);
+    private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
     private ParticipationRole adminRole = ParticipationRole.ADMIN;
@@ -95,6 +103,7 @@ public class SessionServiceTest {
 
         List<Session> sessionList = new ArrayList<>();
 
+        courses.add("ECSE-324");
         Session session1 = new Session();
         Session session2 = new Session();
         Session session3 = new Session();
@@ -137,10 +146,24 @@ public class SessionServiceTest {
         sessionList.add(session4);
         sessionList.add(session5);
 
+        Location location1 = new Location();
+        location1.setStreetAddress("123 Address1");
+        location1.setCity("Montreal");
+        location1.setProvince("Quebec");
+        location1.setPostalCode("H3T 1M8");
+        location1.setBuildingName("Building1");
+        location1.setRoomNumber("Room1");
+
+
         SessionInformation sessionInformation1 = new SessionInformation();
         sessionInformation1.setSessionInformationId(sessionInformationId);
         
         
+        sessionInformation1.setCourses(courses);
+        sessionInformation1.setStartTime(startTime);
+        sessionInformation1.setEndTime(endTime);
+        sessionInformation1.setOnline(isOnline);
+
         //Mock users
         User user1 = new User();
         User user2 = new User();
@@ -172,11 +195,11 @@ public class SessionServiceTest {
         participation2.setUserInformation(userInformation2);
         participation2.setIsGoing(true);
 
-        List<Participation> participationList = new ArrayList<>();
+        List<Participation> participationList = new ArrayList<Participation>();
         participationList.add(participation1);
         participationList.add(participation2);
 
-        List<User> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<User>();
         userList.add(user1);
         userList.add(user2);
 
@@ -188,6 +211,9 @@ public class SessionServiceTest {
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo4)).thenAnswer((InvocationOnMock invocation) -> session4);
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo5)).thenAnswer((InvocationOnMock invocation) -> session5);
 
+        lenient().when(locationRepository.findLocationByLocationid(1)).thenAnswer((InvocationOnMock invocation) -> location1);
+
+        lenient().when(sessionRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> sessionList);
         lenient().when(sessionRepository.findAllSessionByTitle("ECSE 428 study session")).thenAnswer((InvocationOnMock invocation) -> sessionList);
 
         lenient().when(sessionRepository.findSessionBySessionId(1)).thenAnswer((InvocationOnMock invocation) -> session1);
@@ -204,8 +230,10 @@ public class SessionServiceTest {
         lenient().when(sessionInformationRepository.save(any(SessionInformation.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(participationRepository.save(any(Participation.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userRepository.save(any(User.class))).thenAnswer(returnParameterAsAnswer);
-
+        lenient().when(userInformationRepository.save(any(UserInformation.class))).thenAnswer(returnParameterAsAnswer);
     }
+
+    // Letao
     @Test
     public void testGetSessionsBySessionName() {
         // Setup
@@ -221,6 +249,26 @@ public class SessionServiceTest {
         assertEquals(2, sessionService.getSessionsByTag(testTags).size());
     }
 
+
+    // Letao
+    @Test
+    public void testCreateSession() {
+        String title = "ECSE 428 study session";
+        int capacity = 10;
+        boolean isPrivate = false;
+        String description = "ECSE 428 study session its gna be fun!";
+
+        Session session = null;
+        try {
+            session = sessionService.createSession(isPrivate, title, capacity, description, user1Username);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(session);
+        assertEquals(title, session.getTitle());
+    }
+    // Letao
     @Test
     public void testDeleteSession(){
         Boolean session = null;
@@ -234,6 +282,7 @@ public class SessionServiceTest {
     }
 
 
+    // Letao
     @Test
     public void testGetAllUsersInSession(){
         List<User> userList = null;
@@ -248,4 +297,32 @@ public class SessionServiceTest {
     }
     
    
+
+    // Letao
+    @Test
+    public void testAddInfoToSession(){
+        SessionInformation sessionInformation = null;
+        try {
+            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, isOnline, null, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(sessionInformation);
+    }
+
+    // Letao
+    @Test
+    public void testAddInfoToInvalidSession(){
+        SessionInformation sessionInformation = null;
+        String error = null;
+        try {
+            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, isOnline, null, 1);
+        } catch (Exception e) {
+            error = e.getMessage();
+
+        }
+        assertNull(sessionInformation);
+        assertEquals("Session not found", error);
+    }
 }

@@ -21,12 +21,9 @@ public class AuthControllerTest {
     @Autowired
 	private TestRestTemplate client;
 
-    @Test
-	public void testCreateAndGetUser() {
-		testCreatePerson();
-		testGetPerson();
-	}
 
+	// Parsa
+	@Test
     private UserTO testCreatePerson() {
 		ResponseEntity<UserTO> response = client.postForEntity("/signup/", new UserTO(null, "Fouseytube", "fousey", "pass"), UserTO.class);
 		assertNotNull(response);
@@ -37,6 +34,8 @@ public class AuthControllerTest {
 		return response.getBody();
 	}
 
+	//Parsa
+	@Test
 	private void testGetPerson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("parsa", "pass");

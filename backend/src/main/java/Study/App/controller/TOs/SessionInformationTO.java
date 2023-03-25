@@ -28,6 +28,8 @@ public class SessionInformationTO {
 
     @Override
     public String toString() {
-        return "SessionInformationTO [course=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline + ", locationId=" + locationId + ", materialUrl=" + materialUrl + ", sessionId=" + sessionId + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+        return "SessionInformationTO [courses=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline
+                + ", locationId=" + locationId + ", materialUrl=" + materialUrl + ", sessionId=" + sessionId
+                + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
     }
 }

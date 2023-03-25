@@ -1,8 +1,8 @@
 package Study.App;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import org.hibernate.mapping.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -53,8 +53,9 @@ public class StudyAppApplication {
 			userInformationRepository.save(gigInformation);
 
 			SessionInformation sessionInformation = new SessionInformation();
-			ArrayList<String> courses = new ArrayList<String>();
-			courses.add("ECSE 324");
+			// make a new list of strings called courses
+			List<String> courses = new ArrayList<String>();
+			courses.add("ECSE 428");
 			sessionInformation.setCourses(courses);
 			sessionInformationRepository.save(sessionInformation);
 
