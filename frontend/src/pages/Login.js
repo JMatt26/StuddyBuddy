@@ -6,6 +6,7 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
+    ScrollView,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
@@ -15,6 +16,7 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     return (
+        <ScrollView>
         <View style={styles.container}>
             <TouchableOpacity style={styles.thirdPartyLogin}>
                 <Text style={styles.loginText}>Login with Facebook </Text>
@@ -69,6 +71,7 @@ export default function Login({ navigation }) {
                 </TouchableOpacity>
             </View>
         </View>
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({
