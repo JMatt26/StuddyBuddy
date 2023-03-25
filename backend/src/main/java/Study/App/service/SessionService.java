@@ -8,7 +8,6 @@ import java.util.Set;
 
 import Study.App.model.*;
 
-import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -161,8 +160,6 @@ public class SessionService {
     public Set<Session> getSessionsByTag(List<String> tags){
         Set<Session> sessionList = new HashSet<Session>();            
         for(String tag: tags){
-            // List<String> tagList = new ArrayList<String>();
-            // tagList.add(tag);
             Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
             for(SessionInformation sessionInformation : sessionInformations){
                 if(sessionInformation.getTags().contains(tag)){

@@ -22,5 +22,4 @@ public interface SessionRepository extends CrudRepository<Session, Integer> {
 
     public Session findSessionBySessionInformation(SessionInformation sessionInformation);
 
-    public Session findSessionBySessionInformation(SessionInformation sessionInformation);
 }

@@ -155,20 +155,20 @@ public class SessionController {
             return new ResponseEntity<List<UserTO>>(HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/getAllSessionsByCourseName")
-    public ResponseEntity<List<SessionTO>> getAllSessionsByCourseName(@RequestParam String courseName){
-        List<Session> sessionList = sessionService.getAllSessionsByCourseName(courseName);
-        List<SessionTO> sessionTOList = new ArrayList<>();
-        if(sessionList != null){
-            for(Session session : sessionList){
-                SessionTO sessionTO = convertToDTO(session);
-                sessionTOList.add(sessionTO);
-            }
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
-        }
-    }
+    // @GetMapping("/getAllSessionsByCourseName")
+    // public ResponseEntity<List<SessionTO>> getAllSessionsByCourseName(@RequestParam String courseName){
+    //     List<Session> sessionList = sessionService.getAllSessionsByCourseName(courseName);
+    //     List<SessionTO> sessionTOList = new ArrayList<>();
+    //     if(sessionList != null){
+    //         for(Session session : sessionList){
+    //             SessionTO sessionTO = convertToDTO(session);
+    //             sessionTOList.add(sessionTO);
+    //         }
+    //         return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+    //     }else{
+    //         return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+    //     }
+    // }
 
     // GET all sessions by session name
     @GetMapping("/getAllSessionsBySessionName")
@@ -234,6 +234,7 @@ public class SessionController {
         }
         SessionTO sessionTO = new SessionTO(s.getSessionId(), s.isPrivate(), s.getTitle(), s.getCapacity(), s.getDescription(), null, null, s.getSessionInformation().getSessionInformationId());
         return sessionTO;
+    }
     public static String dateToString(Date date) {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
         return sf.format(date);
