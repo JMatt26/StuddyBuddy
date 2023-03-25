@@ -127,6 +127,11 @@ public class SessionService {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public List<CreateSessionTO> getAllSessions(){
+        List<Session> sessions = (List<Session>)sessionRepository.findAll();
+        
+    }
     
     @Transactional
     public List<User> getAllUsersInSession(Integer sessionId){

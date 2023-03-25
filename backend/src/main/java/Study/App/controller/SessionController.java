@@ -2,6 +2,7 @@ package Study.App.controller;
 
 import Study.App.controller.TOs.UserTO;
 import Study.App.model.User;
+import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
 
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
+import Study.App.model.Participation;
 import Study.App.model.Session;
 import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
@@ -38,10 +40,12 @@ import java.util.Set;
 public class SessionController {
     private SessionService sessionService;
     private SessionRepository sessionRepository;
+    private SessionInformationRepository sessionInformationRepository;
 
-    public SessionController(SessionService sessionService, SessionRepository sessionRepository) {
+    public SessionController(SessionService sessionService, SessionRepository sessionRepository, SessionInformationRepository sessionInformationRepository) {
         this.sessionService = sessionService;
         this.sessionRepository = sessionRepository;
+        this.sessionInformationRepository = sessionInformationRepository;
     }
 
     @GetMapping("/sess1")
@@ -179,6 +183,27 @@ public class SessionController {
         } else {
             return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getAllSessions")
+    public ResponseEntity<List<SessionTO>> getAllSessions(){
+        List<Session> sessions = (List<Session>)sessionRepository.findAll();
+        List<SessionTO> result = new ArrayList();
+        for (Session session : sessions) {
+            SessionInformation sessionInformation = session.getSessionInformation();
+            SessionTO sessionTO = new SessionTO(
+                session.getSessionId(),
+                session.isPrivate(),
+                session.getTitle(),
+                session.getCapacity(),
+                session.getDescription(),
+                session.getParticipations().size(),
+                null,
+                session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+            );
+
+        }
+            
     }
 
     @GetMapping("/getAllSessionsByTag")

@@ -1,8 +1,11 @@
-import { View, Text } from "react-native"
-export default function Main(){
-    return(<View>
+import React, { Component } from "react";
+import ActiveSessions from "../../components/ActiveSessions";
+import { StyleSheet, View, Text, Button } from "react-native";export default function Main(){
+    return(
+    <View> 
+        
+
         <Text>
-            You are in Main page
         </Text>
     </View>)
 }
