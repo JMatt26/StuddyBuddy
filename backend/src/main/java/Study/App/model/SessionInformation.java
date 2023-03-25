@@ -24,7 +24,7 @@ public class SessionInformation {
 
     private List<String> courses;
 
-    private Set<String> tags;
+    private List<String> tags;
 
     private boolean isOnline = false;
 
@@ -39,11 +39,11 @@ public class SessionInformation {
     @ManyToOne
     private Location location;
     
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTag(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
@@ -121,7 +121,9 @@ public class SessionInformation {
 
     @Override
     public String toString() {
-        return "SessionInformation [course=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+        return "SessionInformation [courses=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline
+                + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId="
+                + sessionInformationId + ", startTime=" + startTime +  ", tags=" + tags +"]";
     }
     
 }

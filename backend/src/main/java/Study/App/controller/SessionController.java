@@ -82,6 +82,7 @@ public class SessionController {
                 startDate,
                 endDate,
                 incomingInfo.courses,
+                incomingInfo.tags,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
                 incomingInfo.locationId);
@@ -216,11 +217,17 @@ public class SessionController {
     }
 
     public static String dateToString(Date date) {
+        if (date == null) {
+            return null;
+        }
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
         return sf.format(date);
     }
 
     public static Date stringToDate(String date) {
+        if (date == null) {
+            return null;
+        }
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
 
         try {

@@ -154,7 +154,7 @@ public class SessionService {
             // tagList.add(tag);
             Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
             for(SessionInformation sessionInformation : sessionInformations){
-                if(sessionInformation.getTags().contains(tag)){
+                if(sessionInformation.getTags() != null && sessionInformation.getTags().contains(tag)){
                     Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
                     if(session != null && !sessionList.contains(session)) {
                         sessionList.add(session);
@@ -166,16 +166,30 @@ public class SessionService {
         }
         return sessionList;
     }
-    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId) {
         SessionInformation sessionInformation = new SessionInformation();
 
         if (sessionRepository.findSessionBySessionId(sessionId) != null) {
+            if (courses != null)
+                sessionInformation.setCourses(courses);
             sessionInformation.setCourses(courses);
+            if (startTime != null)
+                sessionInformation.setStartTime(startTime);
             sessionInformation.setStartTime(startTime);
+            if (endTime != null)
+                sessionInformation.setEndTime(endTime);
             sessionInformation.setEndTime(endTime);
-            sessionInformation.setOnline(isOnline);
+            if (isOnline != null)
+                sessionInformation.setOnline(isOnline);
+            if (materialUrl != null)
+                sessionInformation.setMaterialUrl(materialUrl);
             sessionInformation.setMaterialUrl(materialUrl);
+            if (tags != null)
+                sessionInformation.setTags(tags);
+            if (locationId != null)
             sessionInformation.setLocation(locationRepository.findLocationByLocationid(locationId));
+
+            if (sessionId != null)
             sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
             return sessionInformationRepository.save(sessionInformation);
         } else {
