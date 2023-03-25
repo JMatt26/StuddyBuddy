@@ -32,8 +32,6 @@ public class User {
     private String username;
     private String password;
 
-    @OneToOne
-    private UserInformation userInformation;
 
     public Set<ParticipationRole> getRoles() {
         return roles;
@@ -65,11 +63,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public UserInformation getUserInformation() {
-        return userInformation;
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", name=" + name + ", username=" + username + ", password=" + password + "]";
     }
-    public void setUserInformation(UserInformation userInformation) {
-        this.userInformation = userInformation;
-    }
-    
 }

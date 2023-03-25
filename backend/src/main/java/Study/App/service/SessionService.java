@@ -1,18 +1,23 @@
 package Study.App.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import Study.App.model.*;
+
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import Study.App.model.enums.ParticipationRole;
+import Study.App.repository.LocationRepository;
 import Study.App.repository.ParticipationRepository;
 import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
+import Study.App.repository.UserInformationRepository;
 import Study.App.repository.UserRepository;
 import Study.exceptions.IncorrectDataException;
 import jakarta.transaction.Transactional;
@@ -23,35 +28,55 @@ public class SessionService {
     private ParticipationRepository participationRepository;
     private SessionInformationRepository sessionInformationRepository;
     private UserRepository userRepository;
+    private UserInformationRepository userInformationRepository;
+    private LocationRepository locationRepository;
 
-    public SessionService(SessionRepository sessionRepository, ParticipationRepository participationRepository, SessionInformationRepository sessionInformationRepository, UserRepository userRepository) {
+    public SessionService(
+        SessionRepository sessionRepository, 
+        ParticipationRepository participationRepository, 
+        SessionInformationRepository sessionInformationRepository, 
+        UserRepository userRepository,
+        UserInformationRepository userInformationRepository,
+        LocationRepository locationRepository) {
+
         this.sessionRepository = sessionRepository;
         this.participationRepository = participationRepository;
         this.sessionInformationRepository = sessionInformationRepository;
         this.userRepository = userRepository;
+        this.userInformationRepository = userInformationRepository;
+        this.locationRepository = locationRepository;
+    }
+
+    // Get all sessions by session name
+    public List<Session> getSessionsBySessionName(String title) {
+        List<Session> result = sessionRepository.findAllSessionByTitle(title);
+        return result;
     }
 
     @Transactional
-    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username, Integer sessionInformationId) {
+    public Session createSession(Boolean isPrivate, String title, Integer capacity, String description, String username) {
 
         Session session = new Session();
 
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
-            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+            throw new IncorrectDataException("User not found", HttpStatus.NOT_FOUND);
         }
+        UserInformation userInformation = userInformationRepository.findUserInformationByUserUsername(user.getUsername());
         Participation sessionParticipation = new Participation();
         sessionParticipation.setRole(ParticipationRole.ADMIN);
         sessionParticipation.setIsGoing(true);
         sessionParticipation.setSession(session);
-        sessionParticipation.setUserInformation(user.getUserInformation());
+        sessionParticipation.setUserInformation(userInformation);
+        participationRepository.save(sessionParticipation);
 
-
-
-        SessionInformation sessionInformation = sessionInformationRepository
-                .findSessionInformationBySessionInformationId(sessionInformationId);
-        if (isPrivate != null)
-            session.setSessionInformation(sessionInformation);
+        // if (sessionInformationId != null) {
+        //     SessionInformation sessionInformation = sessionInformationRepository
+        //             .findSessionInformationBySessionInformationId(sessionInformationId);
+        //     if (sessionInformation != null){
+        //         session.setSessionInformation(sessionInformation);
+        //     }
+        // }
 
         if (isPrivate != null)
             session.setPrivate(isPrivate);
@@ -65,22 +90,23 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-     public Boolean joinSession(int sessionId, String username) {
-        Session session = sessionRepository.findSessionBySessionId(sessionId);
-        var user = userRepository.findUserByUsername(username);
-
-        if (session != null && user != null) {
-            Participation sessionParticipation = new Participation();
-            sessionParticipation.setRole(ParticipationRole.MEMBER);
-            sessionParticipation.setIsGoing(true);
-            sessionParticipation.setSession(session);
-            sessionParticipation.setUserInformation(user.getUserInformation());
-
+     public Boolean joinSession(Integer sessionId, String username) {
+        Session session = this.sessionRepository.findSessionBySessionId(sessionId);
+        User user = this.userRepository.findUserByUsername(username);
+        UserInformation userInformation = this.userInformationRepository.findUserInformationByUserUsername(user.getUsername());
+        Participation existingParticipation = this.participationRepository.findAllParticipationBySessionSessionId(sessionId).stream().filter(p -> p.getUserInformation().getUser().getUsername().equals(username)).findFirst().orElse(null);
+        if (session != null && user != null && userInformation != null && existingParticipation == null) {
+            existingParticipation = new Participation();
+            existingParticipation.setRole(ParticipationRole.MEMBER);
+            existingParticipation.setIsGoing(true);
+            existingParticipation.setSession(session);
+            existingParticipation.setUserInformation(userInformation);
+            participationRepository.save(existingParticipation);
             return true;
-        } else if (session == null) {
-            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        } else if (existingParticipation != null) {
+            throw new IncorrectDataException("You are already in this session", HttpStatus.BAD_REQUEST);
         } else {
-            throw new IncorrectDataException("User not found", HttpStatus.BAD_REQUEST);
+            throw new IncorrectDataException("Session, user, or User information was not found", HttpStatus.BAD_REQUEST);
         }
      }
 
@@ -88,11 +114,10 @@ public class SessionService {
         Session session = sessionRepository.findSessionBySessionId(sessionId);
 
         Integer userID = userRepository.findUserByUsername(username).getUserId();
-
         List<Participation> participations = participationRepository.findAllParticipationBySessionSessionId(sessionId);
-        Integer adminID = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
-        
-        if (userID != adminID) {
+        Integer adminId = participations.stream().filter(p -> p.getRole() == ParticipationRole.ADMIN).findFirst().get().getUserInformation().getUser().getUserId();
+
+        if (userID != adminId) {
             throw new IncorrectDataException("You are not admin of this session", HttpStatus.BAD_REQUEST);
         }
         if (session != null) {
@@ -109,7 +134,10 @@ public class SessionService {
         List<User> userList = new ArrayList<User>();
         for(Participation participation: participationList) {
             UserInformation userInformation = participation.getUserInformation();
-            User user = userInformation.getUser();
+            User user = null;
+            if (userInformation != null) {
+                user = userInformation.getUser();
+            };
             if(user != null && participation.isGoing()){
                 userList.add(user);
             }
@@ -118,16 +146,51 @@ public class SessionService {
         return userList;
     }
 
-    @Transactional
-    public List<Session> getAllSessionsByCourseName(String courseName){
-        List<SessionInformation> sessionInformationList = sessionInformationRepository.findAllSessionInformationByCourse(courseName);
-        List<Session> sessionList = new ArrayList<Session>();
-        for(SessionInformation sessionInformation: sessionInformationList) {
-            Session session = sessionRepository.findSessionBySessionInformation(sessionInformation);
-            if(session != null) {
-                sessionList.add(session);
+    // @Transactional
+    // public List<Session> getAllSessionsByCourseName(String courseName){
+    //     List<SessionInformation> sessionInformationList = sessionInformationRepository.findAllSessionInformationByCourse(courseName);
+    //     List<Session> sessionList = new ArrayList<Session>();
+    //     for(SessionInformation sessionInformation: sessionInformationList) {
+    //         Session session = sessionRepository.findSessionBySessionInformation(sessionInformation);
+    //         if(session != null) {
+    //             sessionList.add(session);
+    //         }
+    //     }
+    //     return sessionList;
+    // }
+    public Set<Session> getSessionsByTag(List<String> tags){
+        Set<Session> sessionList = new HashSet<Session>();            
+        for(String tag: tags){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getTags().contains(tag)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+                
             }
+
         }
         return sessionList;
+    }
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+        SessionInformation sessionInformation = new SessionInformation();
+
+        if (sessionRepository.findSessionBySessionId(sessionId) != null) {
+            sessionInformation.setCourses(courses);
+            sessionInformation.setStartTime(startTime);
+            sessionInformation.setEndTime(endTime);
+            sessionInformation.setOnline(isOnline);
+            sessionInformation.setMaterialUrl(materialUrl);
+            sessionInformation.setLocation(locationRepository.findLocationByLocationid(locationId));
+            sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
+            return sessionInformationRepository.save(sessionInformation);
+        } else {
+            throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
+        }
     }
 }

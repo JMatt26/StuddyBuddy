@@ -2,12 +2,14 @@ package Study.App.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class SessionInformation {
@@ -20,81 +22,106 @@ public class SessionInformation {
 
     private Date endTime;
 
-    private String course;
+    private List<String> courses;
+
+    private Set<String> tags;
 
     private boolean isOnline = false;
 
     private List<String> materialUrl;
 
+    @OneToOne
+    private Session session;
+    
     @ManyToOne
     private Education education;
-
+    
     @ManyToOne
     private Location location;
+    
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTag(Set<String> tags) {
+        this.tags = tags;
+    }
 
     public Education getEducation() {
         return education;
     }
-
+    
     public void setEducation(Education education) {
         this.education = education;
     }
-
+    
     public Location getLocation() {
         return location;
     }
-
+    
     public void setLocation(Location location) {
         this.location = location;
     }
-
+    
     public int getSessionInformationId() {
         return sessionInformationId;
     }
-
+    
     public void setSessionInformationId(int sessionInformationId) {
         this.sessionInformationId = sessionInformationId;
     }
-
+    
     public Date getStartTime() {
         return startTime;
     }
-
+    
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-
+    
     public Date getEndTime() {
         return endTime;
     }
-
+    
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-
-    public String getCourse() {
-        return course;
+    
+    public List<String> getCourses() {
+        return courses;
     }
-
-    public void setCourse(String course) {
-        this.course = course;
+    
+    public void setCourses(List<String> courses) {
+        this.courses = courses;
     }
-
+    
     public boolean isOnline() {
         return isOnline;
     }
-
+    
     public void setOnline(boolean isOnline) {
         this.isOnline = isOnline;
     }
-
+    
     public List<String> getMaterialUrl() {
         return materialUrl;
     }
-
+    
     public void setMaterialUrl(List<String> materialUrl) {
         this.materialUrl = materialUrl;
     }
+    
+    public Session getSession() {
+        return session;  
+    }
+    
+    public void setSession(Session session) {
+        this.session = session;
+    }
 
+    @Override
+    public String toString() {
+        return "SessionInformation [course=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+    }
     
 }
