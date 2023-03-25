@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
 
 import Study.App.model.*;
 
@@ -147,25 +148,37 @@ public class SessionService {
     }
 
     @Transactional
-    public Set<Session> getSessionsByTag(List<String> tags){
-        Set<Session> sessionList = new HashSet<Session>();            
-        for(String tag: tags){
-            // List<String> tagList = new ArrayList<String>();
-            // tagList.add(tag);
-            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
-            for(SessionInformation sessionInformation : sessionInformations){
-                if(sessionInformation.getTags() != null && sessionInformation.getTags().contains(tag)){
-                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
-                    if(session != null && !sessionList.contains(session)) {
-                        sessionList.add(session);
-                    }
+    public List<Session>  getAllActiveSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
                 }
-                
             }
-
         }
-        return sessionList;
+        return sessions;
     }
+
+    @Transactional
+    public List<Session> getAllUpcomingSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
+            }
+        }
+        return sessions;
+    }
+
     public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId) {
         SessionInformation sessionInformation = new SessionInformation();
 

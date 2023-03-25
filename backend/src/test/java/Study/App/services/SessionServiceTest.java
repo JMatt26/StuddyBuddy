@@ -1,5 +1,25 @@
 package Study.App.services;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+import java.util.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+
 import Study.App.model.*;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
@@ -16,6 +36,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
 
+
+import Study.App.model.Session;
+import Study.App.model.SessionInformation;
+import Study.App.repository.SessionInformationRepository;
+import Study.App.repository.SessionRepository;
+import Study.App.service.SessionService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,7 +56,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionServiceTest {
-    @Mock
+
+	@Mock
     private SessionRepository sessionRepository;
 
     @InjectMocks
@@ -65,6 +92,8 @@ public class SessionServiceTest {
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
     private ParticipationRole adminRole = ParticipationRole.ADMIN;
+	private Session sessOne;
+	private Session sessTwo;
 
     @BeforeEach
     void setUpMocks(){
@@ -231,6 +260,7 @@ public class SessionServiceTest {
         lenient().when(participationRepository.save(any(Participation.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userRepository.save(any(User.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userInformationRepository.save(any(UserInformation.class))).thenAnswer(returnParameterAsAnswer);
+		
     }
 
     // Letao
