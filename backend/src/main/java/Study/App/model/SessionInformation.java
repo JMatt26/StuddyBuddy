@@ -2,6 +2,7 @@ package Study.App.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,8 @@ public class SessionInformation {
 
     private List<String> courses;
 
+    private List<String> tags;
+
     private boolean isOnline = false;
 
     private List<String> materialUrl;
@@ -36,6 +39,14 @@ public class SessionInformation {
     @ManyToOne
     private Location location;
     
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public Education getEducation() {
         return education;
     }
@@ -76,7 +87,7 @@ public class SessionInformation {
         this.endTime = endTime;
     }
     
-    public List<String> getCourse() {
+    public List<String> getCourses() {
         return courses;
     }
     
@@ -101,7 +112,7 @@ public class SessionInformation {
     }
     
     public Session getSession() {
-        return session;
+        return session;  
     }
     
     public void setSession(Session session) {
@@ -111,8 +122,8 @@ public class SessionInformation {
     @Override
     public String toString() {
         return "SessionInformation [courses=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline
-                + ", location=" + location + ", materialUrl=" + materialUrl + ", session=" + session
-                + ", sessionInformationId=" + sessionInformationId + ", startTime=" + startTime + "]";
+                + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId="
+                + sessionInformationId + ", startTime=" + startTime +  ", tags=" + tags +"]";
     }
     
 }
