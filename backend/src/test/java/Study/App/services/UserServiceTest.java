@@ -1,7 +1,5 @@
 package Study.App.services;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,15 +11,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import Study.App.model.User;
-import Study.App.repository.UserRepository;
-import Study.App.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -110,9 +100,9 @@ public class UserServiceTest {
 
         User user = userRepository.findUserByUsername(user3Name);
 
-        System.out.println("not null checking");        
+        System.out.println("not null checking");
         assertNotNull(user);
-        System.out.println("not null asserted");        
+        System.out.println("not null asserted");
         assertEquals(user3Name, user.getName());
         assertEquals(user3Username, user.getUsername());
         assertEquals(user3Password, user.getPassword());
@@ -137,5 +127,4 @@ public class UserServiceTest {
     //     assertEquals(user1Username, user.getUsername());
     //     assertEquals(user1Password, user.getPassword());
     // } 
-
 }
