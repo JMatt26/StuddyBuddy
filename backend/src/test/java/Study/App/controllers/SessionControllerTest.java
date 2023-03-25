@@ -179,17 +179,23 @@ public class SessionControllerTest {
         );
         // create a list of strings which is called tags
         List<String> tags = new ArrayList<String>();
-        tags.add("ECSE-321");
+        tags.add("Mahirul");
+
+        // create a list of courses as string
+        List<String> courses = new ArrayList<String>();
+        courses.add("ECSE-321");
+
         body.incomingInfo = new SessionInformationTO(
             null,
             "2001-01-01",
             "2001-01-03",
+            courses, 
             tags,
             false,
             null,
             null,
             null
-        );
+            );
 		HttpEntity req = new HttpEntity(
             body, 
             headers

@@ -86,6 +86,7 @@ public class SessionServiceTest {
     private static final Integer sessionInformationId = 1;
 
     private static final List courses = new ArrayList<String>();
+    private static final List tags = new ArrayList<String>();
     private static final Date startTime = new Date(2023, 2, 14, 12, 0);
     private static final Date endTime = new Date(2023, 2, 14, 14, 0);
     private static final Boolean isOnline = false;
@@ -103,11 +104,11 @@ public class SessionServiceTest {
         SessionInformation sessionInfo4 = new SessionInformation();
         SessionInformation sessionInfo5 = new SessionInformation();
 
-        Set<String> sessionInfo1Tags = new HashSet<String>();
-        Set<String> sessionInfo2Tags = new HashSet<String>();
-        Set<String> sessionInfo3Tags = new HashSet<String>();
-        Set<String> sessionInfo4Tags = new HashSet<String>();
-        Set<String> sessionInfo5Tags = new HashSet<String>();
+        List<String> sessionInfo1Tags = new ArrayList<String>();
+        List<String> sessionInfo2Tags = new ArrayList<String>();
+        List<String> sessionInfo3Tags = new ArrayList<String>();
+        List<String> sessionInfo4Tags = new ArrayList<String>();
+        List<String> sessionInfo5Tags = new ArrayList<String>();
 
         sessionInfo1Tags.add("Movies");
         sessionInfo1Tags.add("Chess");
@@ -123,11 +124,11 @@ public class SessionServiceTest {
 
         sessionInfo5Tags.add("Silent");
 
-        sessionInfo1.setTag(sessionInfo1Tags);
-        sessionInfo2.setTag(sessionInfo2Tags);
-        sessionInfo3.setTag(sessionInfo3Tags);
-        sessionInfo4.setTag(sessionInfo4Tags);
-        sessionInfo5.setTag(sessionInfo5Tags);
+        sessionInfo1.setTags(sessionInfo1Tags);
+        sessionInfo2.setTags(sessionInfo2Tags);
+        sessionInfo3.setTags(sessionInfo3Tags);
+        sessionInfo4.setTags(sessionInfo4Tags);
+        sessionInfo5.setTags(sessionInfo5Tags);
 
 
         List<Session> sessionList = new ArrayList<>();
@@ -333,7 +334,7 @@ public class SessionServiceTest {
     public void testAddInfoToSession(){
         SessionInformation sessionInformation = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, tags, isOnline, null, 1);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -347,7 +348,7 @@ public class SessionServiceTest {
         SessionInformation sessionInformation = null;
         String error = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, tags, isOnline, null, 1);
         } catch (Exception e) {
             error = e.getMessage();
 
