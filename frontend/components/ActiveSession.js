@@ -6,10 +6,10 @@ export default function ActiveSession(location,sessionName,going) {
    
         return (
                 <View style={styles.container}>
-                    <Pressable onPress={}><Image style={styles.image} source={{uri: 'https://picsum.photos/200'}}/></Pressable>
-                    <Text style={styles.sessionName}>{sessionName}</Text>
-                    <Text style={styles.location}>{location}</Text>
-                    <Text style={styles.going}>{going} going</Text>
+                    <Pressable><Image style={styles.image} source={{uri: 'https://picsum.photos/200'}}/></Pressable>
+                    <Text style={styles.sessionName}>Session Name</Text>
+                    <Text style={styles.location}>location</Text>
+                    <Text style={styles.going}>going going</Text>
 
                     <Pressable onPress={()=>AddUser()} style={styles.addButtonContainer}><Image style={styles.addButton} source={require('../assets/buttonIcon.png')}/></Pressable>
                 </View>
