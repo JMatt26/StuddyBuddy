@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import Study.App.model.*;
+
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,8 @@ public class SessionService {
 
     // Get all sessions by session name
     public List<Session> getSessionsBySessionName(String title) {
-        return sessionRepository.findAllSessionByTitle(title);
+        List<Session> result = sessionRepository.findAllSessionByTitle(title);
+        return result;
     }
 
     @Transactional
@@ -143,6 +146,26 @@ public class SessionService {
         return userList;
     }
 
+    @Transactional
+    public Set<Session> getSessionsByTag(List<String> tags){
+        Set<Session> sessionList = new HashSet<Session>();            
+        for(String tag: tags){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getTags().contains(tag)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+                
+            }
+
+        }
+        return sessionList;
+    }
     public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
         SessionInformation sessionInformation = new SessionInformation();
 

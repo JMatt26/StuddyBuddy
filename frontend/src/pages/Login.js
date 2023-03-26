@@ -6,6 +6,7 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
+    ScrollView,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
@@ -15,6 +16,7 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     return (
+        <ScrollView style={styles.scrollContainer}>
         <View style={styles.container}>
             <TouchableOpacity style={styles.thirdPartyLogin}>
                 <Text style={styles.loginText}>Login with Facebook </Text>
@@ -35,6 +37,7 @@ export default function Login({ navigation }) {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
+                    autoCapitalize='none'
                     placeholder="Email"
                     placeholderTextColor="#003f5c"
                     value={email}
@@ -44,6 +47,7 @@ export default function Login({ navigation }) {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
+                    autoCapitalize='none'
                     placeholder="Password"
                     placeholderTextColor="#003f5c"
                     secureTextEntry={true}
@@ -69,17 +73,24 @@ export default function Login({ navigation }) {
                 </TouchableOpacity>
             </View>
         </View>
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({
+    scrollContainer:{
+        height: "100%",
+        flex: 1
+    },
     container: {
-        flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
         paddingLeft: 20,
         paddingRight: 20,
-        paddingBottom: 40,
+        paddingBottom: "40%",
         paddingTop: 40,
+        height: "100%",
+        flex: 1
+        
     },
     middleTextContainer: {
         flexDirection: 'row',
