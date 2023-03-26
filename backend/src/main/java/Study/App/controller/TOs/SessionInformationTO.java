@@ -14,16 +14,26 @@ public class SessionInformationTO {
     public Integer locationId;
     public List<String> tags;
 
-    public SessionInformationTO(Integer sessionInformationId, String startTime, String endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer sessionId, Integer locationId, List<String> tags) {
+    public SessionInformationTO(
+        Integer sessionInformationId, 
+        String startTime, 
+        String endTime, 
+        List<String> courses, 
+        List<String> tags, 
+        Boolean isOnline, 
+        List<String> materialUrl, 
+        Integer sessionId, 
+        Integer locationId
+    ) {
         this.sessionInformationId = sessionInformationId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.courses = courses;
+        this.tags = tags;
         this.isOnline = isOnline;
         this.materialUrl = materialUrl;
         this.sessionId = sessionId;
         this.locationId = locationId;
-        this.tags = tags;
     }
 
     public SessionInformationTO() {
