@@ -1,8 +1,10 @@
 package Study.App.repository;
 
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
 import Study.App.model.Education;
@@ -14,10 +16,16 @@ public interface SessionInformationRepository extends CrudRepository<SessionInfo
     
     public SessionInformation findSessionInformationBySessionInformationId(int id);
 
+    public List<SessionInformation> findAllSessionInformationByCoursesIn(List<String> courses);
+
     public List<SessionInformation> findAllSessionInformationByIsOnlineTrue();
     public List<SessionInformation> findAllSessionInformationByIsOnlineFalse();
 
     public List<SessionInformation> findAllSessionInformationByEducation(Education education);
 
     public List<SessionInformation> findAllSessionInformationByLocation(Location location);
+
+    public List<SessionInformation> findAllSessionInformationByStartTime(Date startTime);
+
+
 }
