@@ -207,11 +207,11 @@ public class SessionController {
                 sessionInformation.getStartTime(),
                 sessionInformation.getEndTime(),
                 sessionInformation.getCourses(),
+                sessionInformation.getTags(),
                 sessionInformation.isOnline(),
                 sessionInformation.getMaterialUrl(),
                 sessionInformation.getSession().getSessionId(),
-                sessionInformation.getLocation().getLocationid(),
-                sessionInformation.getTags()
+                sessionInformation.getLocation().getLocationid()
             );
 
         }  
