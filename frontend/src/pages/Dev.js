@@ -44,6 +44,7 @@ export default function Dev() {
       numberOfAttendees={event.incoming.numberOfAttendees}
       image={assetsObject.mcgillPhoto}
       description={event.incoming.description}
+      sessionId={event.incoming.sessionId}
     />
   </View> )
   }

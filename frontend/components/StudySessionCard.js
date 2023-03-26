@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, Image, Modal } from "react-native";
+import { StyleSheet, View, Text, Image, Modal, TouchableOpacity } from "react-native";
 import { isNil } from "../utils/isNil.js";
 import { Pressable, Divider } from "@react-native-material/core";
 import React, {useState} from 'react';
+import {AddUser} from "../utils/AddUser";
 
 const assets = require("../assets/assets.js");
 
@@ -14,6 +15,7 @@ export default function StudySessionCard({
   numberOfAttendees,
   image,
   description,
+  sessionId,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
@@ -81,9 +83,9 @@ export default function StudySessionCard({
         </View>
 
         <View style={styles.sessionButtonContainer}>
-          <Pressable style={styles.sessionButton}>
+          <TouchableOpacity onPress={()=>AddUser(sessionId)} style={styles.sessionButton}>
             <Image source={require("../assets/plusbutton.png")}></Image>
-          </Pressable>
+          </TouchableOpacity>
           <Text style={styles.numberOfAttendees}>{numberOfAttendees + " going"}</Text>
         </View>
 
