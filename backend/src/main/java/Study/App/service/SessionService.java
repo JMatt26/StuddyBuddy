@@ -162,8 +162,8 @@ public class SessionService {
 
     public List<Session> getSessionsAtLocation(String buildingName) {
         List<Session> sessionsAtLocation = new ArrayList<Session>();
-        Location location = locationRepository.findLocationByBuildingName(buildingName);
-        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(location);
+        List<Location> locations = locationRepository.findAllLocationByBuildingName(buildingName);
+        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(locations.get(0));
         
         for (SessionInformation sessionInfo: sessionsInfo) {
             sessionsAtLocation.add(sessionInfo.getSession());

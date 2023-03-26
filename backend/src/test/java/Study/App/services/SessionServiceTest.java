@@ -45,6 +45,7 @@ public class SessionServiceTest {
     private UserInformationRepository userInformationRepository;
     @Mock
     private LocationRepository locationRepository;
+   
 
     private static final String user1Username = "testUsername1";
     private static final String user2Username = "testUsername2";
@@ -96,13 +97,17 @@ public class SessionServiceTest {
         location1.setPostalCode("H3T 1M8");
         location1.setBuildingName("Building1");
         location1.setRoomNumber("Room1");
-
+    
+        
 
         SessionInformation sessionInformation1 = new SessionInformation();
         sessionInformation1.setCourses(courses);
         sessionInformation1.setStartTime(startTime);
         sessionInformation1.setEndTime(endTime);
         sessionInformation1.setOnline(isOnline);
+        sessionInformation1.setLocation(location1);
+        sessionInformation1.setSession(session1);
+
 
         //Mock users
         User user1 = new User();
@@ -249,5 +254,24 @@ public class SessionServiceTest {
         }
         assertNull(sessionInformation);
         assertEquals("Session not found", error);
+    }
+
+    // Sadek
+    @Test
+    public void testGetSessionsByLocation() {
+        Integer numOfSessions = null;
+        Integer idOfSession = null;
+        try {
+            numOfSessions = sessionService.getSessionsAtLocation("Building1").size();
+            idOfSession = sessionService.getSessionsAtLocation("Building1").get(0).getSessionId();
+            
+        } catch (Exception e) {
+            System.out.println("EXCEPTION: " + e.getMessage());
+        }
+
+        assertEquals(1, numOfSessions);
+        assertEquals(1, idOfSession);
+        
+    
     }
 }
