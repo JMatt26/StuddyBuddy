@@ -30,7 +30,7 @@ export default async function request_ressource(
             console.warn(" request failed with status : " + response.status);
             return;
         }
-  
+
         console.log(`request sucessfull with status  + response.status`)
         return {
             status: response.status,
