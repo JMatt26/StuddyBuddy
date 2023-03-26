@@ -165,29 +165,35 @@ public class SessionService {
             SessionInformation sessionInformation = session.getSessionInformation();
             SessionTO sessionTO = new SessionTO(
                 session.getSessionId(),
-                session.isPrivate(),
-                session.getTitle(),
-                session.getCapacity(),
-                session.getDescription(),
-                session.getParticipations().size(),
+                session.isPrivate() == null ? null : session.isPrivate(),
+                session.getTitle() == null ? null : session.getTitle(),
+                session.getCapacity() == null ? null : session.getCapacity(),
+                session.getDescription() == null ? null : session.getDescription(),
+                session.getParticipations() == null ? null : session.getParticipations().size(),
                 null,
                 session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
             );
+            String startDate = null;
+            String endDate = null;
+            SessionInformationTO sessionInformationTO = null;
 
-            String startDate = SessionController.dateToString(sessionInformation.getStartTime());
-            String endDate = SessionController.dateToString(sessionInformation.getEndTime());
+            if (sessionInformation != null) {
+                startDate = SessionController.dateToString(sessionInformation.getStartTime());
+                endDate = SessionController.dateToString(sessionInformation.getEndTime());
+            
+                sessionInformationTO = new SessionInformationTO(
+                    sessionInformation.getSessionInformationId(),
+                    startDate,
+                    endDate,
+                    sessionInformation.getCourses(),
+                    sessionInformation.getTags(),
+                    sessionInformation.isOnline(),
+                    sessionInformation.getMaterialUrl(),
+                    sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid()
+                );
+            }
 
-            SessionInformationTO sessionInformationTO = new SessionInformationTO(
-                sessionInformation.getSessionInformationId(),
-                startDate,
-                endDate,
-                sessionInformation.getCourses(),
-                sessionInformation.getTags(),
-                sessionInformation.isOnline(),
-                sessionInformation.getMaterialUrl(),
-                sessionInformation.getSession().getSessionId(),
-                sessionInformation.getLocation().getLocationid()
-            );
             CreateSessionTO createSessionTO = new CreateSessionTO();
             createSessionTO.incoming = sessionTO;
             createSessionTO.incomingInfo = sessionInformationTO;
