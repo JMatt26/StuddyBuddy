@@ -35,13 +35,13 @@ public class Session {
     public void setSessionInformation(SessionInformation sessionInformation) {
         this.sessionInformation = sessionInformation;
     }
-    public int getSessionId() {
+    public Integer getSessionId() {
         return sessionId;
     }
-    public void setSessionId(int sessionId) {
+    public void setSessionId(Integer sessionId) {
         this.sessionId = sessionId;
     }
-    public boolean isPrivate() {
+    public Boolean isPrivate() {
         return isPrivate;
     }
     public void setPrivate(Boolean isPrivate) {
@@ -53,10 +53,10 @@ public class Session {
     public void setTitle(String title) {
         this.title = title;
     }
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
     public String getDescription() {
