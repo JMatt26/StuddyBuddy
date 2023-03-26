@@ -16,13 +16,15 @@ export default function Dev() {
   
   async function getActiveSessionsFromServer() {
     let url = "";
-    url = `http://localhost:8080/session/getAllActiveSessions`;
+    url = `http://localhost:8080/session/getAllSessions`;
     
     let response = null;
     try {
       response = await request_ressource(url, "GET");
-      setStatusCode(response.status);
-      response = await response.json();
+      setStatus(response.status);
+      // response = await response.body.json();
+      response = JSON.parse(JSON.stringify(response.body.json()));
+      console.log(response);
       setData(response);
     } catch (e) {
       console.log(e);
@@ -34,17 +36,18 @@ export default function Dev() {
   }, []);
 
   let renderSessions = "";
-  renderSessions = data.map((event) => (
-    <View>
-      <StudySessionCard
-        tag={event.title}
-        sessionTitle={"Studying Session"}
-        sessionLocation={"Trottier"}
-        numberOfAttendees={12}
-        image={assetsObject.mcgillPhoto}
-      />
-    </View>
-  ));
+  renderSessions = data.map(event => {
+  return (<View>
+    <StudySessionCard
+      tag={"HardCode"}
+      sessionTitle={event.incoming.title}
+      sessionLocation={"HardCode"}
+      numberOfAttendees={incoming.numberOfAttendees}
+      image={assetsObject.mcgillPhoto}
+    />
+  </View> )
+  }
+  );
 
 
   return (
