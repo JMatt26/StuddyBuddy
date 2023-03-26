@@ -13,6 +13,7 @@ export default function StudySessionCard({
   sessionLocation,
   numberOfAttendees,
   image,
+  description,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
@@ -51,7 +52,7 @@ export default function StudySessionCard({
             </Text>
             <Text style = {{marginBottom: 15}}>
             <Text style={styles.modalInfoHeader}>Description: </Text>
-            <Text style={styles.modalText}> DESCRIPTION </Text>
+            <Text style={styles.modalText}> {description} </Text>
             </Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
