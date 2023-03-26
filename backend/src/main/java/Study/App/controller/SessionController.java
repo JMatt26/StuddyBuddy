@@ -27,7 +27,7 @@ import Study.App.model.Session;
 import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -187,34 +187,15 @@ public class SessionController {
     }
 
     @GetMapping("/getAllSessions")
-    public ResponseEntity<List<SessionTO>> getAllSessions(){
-        List<Session> sessions = (List<Session>)sessionRepository.findAll();
-        List<SessionTO> result = new ArrayList();
-        for (Session session : sessions) {
-            SessionInformation sessionInformation = session.getSessionInformation();
-            SessionTO sessionTO = new SessionTO(
-                session.getSessionId(),
-                session.isPrivate(),
-                session.getTitle(),
-                session.getCapacity(),
-                session.getDescription(),
-                session.getParticipations().size(),
-                null,
-                session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
-            );
-            SessionInformationTO informationTO = new SessionInformationTO(
-                sessionInformation.getSessionInformationId(),
-                sessionInformation.getStartTime(),
-                sessionInformation.getEndTime(),
-                sessionInformation.getCourses(),
-                sessionInformation.getTags(),
-                sessionInformation.isOnline(),
-                sessionInformation.getMaterialUrl(),
-                sessionInformation.getSession().getSessionId(),
-                sessionInformation.getLocation().getLocationid()
-            );
+    public ResponseEntity<List<CreateSessionTO>> getAllSessions(){
+        List<CreateSessionTO> createSessionTOList = sessionService.getAllSessions();
 
-        }  
+        if(createSessionTOList == null){
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<List<CreateSessionTO>>(createSessionTOList, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/getAllSessionsByTag")
