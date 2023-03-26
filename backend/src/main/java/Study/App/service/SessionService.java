@@ -190,8 +190,14 @@ public class SessionService {
                     sessionInformation.isOnline(),
                     sessionInformation.getMaterialUrl(),
                     sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
-                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid()
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid(),
+                    null
                 );
+
+                if (sessionInformationTO.locationId != null) {
+                    Location location = locationRepository.findLocationByLocationid(sessionInformationTO.locationId);
+                    sessionInformationTO.location = location.toString();
+                }
             }
 
             CreateSessionTO createSessionTO = new CreateSessionTO();
