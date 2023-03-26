@@ -2,16 +2,16 @@ import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
 import React, { Component } from 'react';
 import {AddUser} from "../utils/AddUser";
 
-export default function ActiveSession(props) {
+export default function ActiveSession({sessionName, location, attendanceNbr, sessionId}) {
    
         return (
                 <View style={styles.container}>
                     <Pressable><Image style={styles.image} source={{uri: 'https://picsum.photos/200'}}/></Pressable>
-                    <Text style={styles.sessionName}>{props.sessionName}</Text>
-                    <Text style={styles.location}>{props.location}</Text>
-                    <Text style={styles.going}>{props.attendanceNbr}</Text>
+                    <Text style={styles.sessionName}>{sessionName}</Text>
+                    <Text style={styles.location}>{location}</Text>
+                    <Text style={styles.going}>{attendanceNbr} going</Text>
 
-                    <Pressable onPress={()=>AddUser()} style={styles.addButtonContainer}><Image style={styles.addButton} source={require('../assets/buttonIcon.png')}/></Pressable>
+                    <Pressable onPress={()=>AddUser(sessionId)} style={styles.addButtonContainer}><Image style={styles.addButton} source={require('../assets/buttonIcon.png')}/></Pressable>
                 </View>
         );
     };
