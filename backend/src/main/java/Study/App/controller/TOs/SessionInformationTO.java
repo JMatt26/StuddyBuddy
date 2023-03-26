@@ -14,6 +14,7 @@ public class SessionInformationTO {
     public Integer locationId;
     public String location;
     public List<String> tags;
+    public String adminUsername;
 
     public SessionInformationTO(
         Integer sessionInformationId, 
@@ -25,7 +26,8 @@ public class SessionInformationTO {
         List<String> materialUrl, 
         Integer sessionId, 
         Integer locationId,
-        String location
+        String location,
+        String adminUsername
     ) {
         this.sessionInformationId = sessionInformationId;
         this.startTime = startTime;
@@ -37,6 +39,7 @@ public class SessionInformationTO {
         this.sessionId = sessionId;
         this.locationId = locationId;
         this.location = location;
+        this.adminUsername = adminUsername;
     }
 
     public SessionInformationTO() {
