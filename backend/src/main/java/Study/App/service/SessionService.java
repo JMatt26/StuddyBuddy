@@ -229,4 +229,24 @@ public class SessionService {
         }
         return sessionList;
     }
+
+    @Transactional
+    public Set<Session> getSessionsByCourse(List<String> courses){
+        Set<Session> sessionList = new HashSet<Session>();            
+        for(String course: courses){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getCourses() != null && sessionInformation.getCourses().contains(course)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+
+            }
+        }
+        return sessionList;
+    }
 }
