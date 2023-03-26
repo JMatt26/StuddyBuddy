@@ -22,8 +22,7 @@ export default function Dev() {
     try {
       response = await request_ressource(url, "GET");
       setStatus(response.status);
-      // response = await response.body.json();
-      response = JSON.parse(JSON.stringify(response.body.json()));
+      response = await response.body.json();
       console.log(response);
       setData(response);
     } catch (e) {
@@ -39,11 +38,12 @@ export default function Dev() {
   renderSessions = data.map(event => {
   return (<View>
     <StudySessionCard
-      tag={"HardCode"}
+      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tag[0] : null}
       sessionTitle={event.incoming.title}
-      sessionLocation={"HardCode"}
-      numberOfAttendees={incoming.numberOfAttendees}
+      sessionLocation={"McGill University"}
+      numberOfAttendees={event.incoming.numberOfAttendees}
       image={assetsObject.mcgillPhoto}
+      description={event.incoming.description}
     />
   </View> )
   }
