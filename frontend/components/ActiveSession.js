@@ -1,21 +1,22 @@
 import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
 import React, { Component } from 'react';
+import {AddUser} from "../utils/AddUser";
 
-export default function ActiveSession() {
+export default function ActiveSession(location,sessionName,going) {
    
         return (
-            <View>
-                <Pressable style={styles.container}>
-                    <Image 
-                    style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
-                    <Text style={styles.sessionName}>Study Session</Text>
-                    <Text style={styles.location}>Location</Text>
-                    <Text style={styles.going}>50 going</Text>
-                </Pressable>
-            </View>
+                <View style={styles.container}>
+                    <Pressable onPress={}><Image style={styles.image} source={{uri: 'https://picsum.photos/200'}}/></Pressable>
+                    <Text style={styles.sessionName}>{sessionName}</Text>
+                    <Text style={styles.location}>{location}</Text>
+                    <Text style={styles.going}>{going} going</Text>
+
+                    <Pressable onPress={()=>AddUser()} style={styles.addButtonContainer}><Image style={styles.addButton} source={require('../assets/buttonIcon.png')}/></Pressable>
+                </View>
         );
     };
 const styles = StyleSheet.create ({
+
     container: {
         height: 215,
         width: 168,
@@ -44,5 +45,14 @@ const styles = StyleSheet.create ({
         marginHorizontal: 7,
         fontSize: 20,
     },
+    addButton: {
+        width: 40,
+        height: 40,
+    },
+    addButtonContainer: {
+        position: "absolute",
+        right : 10,
+        bottom : 10,
+    }
     
 });
