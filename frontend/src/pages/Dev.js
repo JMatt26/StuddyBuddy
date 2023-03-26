@@ -9,6 +9,7 @@ import assetsObject from "../../assets/assets";
 import ActiveSessionsPage from "./ActiveSessionsPage";
 import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
+import { isNil } from "../../utils/isNil";
 
 export default function Dev() {
   const [data, setData] = useState([]);
@@ -38,12 +39,14 @@ export default function Dev() {
   renderSessions = data.map(event => {
   return (<View>
     <StudySessionCard
-      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tag[0] : null}
+      tag={!isNil(event.incomingInfo?.tags)? event.incomingInfo.tag[0] : null}
       sessionTitle={event.incoming.title}
-      sessionLocation={"McGill University"}
+      sessionLocation={isNil(event.incomingInfo?.location)? "Online" : event.incomingInfo.location}
       numberOfAttendees={event.incoming.numberOfAttendees}
       image={assetsObject.mcgillPhoto}
       description={event.incoming.description}
+      startTime={event.incomingInfo?.startTime}
+      endTime={event.incomingInfo?.endTime}
     />
   </View> )
   }
