@@ -202,9 +202,19 @@ public class SessionController {
                 null,
                 session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
             );
+            SessionInformationTO informationTO = new SessionInformationTO(
+                sessionInformation.getSessionInformationId(),
+                sessionInformation.getStartTime(),
+                sessionInformation.getEndTime(),
+                sessionInformation.getCourses(),
+                sessionInformation.isOnline(),
+                sessionInformation.getMaterialUrl(),
+                sessionInformation.getSession().getSessionId(),
+                sessionInformation.getLocation().getLocationid(),
+                sessionInformation.getTags()
+            );
 
-        }
-            
+        }  
     }
 
     @GetMapping("/getAllSessionsByTag")
