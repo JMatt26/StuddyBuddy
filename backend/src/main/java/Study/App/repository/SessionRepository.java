@@ -14,6 +14,8 @@ public interface SessionRepository extends CrudRepository<Session, Integer> {
 
     public Session findSessionBySessionId(int id);
 
+    public Session findSessionByParticipationId(int id);
+
     public List<Session> findAllSessionByIsPrivateTrue();
 
     public List<Session> findAllSessionByIsPrivateFalse();
