@@ -11,6 +11,46 @@ import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
 
 export default function Dev() {
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState("");
+  
+  async function getActiveSessionsFromServer() {
+    let url = "";
+    url = `http://localhost:8080/session/getAllSessions`;
+    
+    let response = null;
+    try {
+      response = await request_ressource(url, "GET");
+      setStatus(response.status);
+      response = await response.body.json();
+      console.log(response);
+      setData(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  
+  useEffect(() => {
+    getActiveSessionsFromServer();
+  }, []);
+
+  let renderSessions = "";
+  renderSessions = data.map(event => {
+  return (<View>
+    <StudySessionCard
+      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tag[0] : null}
+      sessionTitle={event.incoming.title}
+      sessionLocation={"McGill University"}
+      numberOfAttendees={event.incoming.numberOfAttendees}
+      image={assetsObject.mcgillPhoto}
+      description={event.incoming.description}
+      sessionId={event.incoming.sessionId}
+    />
+  </View> )
+  }
+  );
+
+
   return (
     <ScrollView>
       <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center", flex: 1 }}>

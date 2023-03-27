@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Study.App.model.*;
+import Study.App.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +25,7 @@ import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
 import Study.App.repository.UserInformationRepository;
 import Study.App.repository.UserRepository;
+import Study.App.model.enums.ParticipationRole;
 
 @SpringBootApplication
 public class StudyAppApplication {
@@ -71,6 +74,31 @@ public class StudyAppApplication {
 			session1.setTitle("ECSE 428");
 			sessionRepository.save(session1);
 
+			SessionInformation sessionInformation1 = new SessionInformation();
+			Date startTime = new Date(12345678);
+			Date endTime = new Date(22345678);
+			Location location1 = new Location();
+			location1.setPostalCode("H3T 1J4");
+			location1.setCity("Montreal");
+			location1.setProvince("Quebec");
+			location1.setStreetAddress("1450 Rue Guy");
+			location1.setBuildingName("Trottier");
+			location1.setRoomNumber("A-100");
+			locationRepository.save(location1);
+
+			sessionInformation1.setLocation(location1);
+			List<String> tags = new ArrayList<String>();
+			tags.add("ECSE");
+			tags.add("COMP");
+			tags.add("Chess");
+			sessionInformation1.setTags(tags);
+			sessionInformation1.setCourses(courses);
+			sessionInformation1.setStartTime(startTime);
+			sessionInformation1.setEndTime(endTime);
+			sessionInformation1.setSession(session1);
+			sessionInformationRepository.save(sessionInformation1);
+
+
 			Session session2 = new Session();
 			session2.setTitle("ECSE 310");
 			sessionRepository.save(session2);
@@ -88,13 +116,13 @@ public class StudyAppApplication {
 
 			//Session Information
 			SessionInformation session4Information = new SessionInformation();
-			Date startTime = SessionController.stringToDate("2021-04-01 12:00:00");
-			Date endTime = SessionController.stringToDate("2021-04-01 13:00:00");
-			session4Information.setStartTime(startTime);
-			session4Information.setEndTime(endTime);
-			List<String> tags = new ArrayList<String>();
-			tags.add("TESTING");
-			session4Information.setTags(tags);
+			Date startTime1 = SessionController.stringToDate("2021-04-01 12:00:00");
+			Date endTime1 = SessionController.stringToDate("2021-04-01 13:00:00");
+			session4Information.setStartTime(startTime1);
+			session4Information.setEndTime(endTime1);
+			List<String> tags1 = new ArrayList<String>();
+			tags1.add("TESTING");
+			session4Information.setTags(tags1);
 			sessionInformationRepository.save(session4Information);
 			session4.setSessionInformation(session4Information);
 
@@ -111,6 +139,36 @@ public class StudyAppApplication {
 			sessionInformationRepository.save(session4Information);
 
 			sessionRepository.save(session4);
+			SessionInformation sessionInformation2 = new SessionInformation();
+			Date startTime2 = new Date(12345678);
+			Date endTime2 = new Date(22345678);
+			Location location2 = new Location();
+			location2.setPostalCode("H3T 1J4");
+			location2.setCity("Montreal");
+			location2.setProvince("Quebec");
+			location2.setStreetAddress("11771 Frigon");
+			location2.setBuildingName("Dante House");
+			location2.setRoomNumber("A-100");
+			locationRepository.save(location2);
+
+			sessionInformation2.setLocation(location2);
+			List<String> tags2 = new ArrayList<String>();
+			tags2.add("ECSE");
+			tags2.add("COMP");
+			tags2.add("Chess");
+			sessionInformation2.setTags(tags2);
+			sessionInformation2.setCourses(courses);
+			sessionInformation2.setStartTime(startTime2);
+			sessionInformation2.setEndTime(endTime2);
+			sessionInformation2.setSession(session2);
+			sessionInformationRepository.save(sessionInformation2);
+
+
+//
+//			Session session3 = new Session();
+//			session3.setTitle("COMP 251");
+//			sessionRepository.save(session3);
+			
 		};
 	}
 
