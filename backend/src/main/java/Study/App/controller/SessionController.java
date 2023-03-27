@@ -2,6 +2,7 @@ package Study.App.controller;
 
 import Study.App.controller.TOs.UserTO;
 import Study.App.model.User;
+import Study.App.repository.SessionInformationRepository;
 import Study.App.repository.SessionRepository;
 
 import org.springframework.http.HttpStatus;
@@ -21,26 +22,30 @@ import org.springframework.web.bind.annotation.RestController;
 import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.controller.TOs.SessionInformationTO;
 import Study.App.controller.TOs.SessionTO;
+import Study.App.model.Participation;
 import Study.App.model.Session;
 import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/session")
 public class SessionController {
     private SessionService sessionService;
     private SessionRepository sessionRepository;
+    private SessionInformationRepository sessionInformationRepository;
 
-    public SessionController(SessionService sessionService, SessionRepository sessionRepository) {
+    public SessionController(SessionService sessionService, SessionRepository sessionRepository, SessionInformationRepository sessionInformationRepository) {
         this.sessionService = sessionService;
         this.sessionRepository = sessionRepository;
+        this.sessionInformationRepository = sessionInformationRepository;
     }
 
     @GetMapping("/sess1")
@@ -81,6 +86,7 @@ public class SessionController {
                 startDate,
                 endDate,
                 incomingInfo.courses,
+                incomingInfo.tags,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
                 incomingInfo.locationId);
@@ -180,6 +186,67 @@ public class SessionController {
         }
     }
 
+    @GetMapping("/getAllSessions")
+    public ResponseEntity<List<CreateSessionTO>> getAllSessions(){
+        List<CreateSessionTO> createSessionTOList = sessionService.getAllSessions();
+
+        if(createSessionTOList == null){
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<List<CreateSessionTO>>(createSessionTOList, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getAllSessionsByTag")
+    public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
+        Set<Session> sessionList = sessionService.getSessionsByTag(tags);
+        List<SessionTO> sessionTOList = new ArrayList<>();
+        if(sessionList != null){
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                    session.getSessionId(),
+                    session.isPrivate(),
+                    session.getTitle(),
+                    session.getCapacity(),
+                    session.getDescription(),
+                    null,
+                    null,
+                    session.getSessionInformation() == null ?
+                        null :
+                        session.getSessionInformation().getSessionInformationId()
+                ));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST); 
+        }
+    }
+
+    @GetMapping("/getAllActiveSessions")
+    public ResponseEntity<List<SessionTO>> getAllActiveSessions() {
+        List<Session> sessionList = sessionService.getAllActiveSessions();
+        List<SessionTO> sessionTOList = new ArrayList<>();
+        if (sessionList != null) {
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                        session.getSessionId(),
+                        session.isPrivate(),
+                        session.getTitle(),
+                        session.getCapacity(),
+                        session.getDescription(),
+                        null,
+                        null,
+                        session.getSessionInformation() == null ? null
+                                : session.getSessionInformation().getSessionInformationId()));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private UserTO convertToDTO(User u) {
         if (u == null) {
             throw new IllegalArgumentException("There is no such User");
@@ -189,11 +256,17 @@ public class SessionController {
     }
 
     public static String dateToString(Date date) {
+        if (date == null) {
+            return null;
+        }
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
         return sf.format(date);
     }
 
     public static Date stringToDate(String date) {
+        if (date == null) {
+            return null;
+        }
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA_FRENCH);
 
         try {

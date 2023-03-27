@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Date;
 
+import Study.App.controller.TOs.CreateSessionTO;
+import Study.App.controller.TOs.SessionInformationTO;
+import Study.App.controller.TOs.SessionTO;
+import Study.App.controller.SessionController;
 import Study.App.model.*;
+
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+
 
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.LocationRepository;
@@ -47,7 +56,8 @@ public class SessionService {
 
     // Get all sessions by session name
     public List<Session> getSessionsBySessionName(String title) {
-        return sessionRepository.findAllSessionByTitle(title);
+        List<Session> result = sessionRepository.findAllSessionByTitle(title);
+        return result;
     }
 
     @Transactional
@@ -143,20 +153,136 @@ public class SessionService {
         return userList;
     }
 
-    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+    /**
+     * Returns the list of all sessions without any filters.
+     * @return List of sessions as CreateSessionTOs
+     */
+    @Transactional
+    public List<CreateSessionTO> getAllSessions(){
+        List<Session> sessions = (List<Session>)sessionRepository.findAll();
+        List<CreateSessionTO> result = new ArrayList();
+        for (Session session : sessions) {
+            SessionInformation sessionInformation = session.getSessionInformation();
+            SessionTO sessionTO = new SessionTO(
+                session.getSessionId(),
+                session.isPrivate() == null ? null : session.isPrivate(),
+                session.getTitle() == null ? null : session.getTitle(),
+                session.getCapacity() == null ? null : session.getCapacity(),
+                session.getDescription() == null ? null : session.getDescription(),
+                session.getParticipations() == null ? null : session.getParticipations().size(),
+                null,
+                session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+            );
+            String startDate = null;
+            String endDate = null;
+            SessionInformationTO sessionInformationTO = null;
+
+            if (sessionInformation != null) {
+                startDate = SessionController.dateToString(sessionInformation.getStartTime());
+                endDate = SessionController.dateToString(sessionInformation.getEndTime());
+            
+                sessionInformationTO = new SessionInformationTO(
+                    sessionInformation.getSessionInformationId(),
+                    startDate,
+                    endDate,
+                    sessionInformation.getCourses(),
+                    sessionInformation.getTags(),
+                    sessionInformation.isOnline(),
+                    sessionInformation.getMaterialUrl(),
+                    sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid()
+                );
+            }
+
+            CreateSessionTO createSessionTO = new CreateSessionTO();
+            createSessionTO.incoming = sessionTO;
+            createSessionTO.incomingInfo = sessionInformationTO;
+            result.add(createSessionTO);
+        }  
+
+        return result;
+    }
+
+    @Transactional
+    public List<Session>  getAllActiveSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
+            }
+        }
+        return sessions;
+    }
+
+    @Transactional
+    public List<Session> getAllUpcomingSessions(){
+        Date date = new Date();
+        List <SessionInformation> sessionInfoList = (List<SessionInformation>) sessionInformationRepository.findAll();
+        List <Session> sessions = new ArrayList<Session>();
+        for (SessionInformation sessionInfo : sessionInfoList){
+            if (sessionInfo.getStartTime().after(date)){
+                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
+                for(Session sess : temp){
+                    sessions.add(sess);
+                }
+            }
+        }
+        return sessions;
+    }
+
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId) {
         SessionInformation sessionInformation = new SessionInformation();
 
         if (sessionRepository.findSessionBySessionId(sessionId) != null) {
+            if (courses != null)
+                sessionInformation.setCourses(courses);
             sessionInformation.setCourses(courses);
+            if (startTime != null)
+                sessionInformation.setStartTime(startTime);
             sessionInformation.setStartTime(startTime);
+            if (endTime != null)
+                sessionInformation.setEndTime(endTime);
             sessionInformation.setEndTime(endTime);
-            sessionInformation.setOnline(isOnline);
+            if (isOnline != null)
+                sessionInformation.setOnline(isOnline);
+            if (materialUrl != null)
+                sessionInformation.setMaterialUrl(materialUrl);
             sessionInformation.setMaterialUrl(materialUrl);
+            if (tags != null)
+                sessionInformation.setTags(tags);
+            if (locationId != null)
             sessionInformation.setLocation(locationRepository.findLocationByLocationid(locationId));
+
+            if (sessionId != null)
             sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
             return sessionInformationRepository.save(sessionInformation);
         } else {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Transactional
+    public Set<Session> getSessionsByTag(List<String> tags){
+        Set<Session> sessionList = new HashSet<Session>();            
+        for(String tag: tags){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getTags() != null && sessionInformation.getTags().contains(tag)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+
+            }
+        }
+        return sessionList;
     }
 }

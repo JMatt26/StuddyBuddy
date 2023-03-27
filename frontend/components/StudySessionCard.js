@@ -1,7 +1,11 @@
-import { StyleSheet, View, Text, Pressable, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Modal, TouchableOpacity } from "react-native";
 import { isNil } from "../utils/isNil.js";
+import { Pressable, Divider } from "@react-native-material/core";
+import React, {useState} from 'react';
+import {AddUser} from "../utils/AddUser";
 
 const assets = require("../assets/assets.js");
+
 
 //to pass an image, add the image to the object in assets.js in the assets folder and pass the value related to the image as the prop
 export default function StudySessionCard({
@@ -10,10 +14,61 @@ export default function StudySessionCard({
   sessionLocation,
   numberOfAttendees,
   image,
+  description,
+  sessionId,
 }) {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
-      <View style={styles.container}>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}> {sessionTitle} </Text>
+            <Text style = {{marginBottom: 15}} > 
+              <Text style={styles.modalInfoHeader}> Hosted By: </Text>
+              <Text style={styles.modalText}> CREATOR </Text>
+            </Text> 
+            <Text style = {{marginBottom: 15}}> 
+              <Text style={styles.modalInfoHeader}> Location: </Text> 
+              <Text style={styles.modalText}> {sessionLocation} </Text>
+            </Text>
+            <Text style = {{marginBottom: 15}}>
+              <Text style={styles.modalInfoHeader}> Time: </Text>
+              <Text style={styles.modalText}> TIME </Text>
+            </Text>
+            <Text style = {{marginBottom: 15}}>
+              <Text style={styles.modalInfoHeader}> Date: </Text>
+              <Text style={styles.modalText}> DATE </Text>
+            </Text>
+            <Text style = {{marginBottom: 15}}>
+              <Text style={styles.modalInfoHeader}> Number of Attendees: </Text>
+              <Text style={styles.modalText}> {numberOfAttendees} </Text>
+            </Text>
+            <Text style = {{marginBottom: 15}}>
+            <Text style={styles.modalInfoHeader}>Description: </Text>
+            <Text style={styles.modalText}> {description} </Text>
+            </Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <Pressable style={styles.container} onPress = {() => {
+        setModalVisible(true);
+      }}>
+
         <View style={styles.image}>
           <Image source={image} style={styles.image} />
         </View>
@@ -28,13 +83,13 @@ export default function StudySessionCard({
         </View>
 
         <View style={styles.sessionButtonContainer}>
-          <Pressable style={styles.sessionButton}>
+          <TouchableOpacity onPress={()=>AddUser(sessionId)} style={styles.sessionButton}>
             <Image source={require("../assets/plusbutton.png")}></Image>
-          </Pressable>
+          </TouchableOpacity>
           <Text style={styles.numberOfAttendees}>{numberOfAttendees + " going"}</Text>
         </View>
 
-      </View>
+      </Pressable>
     </View>
   );
 }
@@ -109,5 +164,58 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     top: 77,
     right: 50
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    marginTop: 10,
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: '#5e6364',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalInfoHeader: {
+    marginTop: 15,
+    marginBottom: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  modalText: {
+    marginTop: 15,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalTitle: {
+    textDecorationLine: 'underline',
+    marginBottom: 30,
+    textAlign: 'left',
+    fontSize: 20,
+    fontWeight: 'bold',
   }
 });
