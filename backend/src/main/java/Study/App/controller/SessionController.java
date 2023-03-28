@@ -89,7 +89,8 @@ public class SessionController {
                 incomingInfo.tags,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
-                incomingInfo.locationId);
+                incomingInfo.locationId,
+                username);
 
         if (newSessionInfo == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

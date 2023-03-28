@@ -15,9 +15,14 @@ export default function StudySessionCard({
   numberOfAttendees,
   image,
   description,
+  startTime,
+  endTime,
+  creator,
   sessionId,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
+  let cardMeetingPlace = isNil(sessionLocation) ? "Online" : "In Person";
+  let modalMeetingPlace = isNil(sessionLocation) ? "Online" : sessionLocation;
   return (
     <View>
 
@@ -34,19 +39,19 @@ export default function StudySessionCard({
             <Text style={styles.modalTitle}> {sessionTitle} </Text>
             <Text style = {{marginBottom: 15}} > 
               <Text style={styles.modalInfoHeader}> Hosted By: </Text>
-              <Text style={styles.modalText}> CREATOR </Text>
+              <Text style={styles.modalText}> {creator} </Text>
             </Text> 
             <Text style = {{marginBottom: 15}}> 
               <Text style={styles.modalInfoHeader}> Location: </Text> 
-              <Text style={styles.modalText}> {sessionLocation} </Text>
+              <Text style={styles.modalText}> {modalMeetingPlace} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
-              <Text style={styles.modalInfoHeader}> Time: </Text>
-              <Text style={styles.modalText}> TIME </Text>
+              <Text style={styles.modalInfoHeader}> Start: </Text>
+              <Text style={styles.modalText}> {startTime} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
-              <Text style={styles.modalInfoHeader}> Date: </Text>
-              <Text style={styles.modalText}> DATE </Text>
+              <Text style={styles.modalInfoHeader}> End: </Text>
+              <Text style={styles.modalText}> {endTime} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
               <Text style={styles.modalInfoHeader}> Number of Attendees: </Text>
@@ -79,7 +84,7 @@ export default function StudySessionCard({
             <Text>{tag}</Text>
           </View>}
           <Text style={styles.sessionTitle}>{sessionTitle}</Text>
-          <Text style={styles.sessionLocation}>{sessionLocation}</Text>
+          <Text style={styles.sessionLocation}> {cardMeetingPlace} </Text>
         </View>
 
         <View style={styles.sessionButtonContainer}>

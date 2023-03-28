@@ -8,6 +8,7 @@ import Main from "../pages/Main";
 import Events from "../pages/Events";
 import Profile from "../pages/Profile";
 import Dev from "../pages/Dev";
+import AllSessions from '../pages/AllSessions';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ export default function AppStack() {
                 {() => <Dev />}
             </Tab.Screen>
             <Tab.Screen name="Events">
-                {() => <Events />}
+                {() => <AllSessions />}
             </Tab.Screen>
             <Tab.Screen name="Profile">
                 {() => <Profile />}

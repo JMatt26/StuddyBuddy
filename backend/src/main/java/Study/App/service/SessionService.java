@@ -77,14 +77,6 @@ public class SessionService {
         sessionParticipation.setUserInformation(userInformation);
         participationRepository.save(sessionParticipation);
 
-        // if (sessionInformationId != null) {
-        //     SessionInformation sessionInformation = sessionInformationRepository
-        //             .findSessionInformationBySessionInformationId(sessionInformationId);
-        //     if (sessionInformation != null){
-        //         session.setSessionInformation(sessionInformation);
-        //     }
-        // }
-
         if (isPrivate != null)
             session.setPrivate(isPrivate);
         if (capacity != null)
@@ -190,8 +182,15 @@ public class SessionService {
                     sessionInformation.isOnline(),
                     sessionInformation.getMaterialUrl(),
                     sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
-                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid()
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid(),
+                    null,
+                    sessionInformation.getAdminUsername()
                 );
+
+                if (sessionInformationTO.locationId != null) {
+                    Location location = locationRepository.findLocationByLocationid(sessionInformationTO.locationId);
+                    sessionInformationTO.location = location.toString();
+                }
             }
 
             CreateSessionTO createSessionTO = new CreateSessionTO();
@@ -235,7 +234,7 @@ public class SessionService {
         return sessions;
     }
 
-    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId, String adminUsername) {
         SessionInformation sessionInformation = new SessionInformation();
 
         if (sessionRepository.findSessionBySessionId(sessionId) != null) {
@@ -260,6 +259,10 @@ public class SessionService {
 
             if (sessionId != null)
             sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
+
+            if (adminUsername != null) {
+                sessionInformation.setAdminUsername(adminUsername);
+            }
             return sessionInformationRepository.save(sessionInformation);
         } else {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);

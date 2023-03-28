@@ -10,11 +10,11 @@ import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
 
-export default function Dev() {
+export default function AllSessions() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
-  async function getActiveSessionsFromServer() {
+  async function getAllSessionsFromServer() {
     let url = "";
     url = `http://localhost:8080/session/getAllSessions`;
     
@@ -31,20 +31,23 @@ export default function Dev() {
   }
   
   useEffect(() => {
-    getActiveSessionsFromServer();
+    getAllSessionsFromServer();
   }, []);
 
   let renderSessions = "";
-  renderSessions = data.map(event => {
-  return (<View>
+  renderSessions = data.map((event, index) => {
+  return (
+  <View key={index} style={{flex: 1}}>
     <StudySessionCard
-      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tag[0] : null}
+      tag={!isNil(event.incomingInfo?.tags)? event.incomingInfo.tags[0] : null}
       sessionTitle={event.incoming.title}
-      sessionLocation={"McGill University"}
+      sessionLocation={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location}
       numberOfAttendees={event.incoming.numberOfAttendees}
       image={assetsObject.mcgillPhoto}
       description={event.incoming.description}
-      sessionId={event.incoming.sessionId}
+      startTime={event.incomingInfo?.startTime}
+      endTime={event.incomingInfo?.endTime}
+      creator={event.incomingInfo?.adminUsername}
     />
   </View> )
   }
@@ -53,9 +56,7 @@ export default function Dev() {
 
   return (
     <ScrollView>
-      <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center", flex: 1 }}>
-        ! FOR DEVELOPMENT ONLY !
-      </Text>
+      {renderSessions}
     </ScrollView>
   );
 }

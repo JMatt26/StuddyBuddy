@@ -79,5 +79,10 @@ public class Location {
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
+
+    @Override
+    public String toString() {
+        return streetAddress + ", " + city + ", " + province + ", " + postalCode + "\n" + buildingName + ", " + roomNumber;
+    }
     
 }

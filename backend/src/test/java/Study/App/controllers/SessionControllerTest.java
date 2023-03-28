@@ -194,6 +194,8 @@ public class SessionControllerTest {
             false,
             null,
             null,
+            null,
+            null,
             null
             );
 		HttpEntity req = new HttpEntity(
