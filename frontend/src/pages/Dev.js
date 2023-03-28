@@ -6,11 +6,12 @@ import { Pressable } from "react-native"
 import { AddUser } from "../../utils/AddUser"
 import StudySessionCard from "../../components/StudySessionCard"
 import assetsObject from "../../assets/assets"
+import CreateSessionPage from "../../components/CreateSessionPage"
 
 export default function Dev(){
     
 
     return(<View>
-        <InputListAdd buttonText="Add" placeholderText="Course"/>
+        <CreateSessionPage/>
     </View>)
 }

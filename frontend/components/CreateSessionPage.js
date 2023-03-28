@@ -75,7 +75,8 @@ export default function CreateSessionPage(){
         let startTime = startDateValue.getFullYear()+ "-" + addZero(startDateValue.getMonth()+1) + "-" + addZero(startDateValue.getDate()) + " " + addZero(startDateValue.getHours()) + ":" + addZero(startDateValue.getMinutes())+ ":" + addZero(startDateValue.getSeconds())
         let endTime = endDateValue.getFullYear()+ "-" + addZero(endDateValue.getMonth()+1) + "-" + addZero(endDateValue.getDate()) + " " + addZero(endDateValue.getHours()) + ":" + addZero(endDateValue.getMinutes())+ ":" + addZero(endDateValue.getSeconds())
         
-        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: courseList, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
+
+        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: courseList, tags: tagList,  isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null, location: locationValue, adminUsername: null}
         let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
 
         let createSessionTO = {incoming: sessionTO, incomingInfo: sessionInformationTO}
