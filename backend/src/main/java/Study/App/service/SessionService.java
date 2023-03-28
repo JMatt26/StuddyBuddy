@@ -209,10 +209,8 @@ public class SessionService {
         List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
-                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
-                for(Session sess : temp){
-                    sessions.add(sess);
-                }
+                Session sess = sessionRepository.findSessionBySessionInformation(sessionInfo);
+                sessions.add(sess);
             }
         }
         return sessions;
@@ -225,10 +223,8 @@ public class SessionService {
         List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().after(date)){
-                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
-                for(Session sess : temp){
-                    sessions.add(sess);
-                }
+                Session sess = sessionRepository.findSessionBySessionInformation(sessionInfo);
+                sessions.add(sess);
             }
         }
         return sessions;
