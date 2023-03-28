@@ -3,17 +3,15 @@ import { Text, TextInput, View, StyleSheet, Switch, TouchableOpacity, ScrollView
 import DropDownPicker from 'react-native-dropdown-picker';
 import CalendarPicker from 'react-native-calendar-picker';
 import request_ressource from "../utils/fetchApi";
-
-
+import InputListAdd from "./InputListAdd";
 
 export default function CreateSessionPage(){
 
     const [startDateOpen, setStartDateOpen] = useState(false);
     const [startHourOpen, setStartHourOpen] = useState(false);
     const [startMinOpen, setStartMinOpen] = useState(false);
-    // const [endDateOpen, setEndDateOpen] = useState(false);
-    // const [endHourOpen, setEndHourOpen] = useState(false);
-    // const [endMinOpen, setEndMinOpen] = useState(false);
+    const [courseList,setCourseList] = useState([]);
+    const [tagList,setTagList] = useState([]);
 
     const[titleValue, setTitleValue] = useState(null);
     const[capacityValue, setCapacityValue] = useState(null);
@@ -25,9 +23,6 @@ export default function CreateSessionPage(){
     const [startHourValue, setStartHourValue] = useState(1);
     const [startMinValue, setStartMinValue] = useState(0);
     const [sessionDurationValue, setSessionDurationValue] = useState(null);
-    //const [endDateValue, setEndDateValue] = useState(new Date(0,0,0,0,0,0));
-    //const [endHourValue, setEndHourValue] = useState(1);
-    //const [endMinValue, setEndMinValue] = useState(0);
 
     const [validDate, setValidDate] = useState(true);
 
@@ -36,11 +31,7 @@ export default function CreateSessionPage(){
         setStartDateOpen(false)
         setStartDateValue(new Date(date))
     }
-    // const toggleCal2 = () => setEndDateOpen(previousState => !previousState);
-    // const selectedEndDate = function(date){
-    //     setEndDateOpen(false)
-    //     setEndDateValue(new Date(date))
-    // }
+  
     const toggleOnlineSwitch = () => setIsOnline(previousState => !previousState);
     const toggleSwitch = () => setIsPrivate(previousState => !previousState);
 
@@ -84,13 +75,14 @@ export default function CreateSessionPage(){
         let startTime = startDateValue.getFullYear()+ "-" + addZero(startDateValue.getMonth()+1) + "-" + addZero(startDateValue.getDate()) + " " + addZero(startDateValue.getHours()) + ":" + addZero(startDateValue.getMinutes())+ ":" + addZero(startDateValue.getSeconds())
         let endTime = endDateValue.getFullYear()+ "-" + addZero(endDateValue.getMonth()+1) + "-" + addZero(endDateValue.getDate()) + " " + addZero(endDateValue.getHours()) + ":" + addZero(endDateValue.getMinutes())+ ":" + addZero(endDateValue.getSeconds())
         
-        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: null, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
+        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: courseList, isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null}
         let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
 
         let createSessionTO = {incoming: sessionTO, incomingInfo: sessionInformationTO}
-       
+
+        let url = `http://localhost:8080/session/createSession`;
         try {
-            let response = await request_ressource("/session/createSession", "POST", {} , createSessionTO);
+            let response = await request_ressource(url, "POST", {} , createSessionTO);
             console.log(response)
         } catch (error) {
             console.log(error)
@@ -106,10 +98,19 @@ export default function CreateSessionPage(){
             </Text>
             <Text style={styles.timeText}> Title </Text>
             <TextInput style={styles.title} placeholder="Title" value={titleValue} onChangeText={setTitleValue}/>
+            
+            <Text style={styles.timeText}> Session Courses </Text> 
+            <InputListAdd placeholderText={"Courses"} buttonText={"Add"} elementList={courseList} setElementList={setCourseList}/>
+            
             <Text style={styles.timeText}> Session Description </Text> 
             <TextInput style={styles.description} placeholder="Session Description" value={descriptionValue} onChangeText={setDescriptionValue} multiline={true}/>
+            
+            <Text style={styles.timeText}> Session Tags </Text> 
+            <InputListAdd placeholderText={"Tags"} buttonText={"Add"} elementList={tagList} setElementList={setTagList}/>
+            
             <Text style={styles.timeText}> Session Capacity </Text> 
             <TextInput style={styles.capacity} placeholder="Max Capacity(limit 99)" maxLength={2} value={capacityValue} onChangeText={setCapacityValue}/>
+            
             <Text style={styles.timeText}> Is the Session Taking Place In-Person? </Text>
             <Switch
                 trackColor={{false: '#767577', true: '#54B175'}}
@@ -118,6 +119,7 @@ export default function CreateSessionPage(){
                 onValueChange={toggleOnlineSwitch}
                 value={isOnline}
             />
+            
             <TextInput style={[styles.title, styles.addMargin ,isOnline ? {display: "inline"}:{display: "none"}]} placeholder="Location" value={locationValue} onChangeText={setLocationValue}/> 
             <Text style={styles.timeText}> Is the Session Private? </Text>
             <Switch
@@ -185,7 +187,6 @@ export default function CreateSessionPage(){
             <Text style={styles.timeText}> Session Duration</Text> 
             <TextInput style={styles.capacity} placeholder="Duration(99 hours)" maxLength={2} value={sessionDurationValue} onChangeText={setSessionDurationValue}/>
 
-                {/* <Text style={[styles.error, validDate ? {display: "none"} : {display: "block"}]}> Start Date must be BEFORE End Date</Text> */}
                 <TouchableOpacity
                 style={styles.button}
                 title = {"Create Session"}
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
         width: "80%",
         paddingLeft: 10,
         paddingVertical: 15,
-        borderRadius: 10,
+        borderRadius: 8,
         backgroundColor: "#fff",
     },
     description:{
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingTop: 15,
         paddingVertical: 15,
-        borderRadius: 10,
+        borderRadius: 8,
         backgroundColor: "#fff",  
     },
     capacity:{
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
         width: "50%",
         paddingLeft: 10,
         paddingVertical: 15,
-        borderRadius: 10,
+        borderRadius: 8,
         backgroundColor: "#fff",
     },
     dropDown1: {

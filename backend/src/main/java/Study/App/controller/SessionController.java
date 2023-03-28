@@ -25,7 +25,7 @@ import Study.App.model.Session;
 import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
