@@ -13,7 +13,7 @@ class ActiveSessions extends Component {
         </View>
         
         <View style={styles.activeSessions}>
-            <ActiveSession />
+            <ActiveSession sessionName="ECSE 321" location="Trottier" attendanceNbr="3"/>
             <ActiveSession />
             <ActiveSession />
         </View>

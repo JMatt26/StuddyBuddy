@@ -43,7 +43,7 @@ export default function Login({ navigation }) {
                     value={email}
                     onChangeText={(email) => setEmail(email)}
                 />
-            </View>
+            </View> 
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}

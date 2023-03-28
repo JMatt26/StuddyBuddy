@@ -1,5 +1,25 @@
 package Study.App.services;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+import java.util.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+
 import Study.App.model.*;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
@@ -16,6 +36,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
 
+
+import Study.App.model.Session;
+import Study.App.model.SessionInformation;
+import Study.App.repository.SessionInformationRepository;
+import Study.App.repository.SessionRepository;
+import Study.App.service.SessionService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,7 +56,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionServiceTest {
-    @Mock
+
+	@Mock
     private SessionRepository sessionRepository;
 
     @InjectMocks
@@ -59,12 +86,15 @@ public class SessionServiceTest {
     private static final Integer sessionInformationId = 1;
 
     private static final List courses = new ArrayList<String>();
+    private static final List tags = new ArrayList<String>();
     private static final Date startTime = new Date(2023, 2, 14, 12, 0);
     private static final Date endTime = new Date(2023, 2, 14, 14, 0);
     private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
     private ParticipationRole adminRole = ParticipationRole.ADMIN;
+	private Session sessOne;
+	private Session sessTwo;
 
     @BeforeEach
     void setUpMocks(){
@@ -74,11 +104,11 @@ public class SessionServiceTest {
         SessionInformation sessionInfo4 = new SessionInformation();
         SessionInformation sessionInfo5 = new SessionInformation();
 
-        Set<String> sessionInfo1Tags = new HashSet<String>();
-        Set<String> sessionInfo2Tags = new HashSet<String>();
-        Set<String> sessionInfo3Tags = new HashSet<String>();
-        Set<String> sessionInfo4Tags = new HashSet<String>();
-        Set<String> sessionInfo5Tags = new HashSet<String>();
+        List<String> sessionInfo1Tags = new ArrayList<String>();
+        List<String> sessionInfo2Tags = new ArrayList<String>();
+        List<String> sessionInfo3Tags = new ArrayList<String>();
+        List<String> sessionInfo4Tags = new ArrayList<String>();
+        List<String> sessionInfo5Tags = new ArrayList<String>();
 
         sessionInfo1Tags.add("Movies");
         sessionInfo1Tags.add("Chess");
@@ -94,11 +124,11 @@ public class SessionServiceTest {
 
         sessionInfo5Tags.add("Silent");
 
-        sessionInfo1.setTag(sessionInfo1Tags);
-        sessionInfo2.setTag(sessionInfo2Tags);
-        sessionInfo3.setTag(sessionInfo3Tags);
-        sessionInfo4.setTag(sessionInfo4Tags);
-        sessionInfo5.setTag(sessionInfo5Tags);
+        sessionInfo1.setTags(sessionInfo1Tags);
+        sessionInfo2.setTags(sessionInfo2Tags);
+        sessionInfo3.setTags(sessionInfo3Tags);
+        sessionInfo4.setTags(sessionInfo4Tags);
+        sessionInfo5.setTags(sessionInfo5Tags);
 
 
         List<Session> sessionList = new ArrayList<>();
@@ -231,6 +261,7 @@ public class SessionServiceTest {
         lenient().when(participationRepository.save(any(Participation.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userRepository.save(any(User.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(userInformationRepository.save(any(UserInformation.class))).thenAnswer(returnParameterAsAnswer);
+		
     }
 
     // Letao
@@ -303,7 +334,7 @@ public class SessionServiceTest {
     public void testAddInfoToSession(){
         SessionInformation sessionInformation = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, tags, isOnline, null, 1, null);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -317,7 +348,7 @@ public class SessionServiceTest {
         SessionInformation sessionInformation = null;
         String error = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, tags, isOnline, null, 1, null);
         } catch (Exception e) {
             error = e.getMessage();
 

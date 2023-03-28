@@ -17,11 +17,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import Study.App.model.User;
 import Study.App.repository.UserRepository;
 import Study.App.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -30,6 +30,7 @@ public class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+    
     @InjectMocks
     private UserService userService;
 
@@ -137,5 +138,4 @@ public class UserServiceTest {
     //     assertEquals(user1Username, user.getUsername());
     //     assertEquals(user1Password, user.getPassword());
     // } 
-
 }
