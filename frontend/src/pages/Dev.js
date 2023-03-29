@@ -38,7 +38,7 @@ export default function Dev() {
   renderSessions = data.map(event => {
   return (<View>
     <StudySessionCard
-      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tag[0] : null}
+      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tags[0] : null}
       sessionTitle={event.incoming.title}
       sessionLocation={"McGill University"}
       numberOfAttendees={event.incoming.numberOfAttendees}
