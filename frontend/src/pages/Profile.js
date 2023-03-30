@@ -4,6 +4,8 @@ import React, { useContext } from 'react'
 import SessionCard from "../../components/profile/SessionCard"
 import FollowingCard from "../../components/profile/FollowingCard"
 import ProfileCard from "../../components/profile/ProfileCard"
+import request_ressource from "../../utils/fetchApi";
+import { isNil } from "../../utils/isNil";
 
 import { AuthContext } from "../context/AuthContext"
 

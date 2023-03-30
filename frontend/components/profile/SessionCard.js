@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, Text, View, Button, Pressable } from 'react-nat
 export default function SessionCard(props) {
     return (
         <View>
-            <Pressable backgroundColor="grey" style={styles.button}>
+            <Pressable style={styles.button}>
                 <View style={styles.text}>
                     <Text style={styles.title}>{props.title}</Text>
                     <Text style={styles.location}>{props.location}</Text>
@@ -22,11 +22,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 65,
         textAlign: "center",
+        backgroundColor: "#7ecd32"
     },
     title: {
-        color: 'white',
-        textShadowColor: 'black',
         alignSelf: "center",
+        fontSize: 20
+    },
+    location: {
+        fontSize: 10,
+        alignSelf: "center",
+        lineHeight: 30
     },
     text: {
         position: "absolute",
