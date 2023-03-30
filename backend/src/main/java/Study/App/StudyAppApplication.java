@@ -60,7 +60,9 @@ public class StudyAppApplication {
 			sessionInformationRepository.save(sessionInformation);
 
 			Session session = new Session();
+			session.setTitle("Penis Test");
 			sessionRepository.save(session);
+			
 			Session session1 = new Session();
 			session1.setTitle("ECSE 428");
 			sessionRepository.save(session1);

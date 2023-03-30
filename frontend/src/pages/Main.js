@@ -1,36 +1,37 @@
-import React, { Component } from "react";
-import { useState } from "react";
-
+import { View } from "react-native";
+ import ActiveSessions from "../../components/ActiveSessions";
 import request_ressource from "../../utils/fetchApi";
-import ActiveSession from "../../components/ActiveSession";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { useState, useEffect } from "react";
+import { isNil } from "../../utils/isNil";
 
-
-export default function Main(){
-    const [data, setData] = useState([]);
-    const [status, setStatus] = useState("");
-    let url = 'http://localhost:8080/session/getAllSessions';
-
+export default function Main() {
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState("");
+  
+  async function getAllSessionsFromServer() {
+    let url = "";
+    url = `http://localhost:8080/session/getAllSessions`;
+    
     let response = null;
-    try{
-        response = request_ressource(url);
-        setStatus(response.status);
-        response = response.body.json();
-        console.log(response);
-        setData(response);
-    } catch(e){
-        console.log(e.message);
+    try {
+      response = await request_ressource(url, "GET");
+      response = await response.body.json();
+      console.log(response);
+      setData(response);
+    } catch (e) {
+      console.log(e);
     }
+  }
+  
+  useEffect(() => {
+    getAllSessionsFromServer();
+  }, []);
+  
 
-    let listSessions = data.map(element => {
-        return(
-            <View>
-                <ActiveSession
-                    sessionName={element.incoming.title}
-                    location={"Somewhere"}
-                    attendanceNbr={element.incoming.numberOfAttendees}>
-                </ActiveSession>
-            </View>
-        )
-    });  
+  return (
+    <View>
+      <ActiveSessions />
+    </View>
+  );
+
 }
