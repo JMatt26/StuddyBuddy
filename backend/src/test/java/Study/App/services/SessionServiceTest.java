@@ -93,6 +93,8 @@ public class SessionServiceTest {
     private static final List tags = new ArrayList<String>();
     private static final Date startTime = new Date(1672517078*1000);
     private static final Date endTime = new Date(1682938800*1000);
+    private static final Date startTimeTwo = new Date(1682938800*1000);
+    private static final Date endTimeTwo = new Date(1782938800*1000);
     private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
@@ -133,6 +135,8 @@ public class SessionServiceTest {
         sessionInfo1.setEndTime(endTime);
         
         sessionInfo2.setTags(sessionInfo2Tags);
+        sessionInfo2.setStartTime(startTimeTwo);
+        sessionInfo2.setEndTime(endTimeTwo);
         sessionInfo3.setTags(sessionInfo3Tags);
         sessionInfo4.setTags(sessionInfo4Tags);
         sessionInfo5.setTags(sessionInfo5Tags);
@@ -334,11 +338,26 @@ public class SessionServiceTest {
         assertEquals(2, userList.size());
     }
     
+    //Saviru
     @Test
     public void testGetAllActiveSessions(){
         List<CreateSessionTO> sessList = null;
         try {
             sessList = sessionService.getAllActiveSessions();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(sessList);
+        assertEquals(1, sessList.size());
+    }
+
+    //Saviru
+    @Test
+    public void testGetAllUpcomingSessions(){
+        List<CreateSessionTO> sessList = null;
+        try {
+            sessList = sessionService.getAllUpcomingSessions();
         } catch (Exception e) {
             e.printStackTrace();
             fail();
