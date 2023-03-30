@@ -91,10 +91,10 @@ public class SessionServiceTest {
 
     private static final List courses = new ArrayList<String>();
     private static final List tags = new ArrayList<String>();
-    private static final Date startTime = new Date(1672517078*1000);
-    private static final Date endTime = new Date(1682938800*1000);
-    private static final Date startTimeTwo = new Date(1682938800*1000);
-    private static final Date endTimeTwo = new Date(1782938800*1000);
+    private static final Date startTime = new Date(123,2,5);
+    private static final Date endTime = new Date(123,7,3);
+    private static final Date startTimeTwo = new Date(123,5,12);
+    private static final Date endTimeTwo = new Date(123,6,12);
     private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
