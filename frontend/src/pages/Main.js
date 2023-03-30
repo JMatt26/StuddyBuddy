@@ -1,40 +1,20 @@
 import { View } from "react-native";
- import ActiveSessions from "../../components/ActiveSessions";
+import AllSessionsComponent from "../../components/AllSessionsComponent";
+import ActiveSessionsComponent from "../../components/ActiveSessionsComponent";
+import UpcomingSessionsComponent from "../../components/UpcomingSessionsComponent";
 import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
 import Searchbar from '../../components/Searchbar';
 
 export default function Main() {
-  const [data, setData] = useState([]);
-  const [status, setStatus] = useState("");
-  
-  async function getAllSessionsFromServer() {
-    let url = "";
-    url = `http://localhost:8080/session/getAllSessions`;
-    
-    let response = null;
-    try {
-      response = await request_ressource(url, "GET");
-      response = await response.body.json();
-      console.log(response);
-      setData(response);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  
-  useEffect(() => {
-    getAllSessionsFromServer();
-  }, []);
-  
 
   return (
     <View>
-        <Searchbar />
-      <ActiveSessions />
+      <AllSessionsComponent />
+      <ActiveSessionsComponent />
+      <UpcomingSessionsComponent />
     </View>
   );
-
 }
 

@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
 import React, { Component } from 'react';
 
-export default function ActiveSession(props) {
+export default function HomeCard(props) {
         return (
             <View>
                 <Pressable style={styles.container}>

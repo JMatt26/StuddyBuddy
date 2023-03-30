@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
-import ActiveSessions from "../../components/ActiveSessions";
+import AllSessionsComponent from "../../components/AllSessionsComponent";
 import Categories from "../../components/Categories";
 import CategoryButton from "../../components/CategoryButton";
 import { Pressable } from "react-native";
