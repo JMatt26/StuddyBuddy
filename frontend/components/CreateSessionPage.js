@@ -19,7 +19,7 @@ export default function CreateSessionPage(){
     const [isOnline, setIsOnline] = useState(false);
     const [locationValue, setLocationValue] = useState(null)
     const [isPrivate, setIsPrivate] = useState(false);
-    const [startDateValue, setStartDateValue] = useState(new Date(0,0,0,0,0,0));
+    const [startDateValue, setStartDateValue] = useState(new Date(Date.now()));
     const [startHourValue, setStartHourValue] = useState(1);
     const [startMinValue, setStartMinValue] = useState(0);
     const [sessionDurationValue, setSessionDurationValue] = useState(null);
@@ -39,7 +39,7 @@ export default function CreateSessionPage(){
 
    
     let hourI=[];
-    for (var i = 1; i < 24; i++) {
+    for (var i = 0; i < 24; i++) {
         hourI.push({label: i, value: i, key: i});
     }
     const [hourItems, setHourItems] = useState(hourI);
@@ -75,8 +75,10 @@ export default function CreateSessionPage(){
         let startTime = startDateValue.getFullYear()+ "-" + addZero(startDateValue.getMonth()+1) + "-" + addZero(startDateValue.getDate()) + " " + addZero(startDateValue.getHours()) + ":" + addZero(startDateValue.getMinutes())+ ":" + addZero(startDateValue.getSeconds())
         let endTime = endDateValue.getFullYear()+ "-" + addZero(endDateValue.getMonth()+1) + "-" + addZero(endDateValue.getDate()) + " " + addZero(endDateValue.getHours()) + ":" + addZero(endDateValue.getMinutes())+ ":" + addZero(endDateValue.getSeconds())
         
+        console.log(tagList);
+        console.log(courseList);
 
-        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, course: courseList, tags: tagList,  isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null, location: locationValue, adminUsername: null}
+        let sessionInformationTO = {sessionInformationId: null, startTime: startTime, endTime: endTime, courses: courseList, tags: tagList,  isOnline: isOnline, materialUrl: null, sessionId: null, locationId: null, location: locationValue, adminUsername: null}
         let sessionTO = {sessionId: null , isPrivate: isPrivate, title: titleValue, capacity: capacityValue, description: descriptionValue, numberOfAttendees: 1 , participationIds: null, sessionInformationId: null} 
 
         let createSessionTO = {incoming: sessionTO, incomingInfo: sessionInformationTO}

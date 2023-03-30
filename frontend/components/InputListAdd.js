@@ -17,8 +17,6 @@ export default function InputListAdd({ elementList, setElementList, buttonText, 
                 setElementList(newEls);
             }
             setElementValue(null);
-            
-            console.log(elementList)
     }
     
 
