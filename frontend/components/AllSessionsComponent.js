@@ -2,10 +2,10 @@ import request_ressource from "frontend/utils/fetchApi.js";
 import { useState, useEffect } from "react";
 import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
-import ActiveSession from "./ActiveSession";
-import { StyleSheet, ScrollView, View, Text, Button } from "react-native";
+import HomeCard from "./HomeCard";
+import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
 
-export default function ActiveSessions() {
+export default function AllSessionsComponent() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
@@ -28,18 +28,21 @@ export default function ActiveSessions() {
     getAllSessionsFromServer();
   }, []);
   
+  const routeChange = () => {
+    Alert.alert("Session");
+  };
 
   return (
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>All Sessions</Text>
-          <Button color="#0ead69" title="See All" />
+          <Button onPress={routeChange} color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {
         return(
           <View key={index}>
-          <ActiveSession 
+          <HomeCard 
           sessionName={event.incoming.title}
           location={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location} 
           attendanceNbr={event.incoming.numberOfAttendees}/>
