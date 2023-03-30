@@ -89,7 +89,8 @@ public class SessionController {
                 incomingInfo.tags,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
-                incomingInfo.locationId);
+                incomingInfo.locationId,
+                username);
 
         if (newSessionInfo == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -221,6 +222,26 @@ public class SessionController {
         }
         else{
             return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST); 
+        }
+    }
+
+    @GetMapping("/getAllActiveSessions")
+    public ResponseEntity<List<CreateSessionTO>> getAllActiveSessions() {
+        List<CreateSessionTO> sessionList = sessionService.getAllActiveSessions();
+        if(sessionList != null){
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getAllUpcomingSessions")
+    public ResponseEntity<List<CreateSessionTO>> getAllUpcomingSessions() {
+        List<CreateSessionTO> sessionList = sessionService.getAllUpcomingSessions();
+        if(sessionList != null){
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 

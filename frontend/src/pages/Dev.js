@@ -6,14 +6,12 @@ import { Pressable } from "react-native"
 import { AddUser } from "../../utils/AddUser"
 import StudySessionCard from "../../components/StudySessionCard"
 import assetsObject from "../../assets/assets"
+import CreateSessionPage from "../../components/CreateSessionPage"
 
 export default function Dev(){
     
 
     return(<View>
-        <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center" }}>
-            ! FOR DEVELOPMENT ONLY !
-        </Text>
-        <StudySessionCard tag={"ECSE-324"} sessionTitle={"Studying Session"} sessionLocation={"Trottier"} numberOfAttendees={12} image={assetsObject.mcgillPhoto}/>
+        <CreateSessionPage/>
     </View>)
 }
