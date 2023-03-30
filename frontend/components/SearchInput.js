@@ -5,10 +5,12 @@ import {Search} from "react-native-feather";
 export default function SearchInput({error = false, label ,state, setState, isMultiLine = false , textInputStyle ={}, textStyle = {} , placeholder, icon }){
     return (
         <View style={[{
-            width: '100%',
             marginTop: 10,
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+            borderRadius: 25
         }, textInputStyle]}>
             {icon}
             {(label && label != "") ?
