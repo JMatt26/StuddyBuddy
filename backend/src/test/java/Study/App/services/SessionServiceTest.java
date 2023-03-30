@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 
+import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.model.*;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
@@ -71,10 +72,13 @@ public class SessionServiceTest {
 
     @Mock
     private SessionInformationRepository sessionInformationRepository;
+
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private UserInformationRepository userInformationRepository;
+
     @Mock
     private LocationRepository locationRepository;
 
@@ -87,8 +91,8 @@ public class SessionServiceTest {
 
     private static final List courses = new ArrayList<String>();
     private static final List tags = new ArrayList<String>();
-    private static final Date startTime = new Date(2023, 2, 14, 12, 0);
-    private static final Date endTime = new Date(2023, 2, 14, 14, 0);
+    private static final Date startTime = new Date(1672517078*1000);
+    private static final Date endTime = new Date(1682938800*1000);
     private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
@@ -125,6 +129,9 @@ public class SessionServiceTest {
         sessionInfo5Tags.add("Silent");
 
         sessionInfo1.setTags(sessionInfo1Tags);
+        sessionInfo1.setStartTime(startTime);
+        sessionInfo1.setEndTime(endTime);
+        
         sessionInfo2.setTags(sessionInfo2Tags);
         sessionInfo3.setTags(sessionInfo3Tags);
         sessionInfo4.setTags(sessionInfo4Tags);
@@ -327,7 +334,18 @@ public class SessionServiceTest {
         assertEquals(2, userList.size());
     }
     
-   
+    @Test
+    public void testGetAllActiveSessions(){
+        List<CreateSessionTO> sessList = null;
+        try {
+            sessList = sessionService.getAllActiveSessions();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(sessList);
+        assertEquals(1, sessList.size());
+    }
 
     // Letao
     @Test
