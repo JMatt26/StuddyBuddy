@@ -22,7 +22,9 @@
     "react-native": "0.70.5",
     "react-native-feather": "^1.1.2",
     "react-native-paper": "^5.5.1",
-    "react-native-search-input": "^0.0.6"
+    "react-native-search-input": "^0.0.6",
+    "react-native-elements": "^3.4.3",
+    "react-native-modal": "^13.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

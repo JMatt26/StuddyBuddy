@@ -1,16 +1,15 @@
 import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
 import React, { Component } from 'react';
 
-export default function ActiveSession() {
-   
+export default function ActiveSession(props) {
         return (
             <View>
                 <Pressable style={styles.container}>
                     <Image 
                     style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
-                    <Text style={styles.sessionName}>Study Session</Text>
-                    <Text style={styles.location}>Location</Text>
-                    <Text style={styles.going}>50 going</Text>
+                    <Text style={styles.sessionName}>{props.sessionName}</Text>
+                    <Text style={styles.location}>{props.location}</Text>
+                    <Text style={styles.going}>{props.attendanceNbr}</Text>
                 </Pressable>
             </View>
         );

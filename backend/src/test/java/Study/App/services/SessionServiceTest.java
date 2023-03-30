@@ -334,7 +334,7 @@ public class SessionServiceTest {
     public void testAddInfoToSession(){
         SessionInformation sessionInformation = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, tags, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(1, startTime, endTime, courses, tags, isOnline, null, 1, null);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -348,7 +348,7 @@ public class SessionServiceTest {
         SessionInformation sessionInformation = null;
         String error = null;
         try {
-            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, tags, isOnline, null, 1);
+            sessionInformation = sessionService.addInfoToSession(4, startTime, endTime, courses, tags, isOnline, null, 1, null);
         } catch (Exception e) {
             error = e.getMessage();
 

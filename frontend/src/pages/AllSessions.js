@@ -1,12 +1,3 @@
-import { View, Text } from "react-native"
-import ActiveSessions from "../../components/ActiveSessions"
-import Categories from "../../components/Categories"
-import CategoryButton from "../../components/CategoryButton"
-import { Pressable } from "react-native"
-import { AddUser } from "../../utils/AddUser"
-import StudySessionCard from "../../components/StudySessionCard"
-import assetsObject from "../../assets/assets"
-import Searchbar from "../../components/Searchbar"
 import { View, Text, ScrollView } from "react-native";
 import ActiveSessions from "../../components/ActiveSessions";
 import Categories from "../../components/Categories";
@@ -19,11 +10,11 @@ import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
 
-export default function Dev() {
+export default function AllSessions() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
-  async function getActiveSessionsFromServer() {
+  async function getAllSessionsFromServer() {
     let url = "";
     url = `http://localhost:8080/session/getAllSessions`;
     
@@ -40,13 +31,32 @@ export default function Dev() {
   }
   
   useEffect(() => {
-    getActiveSessionsFromServer();
+    getAllSessionsFromServer();
   }, []);
 
-    return(<View>
-        <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center" }}>
-            ! FOR DEVELOPMENT ONLY !
-        </Text>
-        <Searchbar/>
-    </View>)
+  let renderSessions = "";
+  renderSessions = data.map((event, index) => {
+  return (
+  <View key={index} style={{flex: 1}}>
+    <StudySessionCard
+      tag={!isNil(event.incomingInfo?.tags)? event.incomingInfo.tags[0] : null}
+      sessionTitle={event.incoming.title}
+      sessionLocation={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location}
+      numberOfAttendees={event.incoming.numberOfAttendees}
+      image={assetsObject.mcgillPhoto}
+      description={event.incoming.description}
+      startTime={event.incomingInfo?.startTime}
+      endTime={event.incomingInfo?.endTime}
+      creator={event.incomingInfo?.adminUsername}
+    />
+  </View> )
+  }
+  );
+
+
+  return (
+    <ScrollView>
+      {renderSessions}
+    </ScrollView>
+  );
 }

@@ -7,11 +7,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.Date;
 
+import Study.App.controller.TOs.CreateSessionTO;
+import Study.App.controller.TOs.SessionInformationTO;
+import Study.App.controller.TOs.SessionTO;
+import Study.App.controller.SessionController;
 import Study.App.model.*;
 
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+
 
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.LocationRepository;
@@ -70,14 +76,6 @@ public class SessionService {
         sessionParticipation.setSession(session);
         sessionParticipation.setUserInformation(userInformation);
         participationRepository.save(sessionParticipation);
-
-        // if (sessionInformationId != null) {
-        //     SessionInformation sessionInformation = sessionInformationRepository
-        //             .findSessionInformationBySessionInformationId(sessionInformationId);
-        //     if (sessionInformation != null){
-        //         session.setSessionInformation(sessionInformation);
-        //     }
-        // }
 
         if (isPrivate != null)
             session.setPrivate(isPrivate);
@@ -147,6 +145,63 @@ public class SessionService {
         return userList;
     }
 
+    /**
+     * Returns the list of all sessions without any filters.
+     * @return List of sessions as CreateSessionTOs
+     */
+    @Transactional
+    public List<CreateSessionTO> getAllSessions(){
+        List<Session> sessions = (List<Session>)sessionRepository.findAll();
+        List<CreateSessionTO> result = new ArrayList();
+        for (Session session : sessions) {
+            SessionInformation sessionInformation = session.getSessionInformation();
+            SessionTO sessionTO = new SessionTO(
+                session.getSessionId(),
+                session.isPrivate() == null ? null : session.isPrivate(),
+                session.getTitle() == null ? null : session.getTitle(),
+                session.getCapacity() == null ? null : session.getCapacity(),
+                session.getDescription() == null ? null : session.getDescription(),
+                session.getParticipations() == null ? null : session.getParticipations().size(),
+                null,
+                session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+            );
+            String startDate = null;
+            String endDate = null;
+            SessionInformationTO sessionInformationTO = null;
+
+            if (sessionInformation != null) {
+                startDate = SessionController.dateToString(sessionInformation.getStartTime());
+                endDate = SessionController.dateToString(sessionInformation.getEndTime());
+            
+                sessionInformationTO = new SessionInformationTO(
+                    sessionInformation.getSessionInformationId(),
+                    startDate,
+                    endDate,
+                    sessionInformation.getCourses(),
+                    sessionInformation.getTags(),
+                    sessionInformation.isOnline(),
+                    sessionInformation.getMaterialUrl(),
+                    sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid(),
+                    null,
+                    sessionInformation.getAdminUsername()
+                );
+
+                if (sessionInformationTO.locationId != null) {
+                    Location location = locationRepository.findLocationByLocationid(sessionInformationTO.locationId);
+                    sessionInformationTO.location = location.toString();
+                }
+            }
+
+            CreateSessionTO createSessionTO = new CreateSessionTO();
+            createSessionTO.incoming = sessionTO;
+            createSessionTO.incomingInfo = sessionInformationTO;
+            result.add(createSessionTO);
+        }  
+
+        return result;
+    }
+
     @Transactional
     public List<Session>  getAllActiveSessions(){
         Date date = new Date();
@@ -154,10 +209,8 @@ public class SessionService {
         List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().before(date) && sessionInfo.getEndTime().after(date)){
-                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
-                for(Session sess : temp){
-                    sessions.add(sess);
-                }
+                Session sess = sessionRepository.findSessionBySessionInformation(sessionInfo);
+                sessions.add(sess);
             }
         }
         return sessions;
@@ -170,16 +223,14 @@ public class SessionService {
         List <Session> sessions = new ArrayList<Session>();
         for (SessionInformation sessionInfo : sessionInfoList){
             if (sessionInfo.getStartTime().after(date)){
-                List<Session> temp = sessionRepository.findAllSessionBySessionInformation(sessionInfo);
-                for(Session sess : temp){
-                    sessions.add(sess);
-                }
+                Session sess = sessionRepository.findSessionBySessionInformation(sessionInfo);
+                sessions.add(sess);
             }
         }
         return sessions;
     }
 
-    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId) {
+    public SessionInformation addInfoToSession(Integer sessionId, Date startTime, Date endTime, List<String> courses, List<String> tags, Boolean isOnline, List<String> materialUrl, Integer locationId, String adminUsername) {
         SessionInformation sessionInformation = new SessionInformation();
 
         if (sessionRepository.findSessionBySessionId(sessionId) != null) {
@@ -204,6 +255,10 @@ public class SessionService {
 
             if (sessionId != null)
             sessionInformation.setSession(sessionRepository.findSessionBySessionId(sessionId));
+
+            if (adminUsername != null) {
+                sessionInformation.setAdminUsername(adminUsername);
+            }
             return sessionInformationRepository.save(sessionInformation);
         } else {
             throw new IncorrectDataException("Session not found", HttpStatus.BAD_REQUEST);
