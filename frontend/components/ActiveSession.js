@@ -17,10 +17,11 @@ export default function ActiveSession(props) {
 const styles = StyleSheet.create ({
     container: {
         height: 215,
-        width: 168,
+        width: 145,
         borderRadius: "10%",
         backgroundColor: 'white',
         marginBottom: 8,
+        marginRight: 10
     },
     sessionName: {
         color: "black",

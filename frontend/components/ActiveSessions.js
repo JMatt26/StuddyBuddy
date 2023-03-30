@@ -1,25 +1,56 @@
+import request_ressource from "frontend/utils/fetchApi.js";
+import { useState, useEffect } from "react";
+import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
 import ActiveSession from "./ActiveSession";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, ScrollView, View, Text, Button } from "react-native";
 
-class ActiveSessions extends Component {
-
-  render() {
-    return (
-    <View>
-        <View style={styles.container}>
-          <Text style={styles.title}>Active Sessions</Text>
-          <Button color="#0ead69" title="See All" />
-        </View>
-        
-        <View style={styles.activeSessions}>
-            <ActiveSession sessionName="ECSE 321" location="Trottier" attendanceNbr="3"/>
-            <ActiveSession />
-            <ActiveSession />
-        </View>
-    </View>
-    );
+export default function ActiveSessions() {
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState("");
+  
+  async function getAllSessionsFromServer() {
+    let url = "";
+    url = `http://localhost:8080/session/getAllSessions`;
+    
+    let response = null;
+    try {
+      response = await request_ressource(url, "GET");
+      response = await response.body.json();
+      console.log(response);
+      setData(response);
+    } catch (e) {
+      console.log(e);
+    }
   }
+  
+  useEffect(() => {
+    getAllSessionsFromServer();
+  }, []);
+  
+
+  return (
+    <View>
+      <View style={styles.container}>
+          <Text style={styles.title}>All Sessions</Text>
+          <Button color="#0ead69" title="See All" />
+      </View>
+      <ScrollView horizontal={true}>
+      {data.map((event, index) => {
+        return(
+          <View key={index}>
+          <ActiveSession 
+          sessionName={event.incoming.title}
+          location={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location} 
+          attendanceNbr={event.incoming.numberOfAttendees}/>
+          </View>
+        );
+      })}
+    </ScrollView>
+    </View>
+    
+  );
+
 }
 
 const styles = StyleSheet.create({
@@ -45,4 +76,3 @@ const styles = StyleSheet.create({
     }
   });
 
-export default ActiveSessions;
