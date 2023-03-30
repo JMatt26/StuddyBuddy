@@ -11,7 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function Login({ navigation }) {
     const { login } = useContext(AuthContext);
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     return (
@@ -35,12 +35,12 @@ export default function Login({ navigation }) {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
-                    placeholder="Email"
+                    placeholder="Username"
                     placeholderTextColor="#003f5c"
-                    value={email}
-                    onChangeText={(email) => setEmail(email)}
+                    value={username}
+                    onChangeText={(username) => setUsername(username)}
                 />
-            </View> 
+            </View>
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
@@ -54,7 +54,7 @@ export default function Login({ navigation }) {
             <TouchableOpacity>
                 <Text style={styles.forgot_button}>Forgot Password?</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(email, password) } }}>
+            <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(username, password) } }}>
                 <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity>
             <View
@@ -71,6 +71,7 @@ export default function Login({ navigation }) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

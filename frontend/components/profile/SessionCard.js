@@ -3,11 +3,11 @@ import { ScrollView, StyleSheet, Text, View, Button, Pressable } from 'react-nat
 
 export default function SessionCard(props) {
     return (
-        <View>
+        <View style={styles.card}>
             <Pressable style={styles.button}>
                 <View style={styles.text}>
                     <Text style={styles.title}>{props.title}</Text>
-                    <Text style={styles.location}>{props.location}</Text>
+                    <Text style={styles.attendees}>{props.attendees} going</Text>
                 </View>
             </Pressable >
         </View >
@@ -28,15 +28,18 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 20
     },
-    location: {
+    attendees: {
         fontSize: 10,
         alignSelf: "center",
-        lineHeight: 30
+        lineHeight: 25
     },
     text: {
         position: "absolute",
         alignSelf: "center",
         padding: 10
+    },
+    card: {
+        marginHorizontal: 10
     }
 
 });
