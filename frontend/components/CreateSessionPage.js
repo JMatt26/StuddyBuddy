@@ -84,9 +84,9 @@ export default function CreateSessionPage(){
         let url = `http://localhost:8080/session/createSession`;
         try {
             let response = await request_ressource(url, "POST", {} , createSessionTO);
-            console.log(response)
+            console.log(JSON.stringify(response));
         } catch (error) {
-            console.log(error)
+            console.log(JSON.stringify(response));
         }
         
     }
