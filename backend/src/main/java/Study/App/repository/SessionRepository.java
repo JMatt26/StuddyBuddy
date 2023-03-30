@@ -14,7 +14,8 @@ public interface SessionRepository extends CrudRepository<Session, Integer> {
 
     public Session findSessionBySessionId(int id);
 
-    public Session findSessionByParticipationId(int id);
+    // TODO: remove this repository method, this should be done at the service layer
+    // public Session findSessionByParticipationId(int id);
     
     public List<Session> findAllSessionByIsPrivateTrue();
 
