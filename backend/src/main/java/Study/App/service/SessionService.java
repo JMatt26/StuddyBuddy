@@ -269,6 +269,7 @@ public class SessionService {
     public List<Session> getSessionsAtLocation(String buildingName) {
         List<Session> sessionsAtLocation = new ArrayList<Session>();
         List<Location> locations = locationRepository.findAllLocationByBuildingName(buildingName);
+        System.out.println("Locations size:" + locations.size());
         List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(locations.get(0));
         
         for (SessionInformation sessionInfo: sessionsInfo) {
@@ -276,6 +277,11 @@ public class SessionService {
         }
 
         return sessionsAtLocation;
+
+    }
+
+    public void addLocation() {}
+
     @Transactional
     public Set<Session> getSessionsByTag(List<String> tags){
         Set<Session> sessionList = new HashSet<Session>();            

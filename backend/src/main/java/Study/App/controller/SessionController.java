@@ -203,10 +203,26 @@ public class SessionController {
     public ResponseEntity<List<SessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
         List<Session> sessionList = sessionService.getSessionsAtLocation(buildingName);
         List<SessionTO> sessionTOList = new ArrayList<>();
+        System.out.println("SESION LIST SIZE!!!!!!!!!!!!!!!!!!!!!!!: " + sessionList.size());
         if (sessionList != null) {
-            return sessionTOList;
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                    session.getSessionId(),
+                    session.isPrivate(),
+                    session.getTitle(),
+                    session.getCapacity(),
+                    session.getDescription(),
+                    null,
+                    null,
+                    session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+                ));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
         }
-    
+    }
+
 
     @GetMapping("/getAllSessionsByTag")
     public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
@@ -222,15 +238,6 @@ public class SessionController {
                     session.getDescription(),
                     null,
                     null,
-                    session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
-                ));
-            });
-
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
-        }
-
                     session.getSessionInformation() == null ?
                         null :
                         session.getSessionInformation().getSessionInformationId()

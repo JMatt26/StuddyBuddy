@@ -368,6 +368,7 @@ public class SessionServiceTest {
         Integer numOfSessions = null;
         Integer idOfSession = null;
         try {
+            
             numOfSessions = sessionService.getSessionsAtLocation("Building1").size();
             idOfSession = sessionService.getSessionsAtLocation("Building1").get(0).getSessionId();
             
