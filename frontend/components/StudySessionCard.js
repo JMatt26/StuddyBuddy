@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, Image, Modal } from "react-native";
+import { StyleSheet, View, Text, Image, Modal, TouchableOpacity } from "react-native";
 import { isNil } from "../utils/isNil.js";
 import { Pressable, Divider } from "@react-native-material/core";
 import React, {useState} from 'react';
+import {AddUser} from "../utils/AddUser";
 
 const assets = require("../assets/assets.js");
 
@@ -13,8 +14,15 @@ export default function StudySessionCard({
   sessionLocation,
   numberOfAttendees,
   image,
+  description,
+  startTime,
+  endTime,
+  creator,
+  sessionId,
 }) {
   const [modalVisible, setModalVisible] = useState(false);
+  let cardMeetingPlace = isNil(sessionLocation) ? "Online" : "In Person";
+  let modalMeetingPlace = isNil(sessionLocation) ? "Online" : sessionLocation;
   return (
     <View>
 
@@ -31,19 +39,19 @@ export default function StudySessionCard({
             <Text style={styles.modalTitle}> {sessionTitle} </Text>
             <Text style = {{marginBottom: 15}} > 
               <Text style={styles.modalInfoHeader}> Hosted By: </Text>
-              <Text style={styles.modalText}> CREATOR </Text>
+              <Text style={styles.modalText}> {creator} </Text>
             </Text> 
             <Text style = {{marginBottom: 15}}> 
               <Text style={styles.modalInfoHeader}> Location: </Text> 
-              <Text style={styles.modalText}> {sessionLocation} </Text>
+              <Text style={styles.modalText}> {modalMeetingPlace} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
-              <Text style={styles.modalInfoHeader}> Time: </Text>
-              <Text style={styles.modalText}> TIME </Text>
+              <Text style={styles.modalInfoHeader}> Start: </Text>
+              <Text style={styles.modalText}> {startTime} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
-              <Text style={styles.modalInfoHeader}> Date: </Text>
-              <Text style={styles.modalText}> DATE </Text>
+              <Text style={styles.modalInfoHeader}> End: </Text>
+              <Text style={styles.modalText}> {endTime} </Text>
             </Text>
             <Text style = {{marginBottom: 15}}>
               <Text style={styles.modalInfoHeader}> Number of Attendees: </Text>
@@ -51,7 +59,7 @@ export default function StudySessionCard({
             </Text>
             <Text style = {{marginBottom: 15}}>
             <Text style={styles.modalInfoHeader}>Description: </Text>
-            <Text style={styles.modalText}> DESCRIPTION </Text>
+            <Text style={styles.modalText}> {description} </Text>
             </Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -76,13 +84,13 @@ export default function StudySessionCard({
             <Text>{tag}</Text>
           </View>}
           <Text style={styles.sessionTitle}>{sessionTitle}</Text>
-          <Text style={styles.sessionLocation}>{sessionLocation}</Text>
+          <Text style={styles.sessionLocation}> {cardMeetingPlace} </Text>
         </View>
 
         <View style={styles.sessionButtonContainer}>
-          <Pressable style={styles.sessionButton}>
+          <TouchableOpacity onPress={()=>AddUser(sessionId)} style={styles.sessionButton}>
             <Image source={require("../assets/plusbutton.png")}></Image>
-          </Pressable>
+          </TouchableOpacity>
           <Text style={styles.numberOfAttendees}>{numberOfAttendees + " going"}</Text>
         </View>
 
