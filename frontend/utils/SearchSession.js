@@ -7,7 +7,7 @@ import {useState} from "react";
 import { isNil } from "../utils/isNil";
 import request_ressource from "../utils/fetchApi";
 
-export default function Searchbar() {
+export default function SearchSession() {
     // const sessions = [
     //   {id: 1, tag: 'FACC-300', sessionTitle: 'Study Session', sessionLocation: "Sherbrooke 680", numberOfAttendees: '36', image:assetsObject.mcgillPhoto},
     //   {id: 2, tag: "ECSE-324", sessionTitle: "Studying Session", sessionLocation: "Trottier", numberOfAttendees: "12", image: assetsObject.mcgillPhoto},
@@ -49,12 +49,11 @@ export default function Searchbar() {
 
     // console.log("THIS IS SESSIONS+++++++++++++++++++" + sessions);
 
-
     useEffect(() => {
       getAllSessionsFromServer();
     }, []);
 
-     const sessions = data.map(function(event) {
+    const sessions = data.map(function(event) {
       return {
         id: event.incoming.sessionId,
         tags: !isNil(event.incomingInfo?.tags)? event.incomingInfo.tags[0] : null,

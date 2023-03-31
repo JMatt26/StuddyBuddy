@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import AllSessionsComponent from "../../components/AllSessionsComponent";
 import ActiveSessionsComponent from "../../components/ActiveSessionsComponent";
 import UpcomingSessionsComponent from "../../components/UpcomingSessionsComponent";
@@ -10,12 +10,12 @@ import Searchbar from '../../components/Searchbar';
 export default function Main() {
 
   return (
-    <View>
+    <ScrollView>
       <Searchbar />
       <AllSessionsComponent />
       <ActiveSessionsComponent />
       <UpcomingSessionsComponent />
-    </View>
+    </ScrollView>
   );
 }
 
