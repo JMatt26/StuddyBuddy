@@ -231,17 +231,15 @@ public class SessionService {
         }
     }
 
-    public List<Session> getSessionsAtLocation(String buildingName) {
-        List<Session> sessionsAtLocation = new ArrayList<Session>();
-        List<Location> locations = locationRepository.findAllLocationByBuildingName(buildingName);
-        System.out.println("Locations size:" + locations.size());
-        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByLocation(locations.get(0));
+    public List<Session> getSessionsByBuildingName(String buildingName) {
+        List<Session> sessionList = new ArrayList<Session>();
+        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName);
         
         for (SessionInformation sessionInfo: sessionsInfo) {
-            sessionsAtLocation.add(sessionInfo.getSession());
+            sessionList.add(sessionInfo.getSession());
         }
 
-        return sessionsAtLocation;
+        return sessionList;
 
     }
 
