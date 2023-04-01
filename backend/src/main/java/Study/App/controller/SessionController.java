@@ -200,11 +200,10 @@ public class SessionController {
     }
 
     // GET all sessions by location
-    @GetMapping("/getAllSessionsByLocation")
+    @GetMapping("/getAllSessionsByBuildingName")
     public ResponseEntity<List<SessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
-        List<Session> sessionList = sessionService.getSessionsAtLocation(buildingName);
+        List<Session> sessionList = sessionService.getSessionsByBuildingName(buildingName);
         List<SessionTO> sessionTOList = new ArrayList<>();
-        System.out.println("SESION LIST SIZE!!!!!!!!!!!!!!!!!!!!!!!: " + sessionList.size());
         if (sessionList != null) {
             sessionList.stream().forEach(session -> {
                 sessionTOList.add(new SessionTO(

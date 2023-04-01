@@ -130,7 +130,15 @@ public class SessionServiceTest {
         sessionInfo3.setTags(sessionInfo3Tags);
         sessionInfo4.setTags(sessionInfo4Tags);
         sessionInfo5.setTags(sessionInfo5Tags);
-
+        
+        sessionInfo1.setBuildingName("Building1");
+        
+        List<SessionInformation> sessionInfos = new ArrayList<>();
+        
+        sessionInfos.add(sessionInfo1);
+        sessionInfos.add(sessionInfo2);
+        sessionInfos.add(sessionInfo3);
+        sessionInfos.add(sessionInfo4);
 
         List<Session> sessionList = new ArrayList<>();
 
@@ -170,6 +178,8 @@ public class SessionServiceTest {
         session3.setSessionInformation(sessionInfo3);
         session4.setSessionInformation(sessionInfo4);
         session5.setSessionInformation(sessionInfo5);
+
+        //sessionInfo1.setSession(session1);
 
         sessionList.add(session1);
         sessionList.add(session2);
@@ -240,6 +250,8 @@ public class SessionServiceTest {
 
         lenient().when(sessionInformationRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> List.of(sessionInfo1, sessionInfo2, sessionInfo3, sessionInfo4, sessionInfo5));
 
+        //lenient().when(sessionInformationRepository.findAllSessionInformationByBuildingName("Building1")).thenAnswer((InvocationOnMock invocation) -> sessionInfos);
+        
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo1)).thenAnswer((InvocationOnMock invocation) -> session1);
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo2)).thenAnswer((InvocationOnMock invocation) -> session2);
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo3)).thenAnswer((InvocationOnMock invocation) -> session3);
@@ -364,20 +376,22 @@ public class SessionServiceTest {
 
     // Sadek
     @Test
-    public void testGetSessionsByLocation() {
-        Integer numOfSessions = null;
-        Integer idOfSession = null;
-        try {
-            
-            numOfSessions = sessionService.getSessionsAtLocation("Building1").size();
-            idOfSession = sessionService.getSessionsAtLocation("Building1").get(0).getSessionId();
-            
-        } catch (Exception e) {
-            System.out.println("EXCEPTION: " + e.getMessage());
-        }
+    public void testGetSessionsByBuildingName() {
+        final String buildingName = "Building1";
+        Session testSession = new Session();
+        SessionInformation testSessionInfo = new SessionInformation();
 
-        assertEquals(1, numOfSessions);
-        assertEquals(1, idOfSession);
+        testSession.setSessionInformation(testSessionInfo);
+        testSessionInfo.setSession(testSession);
+
+        final ArrayList<SessionInformation> testSessionInfos = new ArrayList<SessionInformation>();
+        testSessionInfos.add(testSessionInfo);
+
+        when(sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName)).thenAnswer((InvocationOnMock invocation) -> testSessionInfos);
+
+
+        assertEquals(1, sessionService.getSessionsByBuildingName("Building1").size());
+
         
     
     }
