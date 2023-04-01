@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 
+import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.model.*;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
@@ -233,6 +234,9 @@ public class SessionServiceTest {
         userList.add(user1);
         userList.add(user2);
 
+        List<Participation> user1ParticipationList = new ArrayList<>();
+        user1ParticipationList.add(participation1);
+
         lenient().when(sessionInformationRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> List.of(sessionInfo1, sessionInfo2, sessionInfo3, sessionInfo4, sessionInfo5));
 
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo1)).thenAnswer((InvocationOnMock invocation) -> session1);
@@ -254,6 +258,7 @@ public class SessionServiceTest {
         lenient().when(userRepository.findUserByUsername(user1Username)).thenAnswer((InvocationOnMock invocation) -> user1);
         lenient().when(userRepository.findUserByUsername(user2Username)).thenAnswer((InvocationOnMock invocation) -> user2);
         lenient().when(participationRepository.findAllParticipationBySessionSessionId(1)).thenAnswer((InvocationOnMock invocation) -> participationList);
+        lenient().when(participationRepository.findAllParticipationByUserInformationUserUserId(1)).thenAnswer((InvocationOnMock invocation) -> user1ParticipationList);
 
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> invocation.getArgument(0);
         lenient().when(sessionRepository.save(any(Session.class))).thenAnswer(returnParameterAsAnswer);
@@ -280,6 +285,18 @@ public class SessionServiceTest {
         assertEquals(2, sessionService.getSessionsByTag(testTags).size());
     }
 
+    @Test
+    public void testGetSessionsByUser() {
+        List<CreateSessionTO> sessions = new ArrayList<>();
+        try {
+            sessions = sessionService.getSessionsByUsername(user1Username);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertEquals(1, sessions.size());
+        assertEquals(1, sessions.get(0).incoming.sessionId);
+    }
 
     // Letao
     @Test
