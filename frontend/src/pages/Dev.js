@@ -1,61 +1,16 @@
-import { View, Text, ScrollView } from "react-native";
-import ActiveSessions from "../../components/ActiveSessions";
-import Categories from "../../components/Categories";
-import CategoryButton from "../../components/CategoryButton";
-import { Pressable } from "react-native";
-import { AddUser } from "../../utils/AddUser";
-import StudySessionCard from "../../components/StudySessionCard";
-import assetsObject from "../../assets/assets";
-import request_ressource from "../../utils/fetchApi";
-import { useState, useEffect } from "react";
-import { isNil } from "../../utils/isNil";
+import { View, Text } from "react-native"
+import Categories from "../../components/Categories"
+import CategoryButton from "../../components/CategoryButton"
+import { Pressable } from "react-native"
+import { AddUser } from "../../utils/AddUser"
+import StudySessionCard from "../../components/StudySessionCard"
+import assetsObject from "../../assets/assets"
+import CreateSessionPage from "../../components/CreateSessionPage"
 
-export default function Dev() {
-  const [data, setData] = useState([]);
-  const [status, setStatus] = useState("");
-  
-  async function getActiveSessionsFromServer() {
-    let url = "";
-    url = `http://localhost:8080/session/getAllSessions`;
+export default function Dev(){
     
-    let response = null;
-    try {
-      response = await request_ressource(url, "GET");
-      setStatus(response.status);
-      response = await response.body.json();
-      console.log(response);
-      setData(response);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  
-  useEffect(() => {
-    getActiveSessionsFromServer();
-  }, []);
 
-  let renderSessions = "";
-  renderSessions = data.map(event => {
-  return (<View>
-    <StudySessionCard
-      tag={event.incomingInfo?.tags.length > 0 ? event.incomingInfo.tags[0] : null}
-      sessionTitle={event.incoming.title}
-      sessionLocation={"McGill University"}
-      numberOfAttendees={event.incoming.numberOfAttendees}
-      image={assetsObject.mcgillPhoto}
-      description={event.incoming.description}
-      sessionId={event.incoming.sessionId}
-    />
-  </View> )
-  }
-  );
-
-
-  return (
-    <ScrollView>
-      <Text style={{ fontSize: 16, fontWeight: "bold", alignSelf: "center", flex: 1 }}>
-        ! FOR DEVELOPMENT ONLY !
-      </Text>
-    </ScrollView>
-  );
+    return(<View>
+        <CreateSessionPage/>
+    </View>)
 }
