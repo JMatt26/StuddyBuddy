@@ -13,6 +13,8 @@ import AllSessions from '../pages/AllSessions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import SearchSessions from '../pages/SearchSessions';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +32,11 @@ export default function AppStack() {
               } else if (route.name === 'Profile') {
                 iconName = 'user';
                 return <Feather name={iconName} size={size} color={color} />;
-              } else if (route.name = 'My Events') {
+              } else if (route.name === 'My Events') {
                 iconName = 'calendar';
+              } else if (route.name === 'Search') {
+                iconName = 'search';
+                return <EvilIcons name={iconName} size={size} color={color} />;
               }
   
               // You can return any component that you like here!
@@ -48,9 +53,10 @@ export default function AppStack() {
             }
           })}>
             <Tab.Screen name='Main'>
-                {() => 
-                    <Main />
-                }
+                {() => <Main /> }
+            </Tab.Screen>
+            <Tab.Screen name ='Search'>
+                {() => <SearchSessions />}
             </Tab.Screen>
             <Tab.Screen name='Create Session'>
                 {() => <Dev />}

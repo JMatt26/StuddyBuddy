@@ -8,13 +8,6 @@ import { isNil } from "../utils/isNil";
 import request_ressource from "../utils/fetchApi";
 
 export default function Searchbar() {
-    // const sessions = [
-    //   {id: 1, tag: 'FACC-300', sessionTitle: 'Study Session', sessionLocation: "Sherbrooke 680", numberOfAttendees: '36', image:assetsObject.mcgillPhoto},
-    //   {id: 2, tag: "ECSE-324", sessionTitle: "Studying Session", sessionLocation: "Trottier", numberOfAttendees: "12", image: assetsObject.mcgillPhoto},
-    //   {id:3, tag: "COMP-251", sessionTitle: "COMP 251 Final Review", sessionLocation: "Trottier", numberOfAttendees: "2", image: assetsObject.mcgillPhoto},
-    //   {id: 4, tag: "COMP-206", sessionTitle: "COMP 206 Midterm Review", sessionLocation: "Trottier", numberOfAttendees: 12, image: assetsObject.mcgillPhoto},
-    // ];
-    // console.log("THIS IS SESSIONS+++++++++++++++++++" + sessions);
 
     const [data, setData] = useState([]);
     const [status, setStatus] = useState("");
@@ -35,26 +28,11 @@ export default function Searchbar() {
       }
     }
 
-    // const sessions = data.map((event, index) => {
-    //   return {
-    //     id: event.incoming.sessionId,
-    //     tags: event.incomingInfo.tags,
-    //     sessionTitle: event.incoming.title,
-    //     sessionLocation: isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location,
-    //     numberOfAttendees: event.incoming.numberOfAttendees,
-    //     image: assetsObject.mcgillPhoto,
-    //   };
-    // }
-    // );
-
-    // console.log("THIS IS SESSIONS+++++++++++++++++++" + sessions);
-
-
     useEffect(() => {
       getAllSessionsFromServer();
     }, []);
 
-     const sessions = data.map(function(event) {
+    const sessions = data.map(function(event) {
       return {
         id: event.incoming.sessionId,
         tags: !isNil(event.incomingInfo?.tags)? event.incomingInfo.tags[0] : null,
@@ -64,8 +42,6 @@ export default function Searchbar() {
         image: assetsObject.mcgillPhoto,
       }
     });
-
-    console.log("THIS IS SESSIONS+++++++++++++++++++" + sessions);
 
     const [searchedSession, setSearchedSession] = React.useState('');
     const [filteredSessions, setFilteredSessions] = React.useState([]);
