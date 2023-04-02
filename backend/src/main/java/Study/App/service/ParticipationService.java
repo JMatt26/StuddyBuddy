@@ -26,9 +26,12 @@ public class ParticipationService {
         Session aSession = sessionRepository.findSessionBySessionId(sessionId);
         Participation aParticipant = participantRepository.findParticipationByParticipationID(participantId);
 
-        // if (aSession.getParticipants().contains(aParticipant)) {
-        //     participantRepository.delete(aParticipant);
-        // }
+        if (aSession!=null && aParticipant!=null) {
+            if (aSession.getParticipations().contains(aParticipant)) {
+                aSession.getParticipations().remove(aParticipant);
+                participantRepository.delete(aParticipant);
+            }
+        }
         return aParticipant;
     }
 

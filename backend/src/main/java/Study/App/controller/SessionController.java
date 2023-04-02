@@ -89,7 +89,8 @@ public class SessionController {
                 incomingInfo.tags,
                 incomingInfo.isOnline,
                 incomingInfo.materialUrl,
-                incomingInfo.locationId);
+                incomingInfo.locationId,
+                username);
 
         if (newSessionInfo == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -198,6 +199,31 @@ public class SessionController {
         }
     }
 
+    // GET all sessions by location
+    @GetMapping("/getAllSessionsByBuildingName")
+    public ResponseEntity<List<SessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
+        List<Session> sessionList = sessionService.getSessionsByBuildingName(buildingName);
+        List<SessionTO> sessionTOList = new ArrayList<>();
+        if (sessionList != null) {
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                    session.getSessionId(),
+                    session.isPrivate(),
+                    session.getTitle(),
+                    session.getCapacity(),
+                    session.getDescription(),
+                    null,
+                    null,
+                    session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+                ));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @GetMapping("/getAllSessionsByTag")
     public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
         Set<Session> sessionList = sessionService.getSessionsByTag(tags);
@@ -225,25 +251,22 @@ public class SessionController {
     }
 
     @GetMapping("/getAllActiveSessions")
-    public ResponseEntity<List<SessionTO>> getAllActiveSessions() {
-        List<Session> sessionList = sessionService.getAllActiveSessions();
-        List<SessionTO> sessionTOList = new ArrayList<>();
-        if (sessionList != null) {
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                        session.getSessionId(),
-                        session.isPrivate(),
-                        session.getTitle(),
-                        session.getCapacity(),
-                        session.getDescription(),
-                        null,
-                        null,
-                        session.getSessionInformation() == null ? null
-                                : session.getSessionInformation().getSessionInformationId()));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+    public ResponseEntity<List<CreateSessionTO>> getAllActiveSessions() {
+        List<CreateSessionTO> sessionList = sessionService.getAllActiveSessions();
+        if(sessionList != null){
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getAllUpcomingSessions")
+    public ResponseEntity<List<CreateSessionTO>> getAllUpcomingSessions() {
+        List<CreateSessionTO> sessionList = sessionService.getAllUpcomingSessions();
+        if(sessionList != null){
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -308,4 +331,6 @@ public class SessionController {
             }
         }
     }
+
+    
 }

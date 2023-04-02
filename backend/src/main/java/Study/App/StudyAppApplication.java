@@ -1,5 +1,6 @@
 package Study.App;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import Study.App.controller.SessionController;
+import Study.App.model.Location;
+import Study.App.model.Session;
+import Study.App.model.SessionInformation;
+import Study.App.model.User;
+import Study.App.model.UserInformation;
+import Study.App.model.enums.ParticipationRole;
+import Study.App.repository.LocationRepository;
+import Study.App.repository.SessionInformationRepository;
+import Study.App.repository.SessionRepository;
+import Study.App.repository.UserInformationRepository;
+import Study.App.repository.UserRepository;
 import Study.App.model.enums.ParticipationRole;
 
 @SpringBootApplication
@@ -56,7 +69,9 @@ public class StudyAppApplication {
 			sessionInformationRepository.save(sessionInformation);
 
 			Session session = new Session();
+			session.setTitle("Penis Test");
 			sessionRepository.save(session);
+			
 			Session session1 = new Session();
 			session1.setTitle("ECSE 428");
 			sessionRepository.save(session1);
@@ -90,6 +105,42 @@ public class StudyAppApplication {
 			session2.setTitle("ECSE 310");
 			sessionRepository.save(session2);
 
+			Session session3 = new Session();
+			session3.setTitle("COMP 251");
+			sessionRepository.save(session3);
+
+			// Session that has all attributes
+			Session session4 = new Session();
+			session4.setTitle("Full Trial");
+			session4.setCapacity(1);
+			session4.setDescription("This is a full trial session for the rendering and flow of data");
+			session4.setPrivate(false);
+
+			//Session Information
+			SessionInformation session4Information = new SessionInformation();
+			Date startTime1 = SessionController.stringToDate("2021-04-01 12:00:00");
+			Date endTime1 = SessionController.stringToDate("2021-04-01 13:00:00");
+			session4Information.setStartTime(startTime1);
+			session4Information.setEndTime(endTime1);
+			List<String> tags1 = new ArrayList<String>();
+			tags1.add("TESTING");
+			session4Information.setTags(tags1);
+			sessionInformationRepository.save(session4Information);
+			session4.setSessionInformation(session4Information);
+
+			// Setting Location
+			Location location = new Location();
+			location.setBuildingName("Trottier");
+			location.setRoomNumber("A-100");
+			location.setCity("Montreal");
+			location.setProvince("Quebec");
+			location.setStreetAddress("1450 Rue Guy");
+			location.setPostalCode("H3H 1M8");
+			locationRepository.save(location);
+			session4.getSessionInformation().setLocation(location);
+			sessionInformationRepository.save(session4Information);
+
+			sessionRepository.save(session4);
 			SessionInformation sessionInformation2 = new SessionInformation();
 			Date startTime2 = new Date(12345678);
 			Date endTime2 = new Date(22345678);

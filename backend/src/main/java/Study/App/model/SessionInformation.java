@@ -38,6 +38,10 @@ public class SessionInformation {
     
     @ManyToOne
     private Location location;
+
+    private String adminUsername;
+
+    private String buildingName;
     
     public List<String> getTags() {
         return tags;
@@ -124,6 +128,22 @@ public class SessionInformation {
         return "SessionInformation [courses=" + courses + ", endTime=" + endTime + ", isOnline=" + isOnline
                 + ", materialUrl=" + materialUrl + ", session=" + session + ", sessionInformationId="
                 + sessionInformationId + ", startTime=" + startTime +  ", tags=" + tags +"]";
+    }
+
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
     
 }
