@@ -234,9 +234,7 @@ public class SessionService {
     public List<Session> getSessionsByBuildingName(String buildingName) {
         List<Session> sessionList = new ArrayList<Session>();
         List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName);
-        System.out.println("NUMBER OF SESSIONINFOS: " + sessionsInfo.size());
         for (SessionInformation sessionInfo: sessionsInfo) {
-            System.out.println("SESSION INFO ID: " + sessionInfo.getSessionInformationId());
             sessionList.add(sessionInfo.getSession());
         }
 
