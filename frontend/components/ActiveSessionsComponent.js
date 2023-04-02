@@ -4,6 +4,7 @@ import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
 import HomeCard from "./HomeCard";
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
+import { AuthContext } from "../src/context/AuthContext";
 
 export default function ActiveSessionsComponent() {
   const [data, setData] = useState([]);

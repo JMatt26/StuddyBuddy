@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
 import HomeCard from "./HomeCard";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
 
-export default function AllSessionsComponent() {
+export default function AllSessionsComponent({ navigation }) {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
@@ -36,7 +39,7 @@ export default function AllSessionsComponent() {
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>All Sessions</Text>
-          <Button onPress={routeChange} color="#0ead69" title="See All" />
+          <Button color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {
