@@ -10,13 +10,13 @@ import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
 
-export default function AllSessions({navigation}) {
+export default function ActiveSessions({navigation}) {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
-  async function getAllSessionsFromServer() {
+  async function getActiveSessionsFromServer() {
     let url = "";
-    url = `http://localhost:8080/session/getAllSessions`;
+    url = `http://localhost:8080/session/getAllActiveSessions`;
     
     let response = null;
     try {
@@ -31,7 +31,7 @@ export default function AllSessions({navigation}) {
   }
   
   useEffect(() => {
-    getAllSessionsFromServer();
+    getActiveSessionsFromServer();
   }, []);
 
   let renderSessions = "";

@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import HomeCard from "./HomeCard";
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
 
-export default function UpcomingSessionsComponent() {
+export default function UpcomingSessionsComponent({navigation}) {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
@@ -28,15 +28,11 @@ export default function UpcomingSessionsComponent() {
     getAllUpcomingSessionsFromServer();
   }, []);
   
-  const routeChange = () => {
-    Alert.alert("Session");
-  };
-
   return (
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>Upcoming Sessions</Text>
-          <Button onPress={routeChange} color="#0ead69" title="See All" />
+          <Button onPress={() => navigation.navigate('UpcomingSessions')}color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {

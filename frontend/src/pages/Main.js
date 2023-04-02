@@ -13,9 +13,9 @@ export default function Main({ navigation }) {
   return (
     <View>
       <Searchbar />
-      <AllSessionsComponent />
-      <ActiveSessionsComponent />
-      <UpcomingSessionsComponent />
+      <AllSessionsComponent navigation={navigation} />
+      <ActiveSessionsComponent navigation={navigation} />
+      <UpcomingSessionsComponent navigation={navigation}/>
     </View>
   );
 }

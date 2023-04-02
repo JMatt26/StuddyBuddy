@@ -6,7 +6,7 @@ import HomeCard from "./HomeCard";
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
 import { AuthContext } from "../src/context/AuthContext";
 
-export default function ActiveSessionsComponent() {
+export default function ActiveSessionsComponent({navigation}) {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   
@@ -28,16 +28,12 @@ export default function ActiveSessionsComponent() {
   useEffect(() => {
     getAllActiveSessionsFromServer();
   }, []);
-  
-  const routeChange = () => {
-    Alert.alert("Session");
-  };
 
   return (
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>Active Sessions</Text>
-          <Button onPress={routeChange} color="#0ead69" title="See All" />
+          <Button onPress={() => navigation.navigate('ActiveSessions')}color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {

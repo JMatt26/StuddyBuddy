@@ -39,7 +39,7 @@ export default function AllSessionsComponent({ navigation }) {
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>All Sessions</Text>
-          <Button color="#0ead69" title="See All" />
+          <Button onPress={() => navigation.navigate('AllSessions')}color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {
