@@ -2,7 +2,6 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
 // import request_ressource from './fetchUtil';
-import Logger from './Logger/Logger';
 
 export async function sendNotification(expoToken , object = {
   title :'Original Title',
@@ -33,7 +32,7 @@ export async function sendNotification(expoToken , object = {
 export async function registerForPushNotificationsAsync() {
     let token;
 
-    Logger.info(`[Notifications] registerForPushNotificationsAsync`);
+    console.log(`[Notifications] registerForPushNotificationsAsync`);
 
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
@@ -52,16 +51,16 @@ export async function registerForPushNotificationsAsync() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        Logger.error(`[Notifications] Failed to get push token for push notification!`);
+        console.log(`[Notifications] Failed to get push token for push notification!`);
         alert('Failed to get push token for push notification!');
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      Logger.info(`[Notifications] Your push token: ${token}`);
+      console.log(`[Notifications] Your push token: ${token}`);
 
     } else {
       //alert('Must use physical device for Push Notifications');
-      Logger.error(`[Notifications] Must use physical device for Push Notifications`);
+      console.log(`[Notifications] Must use physical device for Push Notifications`);
     }
   
     return token;
