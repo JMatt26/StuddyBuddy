@@ -28,6 +28,7 @@ import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
 import java.util.Date;
+import java.security.cert.CertPath;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -225,28 +226,13 @@ public class SessionController {
 
 
     @GetMapping("/getAllSessionsByTag")
-    public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
-        Set<Session> sessionList = sessionService.getSessionsByTag(tags);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByTag(tags);
         if(sessionList != null){
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                    session.getSessionId(),
-                    session.isPrivate(),
-                    session.getTitle(),
-                    session.getCapacity(),
-                    session.getDescription(),
-                    null,
-                    null,
-                    session.getSessionInformation() == null ?
-                        null :
-                        session.getSessionInformation().getSessionInformationId()
-                ));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST); 
         }
     }
 
@@ -271,28 +257,13 @@ public class SessionController {
     }
 
     @GetMapping("/getAllSessionsByCourse")
-    public ResponseEntity<List<SessionTO>> getAllSessionsByCourses(@RequestParam List<String> courses) {
-        Set<Session> sessionList = sessionService.getSessionsByCourse(courses);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByCourses(@RequestParam List<String> courses) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByCourse(courses);
         if(sessionList != null){
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                    session.getSessionId(),
-                    session.isPrivate(),
-                    session.getTitle(),
-                    session.getCapacity(),
-                    session.getDescription(),
-                    null,
-                    null,
-                    session.getSessionInformation() == null ?
-                        null :
-                        session.getSessionInformation().getSessionInformationId()
-                ));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST); 
         }
     }
 
