@@ -112,35 +112,53 @@ public class SessionServiceTest {
         SessionInformation sessionInfo5 = new SessionInformation();
 
         List<String> sessionInfo1Tags = new ArrayList<String>();
+        List<String> sessionInfo1Courses = new ArrayList<String>();
         List<String> sessionInfo2Tags = new ArrayList<String>();
+        List<String> sessionInfo2Courses = new ArrayList<String>();
         List<String> sessionInfo3Tags = new ArrayList<String>();
+        List<String> sessionInfo3Courses = new ArrayList<String>();
         List<String> sessionInfo4Tags = new ArrayList<String>();
+        List<String> sessionInfo4Courses = new ArrayList<String>();
         List<String> sessionInfo5Tags = new ArrayList<String>();
+        List<String> sessionInfo5Courses = new ArrayList<String>();
 
         sessionInfo1Tags.add("Movies");
         sessionInfo1Tags.add("Chess");
         sessionInfo1Tags.add("Music");
+        sessionInfo1Courses.add("ECSE-324");
 
         sessionInfo2Tags.add("Music");
+        sessionInfo2Courses.add("ECSE-428");
 
         sessionInfo3Tags.add("Movies");
         sessionInfo3Tags.add("Music");
+        sessionInfo3Courses.add("ECSE-324");
 
         sessionInfo4Tags.add("Chess");
         sessionInfo4Tags.add("Silent");
+        sessionInfo4Courses.add("ECSE-324");
 
         sessionInfo5Tags.add("Silent");
+        sessionInfo5Courses.add("COMP-251");
 
         sessionInfo1.setTags(sessionInfo1Tags);
         sessionInfo1.setStartTime(startTime);
         sessionInfo1.setEndTime(endTime);
+        sessionInfo1.setCourses(sessionInfo1Courses);
         
         sessionInfo2.setTags(sessionInfo2Tags);
         sessionInfo2.setStartTime(startTimeTwo);
         sessionInfo2.setEndTime(endTimeTwo);
+        sessionInfo2.setCourses(sessionInfo2Courses);
+
         sessionInfo3.setTags(sessionInfo3Tags);
+        sessionInfo3.setCourses(sessionInfo3Courses);
+
         sessionInfo4.setTags(sessionInfo4Tags);
+        sessionInfo4.setCourses(sessionInfo4Courses);
+
         sessionInfo5.setTags(sessionInfo5Tags);
+        sessionInfo5.setCourses(sessionInfo5Courses);
         
         sessionInfo1.setBuildingName("Building1");
         
@@ -308,6 +326,14 @@ public class SessionServiceTest {
         assertEquals(2, sessionService.getSessionsByTag(testTags).size());
     }
 
+    //Nicholas
+    @Test
+    public void testGetAllSessionsByCourse() {
+        List<String> testCourses = new ArrayList<String>();
+        testCourses.add("ECSE-324");
+
+        assertEquals(3, sessionService.getSessionsByCourse(testCourses).size());
+    }
 
     // Letao
     @Test
