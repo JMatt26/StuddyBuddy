@@ -199,6 +199,31 @@ public class SessionController {
         }
     }
 
+    // GET all sessions by location
+    @GetMapping("/getAllSessionsByBuildingName")
+    public ResponseEntity<List<SessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
+        List<Session> sessionList = sessionService.getSessionsByBuildingName(buildingName);
+        List<SessionTO> sessionTOList = new ArrayList<>();
+        if (sessionList != null) {
+            sessionList.stream().forEach(session -> {
+                sessionTOList.add(new SessionTO(
+                    session.getSessionId(),
+                    session.isPrivate(),
+                    session.getTitle(),
+                    session.getCapacity(),
+                    session.getDescription(),
+                    null,
+                    null,
+                    session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+                ));
+            });
+            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @GetMapping("/getAllSessionsByTag")
     public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
         Set<Session> sessionList = sessionService.getSessionsByTag(tags);
@@ -280,4 +305,6 @@ public class SessionController {
             }
         }
     }
+
+    
 }

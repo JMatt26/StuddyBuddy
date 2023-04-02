@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
 import React, { Component } from 'react';
 
-export default function ActiveSession(props) {
+export default function HomeCard(props) {
         return (
             <View>
                 <Pressable style={styles.container}>
@@ -17,10 +17,11 @@ export default function ActiveSession(props) {
 const styles = StyleSheet.create ({
     container: {
         height: 215,
-        width: 168,
+        width: 145,
         borderRadius: "10%",
         backgroundColor: 'white',
         marginBottom: 8,
+        marginRight: 10
     },
     sessionName: {
         color: "black",

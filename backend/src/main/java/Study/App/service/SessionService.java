@@ -231,6 +231,19 @@ public class SessionService {
         }
     }
 
+    public List<Session> getSessionsByBuildingName(String buildingName) {
+        List<Session> sessionList = new ArrayList<Session>();
+        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName);
+        for (SessionInformation sessionInfo: sessionsInfo) {
+            sessionList.add(sessionInfo.getSession());
+        }
+
+        return sessionList;
+
+    }
+
+    public void addLocation() {}
+
     @Transactional
     public Set<Session> getSessionsByTag(List<String> tags) {
         Set<Session> sessionList = new HashSet<Session>();
