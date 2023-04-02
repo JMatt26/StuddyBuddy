@@ -12,6 +12,7 @@ export default function Main({ navigation }) {
 
   return (
     <View>
+      <Searchbar />
       <AllSessionsComponent />
       <ActiveSessionsComponent />
       <UpcomingSessionsComponent />
