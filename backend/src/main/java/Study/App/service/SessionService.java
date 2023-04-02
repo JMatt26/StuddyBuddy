@@ -245,8 +245,8 @@ public class SessionService {
     public void addLocation() {}
 
     @Transactional
-    public Set<Session> getSessionsByTag(List<String> tags) {
-        Set<Session> sessionList = new HashSet<Session>();
+    public List<CreateSessionTO> getSessionsByTag(List<String> tags) {
+        List<Session> sessionList = new ArrayList<Session>();
         for (String tag : tags) {
             Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
             for (SessionInformation sessionInformation : sessionInformations) {
@@ -259,9 +259,28 @@ public class SessionService {
 
             }
         }
-        return sessionList;
+        return sessions2CreateSessionTOs(sessionList);
     }
 
+    @Transactional
+    public List<CreateSessionTO> getSessionsByCourse(List<String> courses){
+        List<Session> sessionList = new ArrayList<Session>();            
+        for(String course: courses){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getCourses() != null && sessionInformation.getCourses().contains(course)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+
+            }
+        }
+        return sessions2CreateSessionTOs(sessionList);
+    }
     public List<CreateSessionTO> sessions2CreateSessionTOs(List<Session> sessions) {
         List<CreateSessionTO> result = new ArrayList();
         for (Session session : sessions) {
