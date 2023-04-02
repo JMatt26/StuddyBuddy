@@ -44,8 +44,9 @@ export default function ActiveSessionsComponent() {
           <View key={index}>
           <HomeCard 
           sessionName={event.incoming.title}
-          location={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location} 
-          attendanceNbr={event.incoming.numberOfAttendees}/>
+          location={isNil(event.incomingInfo?.location) ? 'Online' : event.incomingInfo.location} 
+          attendanceNbr={event.incoming.numberOfAttendees}
+          sessionId={event.incoming.sessionId}/>
           </View>
         );
       })}
