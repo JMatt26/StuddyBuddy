@@ -166,25 +166,12 @@ public class SessionController {
 
     // GET all sessions by session name
     @GetMapping("/getAllSessionsBySessionName")
-    public ResponseEntity<List<SessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName) {
-        List<Session> sessionList = sessionService.getSessionsBySessionName(sessionName);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsBySessionName(sessionName);
         if (sessionList != null) {
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                        session.getSessionId(),
-                        session.isPrivate(),
-                        session.getTitle(),
-                        session.getCapacity(),
-                        session.getDescription(),
-                        null,
-                        null,
-                        session.getSessionInformation() == null ? null
-                                : session.getSessionInformation().getSessionInformationId()));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -53,9 +53,9 @@ public class SessionService {
     }
 
     // Get all sessions by session name
-    public List<Session> getSessionsBySessionName(String title) {
+    public List<CreateSessionTO> getSessionsBySessionName(String title) {
         List<Session> result = sessionRepository.findAllSessionByTitle(title);
-        return result;
+        return sessions2CreateSessionTOs(result);
     }
 
     @Transactional
