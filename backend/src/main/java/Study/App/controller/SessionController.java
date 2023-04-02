@@ -202,25 +202,12 @@ public class SessionController {
 
     // GET all sessions by location
     @GetMapping("/getAllSessionsByBuildingName")
-    public ResponseEntity<List<SessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
-        List<Session> sessionList = sessionService.getSessionsByBuildingName(buildingName);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByBuildingName(buildingName);
         if (sessionList != null) {
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                    session.getSessionId(),
-                    session.isPrivate(),
-                    session.getTitle(),
-                    session.getCapacity(),
-                    session.getDescription(),
-                    null,
-                    null,
-                    session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
-                ));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -231,14 +231,14 @@ public class SessionService {
         }
     }
 
-    public List<Session> getSessionsByBuildingName(String buildingName) {
+    public List<CreateSessionTO> getSessionsByBuildingName(String buildingName) {
         List<Session> sessionList = new ArrayList<Session>();
         List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName);
         for (SessionInformation sessionInfo: sessionsInfo) {
             sessionList.add(sessionInfo.getSession());
         }
 
-        return sessionList;
+        return sessions2CreateSessionTOs(sessionList);
 
     }
 
