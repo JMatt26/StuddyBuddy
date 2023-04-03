@@ -7,11 +7,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function AllSessionsComponent({ navigation }) {
+  const [reload, setReload] = useState(false);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
-  
+  const isFocused = useIsFocused();
+
   async function getAllSessionsFromServer() {
     let url = "";
     url = `http://localhost:8080/session/getAllSessions`;
@@ -29,7 +32,7 @@ export default function AllSessionsComponent({ navigation }) {
   
   useEffect(() => {
     getAllSessionsFromServer();
-  }, []);
+  }, [isFocused, reload]);
   
   const routeChange = () => {
     Alert.alert("Session");
@@ -42,16 +45,22 @@ export default function AllSessionsComponent({ navigation }) {
           <Button onPress={() => navigation.navigate('AllSessions')}color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
-      {data.map((event, index) => {
-        return(
-          <View key={index}>
-          <HomeCard 
-          sessionName={event.incoming.title}
-          location={isNil(event.incomingInfo?.location) ? null : event.incomingInfo.location} 
-          attendanceNbr={event.incoming.numberOfAttendees}/>
-          </View>
-        );
-      })}
+        {data.map((event, index) => {
+          return(
+            <View key={index}>
+              <HomeCard 
+                sessionName={event.incoming.title}
+                location={isNil(event.incomingInfo?.location) ? 
+                  'Online' : 
+                  event.incomingInfo.location
+                } 
+                attendanceNbr={event.incoming.numberOfAttendees}
+                sessionId={event.incoming.sessionId}
+                setReload={setReload}
+              />
+            </View>
+          );
+        })}
     </ScrollView>
     </View>
     

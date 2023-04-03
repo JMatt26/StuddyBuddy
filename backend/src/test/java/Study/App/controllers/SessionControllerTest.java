@@ -105,9 +105,39 @@ public class SessionControllerTest {
         // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
-        ResponseEntity<List<SessionTO>> response = client.exchange(
+        ResponseEntity<List<CreateSessionTO>> response = client.exchange(
             // you can add any request params here
             "/session/getAllSessionsBySessionName?sessionName=title", 
+            // specify the request method
+            HttpMethod.GET, 
+            // insert the request object
+            req, 
+            // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
+            new ParameterizedTypeReference<List<CreateSessionTO>>() {}
+        );
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        assertNotNull(response.getBody(), "Response has body");
+        assertEquals("title", response.getBody().get(0).incoming.title, "title");
+    }
+
+    @Test
+    public void testGetSessionsByBuildingName() {
+        // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
+
+        // STEP 1: Creating headers that contain the brearer token
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token1);
+
+        // STEP 2: Creating the request with above headers 
+		HttpEntity req = new HttpEntity(headers);
+
+        // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
+
+        // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
+        ResponseEntity<List<SessionTO>> response = client.exchange(
+            // you can add any request params here
+            "/session/getAllSessionsByBuildingName?buildingName=Building1", 
             // specify the request method
             HttpMethod.GET, 
             // insert the request object
@@ -118,7 +148,37 @@ public class SessionControllerTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody(), "Response has body");
-        assertEquals("title", response.getBody().get(0).title, "title");
+        //assertEquals("Building1", response.getBody().get(0).sessionInformationId, "Building1");
+    }
+
+    @Test
+    public void testGetSessionsCourse() {
+        // NOTE: For your tests, you can literally copy/paste Step 1 and 2, and adapt step 3 to your needs
+
+        // STEP 1: Creating headers that contain the brearer token
+        HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + token1);
+
+        // STEP 2: Creating the request with above headers 
+		HttpEntity req = new HttpEntity(headers);
+
+        // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
+
+        // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
+        ResponseEntity<List<CreateSessionTO>> response = client.exchange(
+            // you can add any request params here
+            "/session/getAllSessionsByCourse?courses=ECSE-324", 
+            // specify the request method
+            HttpMethod.GET, 
+            // insert the request object
+            req, 
+            // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
+            new ParameterizedTypeReference<List<CreateSessionTO>>() {}
+        );
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        assertNotNull(response.getBody(), "Response has body");
+        // assertEquals("Building1", response.getBody().get(0).incoming.sessionInformationId, "Building1");
     }
 
     @Test

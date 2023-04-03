@@ -1,18 +1,25 @@
-import {StyleSheet, Text, View, Button, Image, Pressable } from 'react-native';
+import {StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
-
+import {AddUser} from "../utils/AddUser";
 export default function HomeCard(props) {
-        return (
-            <View>
-                <Pressable style={styles.container}>
-                    <Image 
-                    style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
-                    <Text style={styles.sessionName}>{props.sessionName}</Text>
-                    <Text style={styles.location}>{props.location}</Text>
-                    <Text style={styles.going}>{props.attendanceNbr}</Text>
-                </Pressable>
-            </View>
-        );
+
+    let callAddUser = () => {
+        props.setReload({pipi: 34});
+        AddUser(props.sessionId);
+   }
+
+    return (
+        <View style={styles.container}>
+                <Image 
+                style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
+                <Text style={styles.sessionName}>{props.sessionName}</Text>
+                <Text style={styles.location}>{props.location}</Text>
+                <Text style={styles.going}>{props.attendanceNbr} going</Text>
+                <TouchableOpacity onPress={()=>callAddUser()} style={styles.sessionButton}>
+                    <Image source={require("../assets/plusbutton.png")}></Image>
+                </TouchableOpacity>
+        </View>
+    );
     };
 const styles = StyleSheet.create ({
     container: {
@@ -21,7 +28,7 @@ const styles = StyleSheet.create ({
         borderRadius: "10%",
         backgroundColor: 'white',
         marginBottom: 8,
-        marginRight: 10
+        marginHorizontal: 5
     },
     sessionName: {
         color: "black",
@@ -45,5 +52,9 @@ const styles = StyleSheet.create ({
         marginHorizontal: 7,
         fontSize: 20,
     },
-    
+    sessionButton: {
+        position: 'absolute',
+        bottom: 7,
+        right: 7,
+      },
 });

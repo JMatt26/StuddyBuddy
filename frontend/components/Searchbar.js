@@ -1,89 +1,121 @@
-import {StyleSheet, ScrollView, View, Image} from "react-native";
+import { StyleSheet, ScrollView, View, Image } from "react-native";
 import React, { Component, useEffect } from "react";
 import SearchInput from "./SearchInput";
 import StudySessionCard from "./StudySessionCard";
 import assetsObject from "../assets/assets";
-import {useState} from "react";
+import { useState } from "react";
+import { isNil } from "../utils/isNil";
+import request_ressource from "../utils/fetchApi";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Searchbar() {
-    // const sessions = [
-    //   {id: 1, tag: 'FACC-300', sessionTitle: 'Study Session', sessionLocation: "Sherbrooke 680", numberOfAttendees: '36', image:assetsObject.mcgillPhoto},
-    //   {id: 2, tag: "ECSE-324", sessionTitle: "Studying Session", sessionLocation: "Trottier", numberOfAttendees: "12", image: assetsObject.mcgillPhoto},
-    //   {id:3, tag: "COMP-251", sessionTitle: "COMP 251 Final Review", sessionLocation: "Trottier", numberOfAttendees: "2", image: assetsObject.mcgillPhoto},
-    //   {id: 4, tag: "COMP-206", sessionTitle: "COMP 206 Midterm Review", sessionLocation: "Trottier", numberOfAttendees: 12, image: assetsObject.mcgillPhoto},
-    // ];
+ 
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState("");
+  const isFocused = useIsFocused();
 
-    const [data, setData] = useState([]);
-    const [status, setStatus] = useState("");
-    const sessions = [];
+  async function getAllSessionsFromServer() {
+    let url = "";
+    url = `http://localhost:8080/session/getAllSessions`;
 
-      async function getAllSessionsFromServer() {
-      let url = "";
-      url = `http://localhost:8080/session/getAllSessions`;
-      
-      let response = null;
-      try {
-        response = await request_ressource(url, "GET");
-        setStatus(response.status);
-        response = await response.body.json();
-        console.log(response);
-        setData(response);
-      } catch (e) {
-        console.log(e);
-      }
+    let response = null;
+    try {
+      response = await request_ressource(url, "GET");
+      setStatus(response.status);
+      response = await response.body.json();
+      console.log(response);
+      setData(response);
+    } catch (e) {
+      console.log(e);
     }
+  }
 
-    let setSessionTitles = data.map((event, index) => {
-      sessions.push(event.incoming.title);
-      console.log(event.title);
+  useEffect(() => {
+    getAllSessionsFromServer();
+  }, [isFocused]);
+
+  const sessions = data.map(function (event) {
+    return {
+      id: event.incoming.sessionId,
+      tags: !isNil(event.incomingInfo?.tags)
+        ? event.incomingInfo.tags[0]
+        : null,
+      sessionTitle: event.incoming.title,
+      sessionLocation: isNil(event.incomingInfo?.location)
+        ? null
+        : event.incomingInfo.location,
+      numberOfAttendees: event.incoming.numberOfAttendees,
+      image: assetsObject.mcgillPhoto,
+      description: event.incoming.description,
+      startTime: event.incomingInfo?.startTime,
+      endTime: event.incomingInfo?.endTime,
+      creator: event.incomingInfo?.adminUsername,
+    };
+  });
+
+  const [searchedSession, setSearchedSession] = React.useState("");
+  const [filteredSessions, setFilteredSessions] = React.useState([]);
+  const [showAll, setShowAll] = React.useState();
+
+  const filterSessions = (search) => {
+    if (search == null || search == undefined || search == "") {
+      setShowAll(true);
+      return;
     }
-    );
-
-    const [searchedSession, setSearchedSession] = React.useState('');
-    const [filteredSessions, setFilteredSessions] = React.useState([]);
-    const [showAll, setShowAll] = React.useState();
-
-    const filterSessions = (search) => {
-      if (search == null || search == undefined || search == "") {
-        setShowAll(true);
-        return;
-      }
-      setShowAll(false);
-      let sessionsToShow = [];
-      sessions.forEach((session) => {
-        if (session.sessionTitle.toLowerCase().search(search.toLowerCase()) !== -1) {
+    setShowAll(false);
+    let sessionsToShow = [];
+    sessions.forEach((session) => {
+      if (session.sessionTitle != null) {
+        if (
+          session.sessionTitle.toLowerCase().search(search.toLowerCase()) !== -1
+        ) {
           sessionsToShow.push(session);
         }
-        setFilteredSessions(sessionsToShow);
-      });
+      }
+      setFilteredSessions(sessionsToShow);
+    });
+  };
+  useEffect(() => {
+    filterSessions(searchedSession);
+  }, [searchedSession]);
 
-    }
-    useEffect(() => {
-      filterSessions(searchedSession);
-    }, [searchedSession])
-
-    return (
-      <View >
+  return (
+    <View>
       <SearchInput
         style={styles.container}
-        icon= {<Image style={styles.searchicon} source={require("../assets/searchicon.png")}></Image>}
+        icon={
+          <Image
+            style={styles.searchicon}
+            source={require("../assets/searchicon.png")}
+          ></Image>
+        }
         placeholder="Search"
         state={searchedSession}
         setState={setSearchedSession}
       />
       <ScrollView>
         <View>
-          {(showAll ? sessions : filteredSessions).map(
-            (session) => {
-              return (
-                <StudySessionCard key={session.id} tag={session.tag} sessionTitle={session.sessionTitle} sessionLocation={session.sessionLocation} numberOfAttendees={session.numberOfAttendees} image={session.image}/>
-              );
-            }
-          )}
+          {(showAll ? sessions : filteredSessions).map((session, index) => {
+            return (
+              <StudySessionCard
+                key={index}
+                tag={session.tag}
+                sessionTitle={session.sessionTitle}
+                sessionLocation={session.sessionLocation}
+                numberOfAttendees={session.numberOfAttendees}
+                image={session.image}
+                description={session.description}
+                startTime={session.startTime}
+                endTime={session.endTime}
+                creator={session.creator}
+                sessionId={session.id}
+              />
+            );
+          })}
         </View>
       </ScrollView>
-      </View>
-    );
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -92,5 +124,5 @@ const styles = StyleSheet.create({
     height: "4%",
     marginLeft: "4%",
     padding: 9,
-  }
+  },
 });

@@ -40,6 +40,8 @@ public class SessionInformation {
     private Location location;
 
     private String adminUsername;
+
+    private String buildingName;
     
     public List<String> getTags() {
         return tags;
@@ -134,6 +136,14 @@ public class SessionInformation {
 
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
     
 }

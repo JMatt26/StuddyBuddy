@@ -53,9 +53,9 @@ public class SessionService {
     }
 
     // Get all sessions by session name
-    public List<Session> getSessionsBySessionName(String title) {
+    public List<CreateSessionTO> getSessionsBySessionName(String title) {
         List<Session> result = sessionRepository.findAllSessionByTitle(title);
-        return result;
+        return sessions2CreateSessionTOs(result);
     }
 
     @Transactional
@@ -231,9 +231,22 @@ public class SessionService {
         }
     }
 
+    public List<CreateSessionTO> getSessionsByBuildingName(String buildingName) {
+        List<Session> sessionList = new ArrayList<Session>();
+        List<SessionInformation> sessionsInfo = sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName);
+        for (SessionInformation sessionInfo: sessionsInfo) {
+            sessionList.add(sessionInfo.getSession());
+        }
+
+        return sessions2CreateSessionTOs(sessionList);
+
+    }
+
+    public void addLocation() {}
+
     @Transactional
-    public Set<Session> getSessionsByTag(List<String> tags) {
-        Set<Session> sessionList = new HashSet<Session>();
+    public List<CreateSessionTO> getSessionsByTag(List<String> tags) {
+        List<Session> sessionList = new ArrayList<Session>();
         for (String tag : tags) {
             Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
             for (SessionInformation sessionInformation : sessionInformations) {
@@ -246,9 +259,28 @@ public class SessionService {
 
             }
         }
-        return sessionList;
+        return sessions2CreateSessionTOs(sessionList);
     }
 
+    @Transactional
+    public List<CreateSessionTO> getSessionsByCourse(List<String> courses){
+        List<Session> sessionList = new ArrayList<Session>();            
+        for(String course: courses){
+            // List<String> tagList = new ArrayList<String>();
+            // tagList.add(tag);
+            Iterable<SessionInformation> sessionInformations = sessionInformationRepository.findAll();
+            for(SessionInformation sessionInformation : sessionInformations){
+                if(sessionInformation.getCourses() != null && sessionInformation.getCourses().contains(course)){
+                    Session session = this.sessionRepository.findSessionBySessionInformation(sessionInformation);
+                    if(session != null && !sessionList.contains(session)) {
+                        sessionList.add(session);
+                    }
+                }
+
+            }
+        }
+        return sessions2CreateSessionTOs(sessionList);
+    }
     public List<CreateSessionTO> sessions2CreateSessionTOs(List<Session> sessions) {
         List<CreateSessionTO> result = new ArrayList();
         for (Session session : sessions) {
@@ -296,6 +328,71 @@ public class SessionService {
             createSessionTO.incomingInfo = sessionInformationTO;
             result.add(createSessionTO);
         }
+
+        return result;
+    }
+
+    /**
+     * Returns the list of a user's sessions.
+     * @return List of sessions as CreateSessionTOs
+     */
+    @Transactional
+    public List<CreateSessionTO> getSessionsByUsername(String username){
+        Integer userId = userRepository.findUserByUsername(username).getUserId();
+        List<Participation> participations = participationRepository.findAllParticipationByUserInformationUserUserId(userId);
+       
+        List<Session> userSessions = new ArrayList<>();
+        List<CreateSessionTO> result = new ArrayList<>();
+
+        for (Participation participation : participations) {
+            userSessions.add(participation.getSession());
+        }
+
+        for (Session session : userSessions) {
+            SessionInformation sessionInformation = session.getSessionInformation();
+            SessionTO sessionTO = new SessionTO(
+                session.getSessionId(),
+                session.isPrivate() == null ? null : session.isPrivate(),
+                session.getTitle() == null ? null : session.getTitle(),
+                session.getCapacity() == null ? null : session.getCapacity(),
+                session.getDescription() == null ? null : session.getDescription(),
+                session.getParticipations() == null ? null : session.getParticipations().size(),
+                null,
+                session.getSessionInformation() == null ? null : session.getSessionInformation().getSessionInformationId()
+            );
+            String startDate = null;
+            String endDate = null;
+            SessionInformationTO sessionInformationTO = null;
+
+            if (sessionInformation != null) {
+                startDate = SessionController.dateToString(sessionInformation.getStartTime());
+                endDate = SessionController.dateToString(sessionInformation.getEndTime());
+            
+                sessionInformationTO = new SessionInformationTO(
+                    sessionInformation.getSessionInformationId(),
+                    startDate,
+                    endDate,
+                    sessionInformation.getCourses(),
+                    sessionInformation.getTags(),
+                    sessionInformation.isOnline(),
+                    sessionInformation.getMaterialUrl(),
+                    sessionInformation.getSession() == null ? null : sessionInformation.getSession().getSessionId(),
+                    sessionInformation.getLocation() == null ? null : sessionInformation.getLocation().getLocationid(),
+                    null,
+                    sessionInformation.getAdminUsername()
+                );
+
+                if (sessionInformationTO.locationId != null) {
+                    Location location = locationRepository.findLocationByLocationid(sessionInformationTO.locationId);
+                    sessionInformationTO.location = location.toString();
+                }
+            }
+
+            CreateSessionTO createSessionTO = new CreateSessionTO();
+            createSessionTO.incoming = sessionTO;
+            createSessionTO.incomingInfo = sessionInformationTO;
+            result.add(createSessionTO);
+        }  
 
         return result;
     }

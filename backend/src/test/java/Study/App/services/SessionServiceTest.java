@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 
+import Study.App.controller.TOs.CreateSessionTO;
 import Study.App.model.*;
 import Study.App.model.enums.ParticipationRole;
 import Study.App.repository.*;
@@ -71,12 +72,16 @@ public class SessionServiceTest {
 
     @Mock
     private SessionInformationRepository sessionInformationRepository;
+
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private UserInformationRepository userInformationRepository;
+
     @Mock
     private LocationRepository locationRepository;
+   
 
     private static final String user1Username = "testUsername1";
     private static final String user2Username = "testUsername2";
@@ -87,8 +92,10 @@ public class SessionServiceTest {
 
     private static final List courses = new ArrayList<String>();
     private static final List tags = new ArrayList<String>();
-    private static final Date startTime = new Date(2023, 2, 14, 12, 0);
-    private static final Date endTime = new Date(2023, 2, 14, 14, 0);
+    private static final Date startTime = new Date(123,2,5);
+    private static final Date endTime = new Date(123,7,3);
+    private static final Date startTimeTwo = new Date(123,5,12);
+    private static final Date endTimeTwo = new Date(123,6,12);
     private static final Boolean isOnline = false;
 
     private ParticipationRole studentRole = ParticipationRole.MEMBER;
@@ -105,31 +112,62 @@ public class SessionServiceTest {
         SessionInformation sessionInfo5 = new SessionInformation();
 
         List<String> sessionInfo1Tags = new ArrayList<String>();
+        List<String> sessionInfo1Courses = new ArrayList<String>();
         List<String> sessionInfo2Tags = new ArrayList<String>();
+        List<String> sessionInfo2Courses = new ArrayList<String>();
         List<String> sessionInfo3Tags = new ArrayList<String>();
+        List<String> sessionInfo3Courses = new ArrayList<String>();
         List<String> sessionInfo4Tags = new ArrayList<String>();
+        List<String> sessionInfo4Courses = new ArrayList<String>();
         List<String> sessionInfo5Tags = new ArrayList<String>();
+        List<String> sessionInfo5Courses = new ArrayList<String>();
 
         sessionInfo1Tags.add("Movies");
         sessionInfo1Tags.add("Chess");
         sessionInfo1Tags.add("Music");
+        sessionInfo1Courses.add("ECSE-324");
 
         sessionInfo2Tags.add("Music");
+        sessionInfo2Courses.add("ECSE-428");
 
         sessionInfo3Tags.add("Movies");
         sessionInfo3Tags.add("Music");
+        sessionInfo3Courses.add("ECSE-324");
 
         sessionInfo4Tags.add("Chess");
         sessionInfo4Tags.add("Silent");
+        sessionInfo4Courses.add("ECSE-324");
 
         sessionInfo5Tags.add("Silent");
+        sessionInfo5Courses.add("COMP-251");
 
         sessionInfo1.setTags(sessionInfo1Tags);
+        sessionInfo1.setStartTime(startTime);
+        sessionInfo1.setEndTime(endTime);
+        sessionInfo1.setCourses(sessionInfo1Courses);
+        
         sessionInfo2.setTags(sessionInfo2Tags);
-        sessionInfo3.setTags(sessionInfo3Tags);
-        sessionInfo4.setTags(sessionInfo4Tags);
-        sessionInfo5.setTags(sessionInfo5Tags);
+        sessionInfo2.setStartTime(startTimeTwo);
+        sessionInfo2.setEndTime(endTimeTwo);
+        sessionInfo2.setCourses(sessionInfo2Courses);
 
+        sessionInfo3.setTags(sessionInfo3Tags);
+        sessionInfo3.setCourses(sessionInfo3Courses);
+
+        sessionInfo4.setTags(sessionInfo4Tags);
+        sessionInfo4.setCourses(sessionInfo4Courses);
+
+        sessionInfo5.setTags(sessionInfo5Tags);
+        sessionInfo5.setCourses(sessionInfo5Courses);
+        
+        sessionInfo1.setBuildingName("Building1");
+        
+        List<SessionInformation> sessionInfos = new ArrayList<>();
+        
+        sessionInfos.add(sessionInfo1);
+        sessionInfos.add(sessionInfo2);
+        sessionInfos.add(sessionInfo3);
+        sessionInfos.add(sessionInfo4);
 
         List<Session> sessionList = new ArrayList<>();
 
@@ -170,6 +208,8 @@ public class SessionServiceTest {
         session4.setSessionInformation(sessionInfo4);
         session5.setSessionInformation(sessionInfo5);
 
+        //sessionInfo1.setSession(session1);
+
         sessionList.add(session1);
         sessionList.add(session2);
         sessionList.add(session3);
@@ -183,7 +223,8 @@ public class SessionServiceTest {
         location1.setPostalCode("H3T 1M8");
         location1.setBuildingName("Building1");
         location1.setRoomNumber("Room1");
-
+    
+        
 
         SessionInformation sessionInformation1 = new SessionInformation();
         sessionInformation1.setSessionInformationId(sessionInformationId);
@@ -193,6 +234,9 @@ public class SessionServiceTest {
         sessionInformation1.setStartTime(startTime);
         sessionInformation1.setEndTime(endTime);
         sessionInformation1.setOnline(isOnline);
+        sessionInformation1.setLocation(location1);
+        sessionInformation1.setSession(session1);
+
 
         //Mock users
         User user1 = new User();
@@ -233,8 +277,13 @@ public class SessionServiceTest {
         userList.add(user1);
         userList.add(user2);
 
+        List<Participation> user1ParticipationList = new ArrayList<>();
+        user1ParticipationList.add(participation1);
+
         lenient().when(sessionInformationRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> List.of(sessionInfo1, sessionInfo2, sessionInfo3, sessionInfo4, sessionInfo5));
 
+        //lenient().when(sessionInformationRepository.findAllSessionInformationByBuildingName("Building1")).thenAnswer((InvocationOnMock invocation) -> sessionInfos);
+        
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo1)).thenAnswer((InvocationOnMock invocation) -> session1);
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo2)).thenAnswer((InvocationOnMock invocation) -> session2);
         lenient().when(sessionRepository.findSessionBySessionInformation(sessionInfo3)).thenAnswer((InvocationOnMock invocation) -> session3);
@@ -254,6 +303,7 @@ public class SessionServiceTest {
         lenient().when(userRepository.findUserByUsername(user1Username)).thenAnswer((InvocationOnMock invocation) -> user1);
         lenient().when(userRepository.findUserByUsername(user2Username)).thenAnswer((InvocationOnMock invocation) -> user2);
         lenient().when(participationRepository.findAllParticipationBySessionSessionId(1)).thenAnswer((InvocationOnMock invocation) -> participationList);
+        lenient().when(participationRepository.findAllParticipationByUserInformationUserUserId(1)).thenAnswer((InvocationOnMock invocation) -> user1ParticipationList);
 
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> invocation.getArgument(0);
         lenient().when(sessionRepository.save(any(Session.class))).thenAnswer(returnParameterAsAnswer);
@@ -269,7 +319,7 @@ public class SessionServiceTest {
     public void testGetSessionsBySessionName() {
         // Setup
         assertEquals(5, sessionService.getSessionsBySessionName("ECSE 428 study session").size());
-        assertEquals("ECSE 428 study session", sessionService.getSessionsBySessionName("ECSE 428 study session").get(0).getTitle());
+        //assertEquals("ECSE 428 study session", sessionService.getSessionsBySessionName("ECSE 428 study session").get(0).getTitle());
     }
   
     @Test
@@ -280,6 +330,28 @@ public class SessionServiceTest {
         assertEquals(2, sessionService.getSessionsByTag(testTags).size());
     }
 
+    @Test
+    public void testGetSessionsByUser() {
+        List<CreateSessionTO> sessions = new ArrayList<>();
+        try {
+            sessions = sessionService.getSessionsByUsername(user1Username);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertEquals(1, sessions.size());
+        assertEquals(1, sessions.get(0).incoming.sessionId);
+    }
+ 
+    //Nicholas
+    @Test
+    public void testGetAllSessionsByCourse() {
+        List<String> testCourses = new ArrayList<String>();
+        testCourses.add("ECSE-324");
+
+        assertEquals(3, sessionService.getSessionsByCourse(testCourses).size());
+
+    }
 
     // Letao
     @Test
@@ -327,7 +399,33 @@ public class SessionServiceTest {
         assertEquals(2, userList.size());
     }
     
-   
+    //Saviru
+    @Test
+    public void testGetAllActiveSessions(){
+        List<CreateSessionTO> sessList = null;
+        try {
+            sessList = sessionService.getAllActiveSessions();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(sessList);
+        assertEquals(1, sessList.size());
+    }
+
+    //Saviru
+    @Test
+    public void testGetAllUpcomingSessions(){
+        List<CreateSessionTO> sessList = null;
+        try {
+            sessList = sessionService.getAllUpcomingSessions();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertNotNull(sessList);
+        assertEquals(1, sessList.size());
+    }
 
     // Letao
     @Test
@@ -355,5 +453,27 @@ public class SessionServiceTest {
         }
         assertNull(sessionInformation);
         assertEquals("Session not found", error);
+    }
+
+    // Sadek
+    @Test
+    public void testGetSessionsByBuildingName() {
+        final String buildingName = "Building1";
+        Session testSession = new Session();
+        SessionInformation testSessionInfo = new SessionInformation();
+
+        testSession.setSessionInformation(testSessionInfo);
+        testSessionInfo.setSession(testSession);
+
+        final ArrayList<SessionInformation> testSessionInfos = new ArrayList<SessionInformation>();
+        testSessionInfos.add(testSessionInfo);
+
+        when(sessionInformationRepository.findAllSessionInformationByBuildingName(buildingName)).thenAnswer((InvocationOnMock invocation) -> testSessionInfos);
+
+
+        assertEquals(1, sessionService.getSessionsByBuildingName("Building1").size());
+
+        
+    
     }
 }

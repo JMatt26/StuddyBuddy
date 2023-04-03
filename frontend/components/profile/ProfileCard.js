@@ -5,7 +5,9 @@ export default function ProfileCard(props) {
     return (
         <View style={styles.box}>
             <View style={[styles.card, styles.shadowProp]}>
-                <View style={[styles.circle, styles.shadowProp]} />
+                <Image source={{
+                    uri: 'https://i.pravatar.cc/300'
+                }} style={[styles.circle, styles.shadowProp]} />
                 <Text style={styles.name}>
                     {props.name}
                     <Text style={styles.year}>({props.year})</Text>
