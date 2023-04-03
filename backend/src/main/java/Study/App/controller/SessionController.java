@@ -28,6 +28,7 @@ import Study.App.model.SessionInformation;
 import Study.App.service.SessionService;
 
 import java.util.Date;
+import java.security.cert.CertPath;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -165,25 +166,12 @@ public class SessionController {
 
     // GET all sessions by session name
     @GetMapping("/getAllSessionsBySessionName")
-    public ResponseEntity<List<SessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName) {
-        List<Session> sessionList = sessionService.getSessionsBySessionName(sessionName);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsBySessionName(@RequestParam String sessionName) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsBySessionName(sessionName);
         if (sessionList != null) {
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                        session.getSessionId(),
-                        session.isPrivate(),
-                        session.getTitle(),
-                        session.getCapacity(),
-                        session.getDescription(),
-                        null,
-                        null,
-                        session.getSessionInformation() == null ? null
-                                : session.getSessionInformation().getSessionInformationId()));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -199,29 +187,26 @@ public class SessionController {
         }
     }
 
+    // GET all sessions by location
+    @GetMapping("/getAllSessionsByBuildingName")
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByLocation(@RequestParam String buildingName) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByBuildingName(buildingName);
+        if (sessionList != null) {
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @GetMapping("/getAllSessionsByTag")
-    public ResponseEntity<List<SessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
-        Set<Session> sessionList = sessionService.getSessionsByTag(tags);
-        List<SessionTO> sessionTOList = new ArrayList<>();
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByTags(@RequestParam List<String> tags) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByTag(tags);
         if(sessionList != null){
-            sessionList.stream().forEach(session -> {
-                sessionTOList.add(new SessionTO(
-                    session.getSessionId(),
-                    session.isPrivate(),
-                    session.getTitle(),
-                    session.getCapacity(),
-                    session.getDescription(),
-                    null,
-                    null,
-                    session.getSessionInformation() == null ?
-                        null :
-                        session.getSessionInformation().getSessionInformationId()
-                ));
-            });
-            return new ResponseEntity<List<SessionTO>>(sessionTOList, HttpStatus.OK);
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<List<SessionTO>>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST); 
         }
     }
 
@@ -260,6 +245,17 @@ public class SessionController {
         }
     }
 
+    @GetMapping("/getAllSessionsByCourse")
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByCourses(@RequestParam List<String> courses) {
+        List<CreateSessionTO> sessionList = sessionService.getSessionsByCourse(courses);
+        if(sessionList != null){
+            return new ResponseEntity<List<CreateSessionTO>>(sessionList, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.BAD_REQUEST); 
+        }
+    }
+
     private UserTO convertToDTO(User u) {
         if (u == null) {
             throw new IllegalArgumentException("There is no such User");
@@ -295,4 +291,6 @@ public class SessionController {
             }
         }
     }
+
+    
 }
