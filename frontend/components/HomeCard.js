@@ -2,18 +2,24 @@ import {StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-na
 import React, { Component } from 'react';
 import {AddUser} from "../utils/AddUser";
 export default function HomeCard(props) {
-        return (
-            <View style={styles.container}>
-                    <Image 
-                    style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
-                    <Text style={styles.sessionName}>{props.sessionName}</Text>
-                    <Text style={styles.location}>{props.location}</Text>
-                    <Text style={styles.going}>{props.attendanceNbr} going</Text>
-                    <TouchableOpacity onPress={()=>AddUser(props.sessionId)} style={styles.sessionButton}>
-                        <Image source={require("../assets/plusbutton.png")}></Image>
-                    </TouchableOpacity>
-            </View>
-        );
+
+    let callAddUser = () => {
+        props.setReload({pipi: 34});
+        AddUser(props.sessionId);
+   }
+
+    return (
+        <View style={styles.container}>
+                <Image 
+                style={styles.image} source={{uri: 'https://picsum.photos/200'}}/>
+                <Text style={styles.sessionName}>{props.sessionName}</Text>
+                <Text style={styles.location}>{props.location}</Text>
+                <Text style={styles.going}>{props.attendanceNbr} going</Text>
+                <TouchableOpacity onPress={()=>callAddUser()} style={styles.sessionButton}>
+                    <Image source={require("../assets/plusbutton.png")}></Image>
+                </TouchableOpacity>
+        </View>
+    );
     };
 const styles = StyleSheet.create ({
     container: {

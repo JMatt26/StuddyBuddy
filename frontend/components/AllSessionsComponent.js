@@ -7,6 +7,7 @@ import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 
 export default function AllSessionsComponent() {
+  const [reload, setReload] = useState(false);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   const isFocused = useIsFocused();
@@ -28,7 +29,7 @@ export default function AllSessionsComponent() {
   
   useEffect(() => {
     getAllSessionsFromServer();
-  }, [isFocused]);
+  }, [isFocused, reload]);
   
   const routeChange = () => {
     Alert.alert("Session");
@@ -41,17 +42,22 @@ export default function AllSessionsComponent() {
           <Button onPress={routeChange} color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
-      {data.map((event, index) => {
-        return(
-          <View key={index}>
-          <HomeCard 
-          sessionName={event.incoming.title}
-          location={isNil(event.incomingInfo?.location) ? 'Online' : event.incomingInfo.location} 
-          attendanceNbr={event.incoming.numberOfAttendees}
-          sessionId={event.incoming.sessionId}/>
-          </View>
-        );
-      })}
+        {data.map((event, index) => {
+          return(
+            <View key={index}>
+              <HomeCard 
+                sessionName={event.incoming.title}
+                location={isNil(event.incomingInfo?.location) ? 
+                  'Online' : 
+                  event.incomingInfo.location
+                } 
+                attendanceNbr={event.incoming.numberOfAttendees}
+                sessionId={event.incoming.sessionId}
+                setReload={setReload}
+              />
+            </View>
+          );
+        })}
     </ScrollView>
     </View>
     
