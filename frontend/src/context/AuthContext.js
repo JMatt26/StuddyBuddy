@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
             .then(res => {
                 let userInfo = res.data;
                 setUserToken(userInfo);
+                AsyncStorage.setItem('username', username);
                 AsyncStorage.setItem('userToken', userInfo);
                 setUsername(username);
                 console.log('User Token: ' + userInfo);

@@ -8,7 +8,7 @@ import Main from "../pages/Main";
 import Events from "../pages/Events";
 import Profile from "../pages/Profile";
 import Dev from "../pages/Dev";
-import AllSessions from '../pages/AllSessions';
+import MySessions from '../pages/MySessions';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -62,7 +62,7 @@ export default function AppStack() {
                 {() => <Dev />}
             </Tab.Screen>
             <Tab.Screen name="My Events">
-                {() => <AllSessions />}
+                {() => <MySessions />}
             </Tab.Screen>
             <Tab.Screen name="Profile">
                 {() => <Profile />}

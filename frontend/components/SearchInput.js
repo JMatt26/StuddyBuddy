@@ -6,6 +6,7 @@ export default function SearchInput({error = false, label ,state, setState, isMu
     return (
         <View style={[{
             marginTop: 10,
+            marginBottom: 5,
             flexDirection: 'row',
             alignItems: 'center',
             marginHorizontal: 12,

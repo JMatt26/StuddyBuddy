@@ -48,6 +48,7 @@ export default function AllSessions() {
       startTime={event.incomingInfo?.startTime}
       endTime={event.incomingInfo?.endTime}
       creator={event.incomingInfo?.adminUsername}
+      sessionId={event.incoming.sessionId}
     />
   </View> )
   }
