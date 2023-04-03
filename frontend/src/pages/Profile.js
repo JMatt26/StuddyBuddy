@@ -16,7 +16,7 @@ export default function Profile() {
 
     async function getSessionsOfUser() {
         let url = "";
-        url = `http://localhost:8080/session/getAllSessions`;
+        url = `http://localhost:8080/session/getAllSessionsByUsername`;
 
         let response = null;
         try {
@@ -63,6 +63,7 @@ export default function Profile() {
                 <View style={styles.cards}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {renderSessions}
+                        {renderSessions.length == 0 ? <Text style={styles.emptyText}>No Sessions yet!</Text> : null}
                     </ScrollView>
                 </View>
             </View>
@@ -160,6 +161,10 @@ const styles = StyleSheet.create({
     cards: {
         marginHorizontal: 20,
         marginVertical: 10,
+    },
+    emptyText: {
+        fontSize: 15,
+        paddingVertical: 30
     }
 
 });
