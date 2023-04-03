@@ -47,17 +47,15 @@ export default function Profile() {
     }
     );
 
+    const renderSessionsCount = renderSessions.length;
+
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1 }}>
-                <ProfileCard name={username} year="U2" university=" McGill University" sessionNo="0" followersNo="0" followingNo="0" />
+                <ProfileCard name={username} year="U2" university=" McGill University" sessionNo={renderSessionsCount} followersNo="0" followingNo="0" />
             </View>
-            <View>
-                <Text style={styles.bio}>
-                    Occaecat irure laboris esse proident excepteur irure ea fugiat. Irure sunt voluptate dolor eu mollit do fugiat mollit ipsum incididunt pariatur.
-                </Text>
-            </View>
+
             <View>
                 <Text style={styles.subtitle}>
                     My Sessions
