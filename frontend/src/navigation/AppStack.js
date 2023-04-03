@@ -4,7 +4,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Main from "../pages/Main";
+import MainIndex from "../pages/MainIndex";
 import Events from "../pages/Events";
 import Profile from "../pages/Profile";
 import Dev from "../pages/Dev";
@@ -53,10 +53,9 @@ export default function AppStack() {
             }
           })}>
             <Tab.Screen name='Main'>
-                {() => <Main /> }
-            </Tab.Screen>
-            <Tab.Screen name ='Search'>
-                {() => <SearchSessions />}
+                {() => 
+                    <MainIndex />
+                }
             </Tab.Screen>
             <Tab.Screen name='Create Session'>
                 {() => <Dev />}
@@ -67,6 +66,7 @@ export default function AppStack() {
             <Tab.Screen name="Profile">
                 {() => <Profile />}
             </Tab.Screen>
+
         </Tab.Navigator>
     )
 };

@@ -4,9 +4,10 @@ import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
 import HomeCard from "./HomeCard";
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
+import { AuthContext } from "../src/context/AuthContext";
 import { useIsFocused } from "@react-navigation/native";
 
-export default function ActiveSessionsComponent() {
+export default function ActiveSessionsComponent({navigation}) {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
   const isFocused = useIsFocused();
@@ -38,7 +39,7 @@ export default function ActiveSessionsComponent() {
     <View>
       <View style={styles.container}>
           <Text style={styles.title}>Active Sessions</Text>
-          <Button onPress={routeChange} color="#0ead69" title="See All" />
+          <Button onPress={() => navigation.navigate('ActiveSessions')}color="#0ead69" title="See All" />
       </View>
       <ScrollView horizontal={true}>
       {data.map((event, index) => {
