@@ -105,7 +105,7 @@ public class SessionControllerTest {
         // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
-        ResponseEntity<List<SessionTO>> response = client.exchange(
+        ResponseEntity<List<CreateSessionTO>> response = client.exchange(
             // you can add any request params here
             "/session/getAllSessionsBySessionName?sessionName=title", 
             // specify the request method
@@ -113,12 +113,12 @@ public class SessionControllerTest {
             // insert the request object
             req, 
             // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
-            new ParameterizedTypeReference<List<SessionTO>>() {}
+            new ParameterizedTypeReference<List<CreateSessionTO>>() {}
         );
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody(), "Response has body");
-        assertEquals("title", response.getBody().get(0).title, "title");
+        assertEquals("title", response.getBody().get(0).incoming.title, "title");
     }
 
     @Test
@@ -165,20 +165,20 @@ public class SessionControllerTest {
         // STEP 2.5: Optional: if you want to send a body with the request, you can do it at this point
 
         // STEP 3: Sending the request to the server to correct URL: note that url contains the reqest parameters
-        ResponseEntity<List<SessionTO>> response = client.exchange(
+        ResponseEntity<List<CreateSessionTO>> response = client.exchange(
             // you can add any request params here
-            "/session/getAllSessionsByCourse?sessionCourse=ECSE-324", 
+            "/session/getAllSessionsByCourse?courses=ECSE-324", 
             // specify the request method
             HttpMethod.GET, 
             // insert the request object
             req, 
             // side note: this is a how you tell the compiler what the type T of the response object is, you wrap it in a new ParameterizedTypeReference<T>() {}
-            new ParameterizedTypeReference<List<SessionTO>>() {}
+            new ParameterizedTypeReference<List<CreateSessionTO>>() {}
         );
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody(), "Response has body");
-        //assertEquals("Building1", response.getBody().get(0).sessionInformationId, "Building1");
+        // assertEquals("Building1", response.getBody().get(0).incoming.sessionInformationId, "Building1");
     }
 
     @Test
