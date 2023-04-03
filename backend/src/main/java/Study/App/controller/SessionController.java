@@ -210,6 +210,21 @@ public class SessionController {
         }
     }
 
+    @GetMapping("/getAllSessionsByUsername")
+    public ResponseEntity<List<CreateSessionTO>> getAllSessionsByUsername() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<CreateSessionTO> createSessionTOList = sessionService.getSessionsByUsername(username);
+
+        if(createSessionTOList == null){
+            return new ResponseEntity<List<CreateSessionTO>>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<List<CreateSessionTO>>(createSessionTOList, HttpStatus.OK);
+        }
+
+    }
+
     @GetMapping("/getAllActiveSessions")
     public ResponseEntity<List<CreateSessionTO>> getAllActiveSessions() {
         List<CreateSessionTO> sessionList = sessionService.getAllActiveSessions();
