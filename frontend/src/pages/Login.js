@@ -12,72 +12,73 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function Login({ navigation }) {
     const { login } = useContext(AuthContext);
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     return (
         <ScrollView style={styles.scrollContainer}>
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.thirdPartyLogin}>
-                <Text style={styles.loginText}>Login with Facebook </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.thirdPartyLogin}>
-                <Text style={styles.loginText}>Login with Google </Text>
-            </TouchableOpacity>
-            <View style={styles.middleTextContainer}>
-                <View style={styles.middleTextLines} />
-                <View>
-                    <Text style={styles.middleText}>OR</Text>
-                </View>
-                <View style={styles.middleTextLines} />
-            </View>
-            <View>
-                <Text style={styles.existingAccount}>Sign in with an existing account</Text>
-            </View>
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    autoCapitalize='none'
-                    placeholder="Email"
-                    placeholderTextColor="#003f5c"
-                    value={email}
-                    onChangeText={(email) => setEmail(email)}
-                />
-            </View> 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    autoCapitalize='none'
-                    placeholder="Password"
-                    placeholderTextColor="#003f5c"
-                    secureTextEntry={true}
-                    value={password}
-                    onChangeText={(password) => setPassword(password)}
-                />
-            </View>
-            <TouchableOpacity>
-                <Text style={styles.forgot_button}>Forgot Password?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(email, password) } }}>
-                <Text style={styles.loginText}>LOGIN</Text>
-            </TouchableOpacity>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    marginTop: 30,
-                }}>
-                <Text>New to the app?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={{ color: '#7ecd32', fontWeight: '700' }}> Sign Up</Text>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.thirdPartyLogin}>
+                    <Text style={styles.loginText}>Login with Facebook </Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.thirdPartyLogin}>
+                    <Text style={styles.loginText}>Login with Google </Text>
+                </TouchableOpacity>
+                <View style={styles.middleTextContainer}>
+                    <View style={styles.middleTextLines} />
+                    <View>
+                        <Text style={styles.middleText}>OR</Text>
+                    </View>
+                    <View style={styles.middleTextLines} />
+                </View>
+                <View>
+                    <Text style={styles.existingAccount}>Sign in with an existing account</Text>
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        autoCapitalize='none'
+                        placeholder="Email"
+                        placeholderTextColor="#003f5c"
+                        value={username}
+                        onChangeText={(username) => setUsername(username)}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        autoCapitalize='none'
+                        placeholder="Password"
+                        placeholderTextColor="#003f5c"
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={(password) => setPassword(password)}
+                    />
+                </View>
+                <TouchableOpacity>
+                    <Text style={styles.forgot_button}>Forgot Password?</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.loginBtn} onPress={() => { { login(username, password) } }}>
+                    <Text style={styles.loginText}>LOGIN</Text>
+                </TouchableOpacity>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        marginTop: 30,
+                    }}>
+                    <Text>New to the app?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Text style={{ color: '#7ecd32', fontWeight: '700' }}> Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
         </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
-    scrollContainer:{
+    scrollContainer: {
         height: "100%",
         flex: 1
     },
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         height: "100%",
         flex: 1
-        
+
     },
     middleTextContainer: {
         flexDirection: 'row',

@@ -1,31 +1,69 @@
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Button } from "react-native"
 import { Avatar } from 'react-native-elements';
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect, useReducer } from 'react'
 import SessionCard from "../../components/profile/SessionCard"
 import FollowingCard from "../../components/profile/FollowingCard"
 import ProfileCard from "../../components/profile/ProfileCard"
+import request_ressource from "../../utils/fetchApi";
+import { isNil } from "../../utils/isNil";
 
 import { AuthContext } from "../context/AuthContext"
 
 export default function Profile() {
-    const { logout } = useContext(AuthContext);
+    const { logout, username } = useContext(AuthContext);
+    const [data, setData] = useState([]);
+    const [status, setStatus] = useState("");
+
+    async function getSessionsOfUser() {
+        let url = "";
+        url = `http://localhost:8080/session/getAllSessionsByUsername`;
+
+        let response = null;
+        try {
+            response = await request_ressource(url, "GET");
+            setStatus(response.status);
+            response = await response.body.json();
+            console.log(response);
+            setData(response);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+    useEffect(() => {
+        getSessionsOfUser();
+    }, []);
+
+    let renderSessions = "";
+    renderSessions = data.map((event, index) => {
+        return (
+            <View key={index}>
+                <SessionCard
+                    title={event.incoming.title}
+                    attendees={event.incoming.numberOfAttendees}
+                />
+            </View>)
+    }
+    );
+
+    const renderSessionsCount = renderSessions.length;
+
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1 }}>
-                <ProfileCard name="Parsa Langari" year="U2" university=" McGill University" sessionNo="0" followersNo="0" followingNo="0" />
+                <ProfileCard name={username} year="U2" university=" McGill University" sessionNo={renderSessionsCount} followersNo="0" followingNo="0" />
             </View>
-            <View>
-                <Text style={styles.bio}>
-                    Occaecat irure laboris esse proident excepteur irure ea fugiat. Irure sunt voluptate dolor eu mollit do fugiat mollit ipsum incididunt pariatur.
-                </Text>
-            </View>
+
             <View>
                 <Text style={styles.subtitle}>
                     My Sessions
                 </Text>
                 <View style={styles.cards}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <SessionCard title="ECSE 211" location="Trottier 5510" />
+                        {renderSessions}
+                        {renderSessions.length == 0 ? <Text style={styles.emptyText}>No Sessions yet!</Text> : null}
                     </ScrollView>
                 </View>
             </View>
@@ -123,6 +161,10 @@ const styles = StyleSheet.create({
     cards: {
         marginHorizontal: 20,
         marginVertical: 10,
+    },
+    emptyText: {
+        fontSize: 15,
+        paddingVertical: 30
     }
 
 });
