@@ -4,11 +4,13 @@ import { isNil } from "frontend/utils/isNil.js";
 import React, { Component } from "react";
 import HomeCard from "./HomeCard";
 import { StyleSheet, ScrollView, View, Text, Button, Alert } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ActiveSessionsComponent() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
-  
+  const isFocused = useIsFocused();
+
   async function getAllActiveSessionsFromServer() {
     let url = "";
     url = `http://localhost:8080/session/getAllActiveSessions`;
@@ -26,7 +28,7 @@ export default function ActiveSessionsComponent() {
   
   useEffect(() => {
     getAllActiveSessionsFromServer();
-  }, []);
+  }, [isFocused]);
   
   const routeChange = () => {
     Alert.alert("Session");

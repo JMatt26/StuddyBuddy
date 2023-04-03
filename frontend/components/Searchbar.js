@@ -6,11 +6,13 @@ import assetsObject from "../assets/assets";
 import { useState } from "react";
 import { isNil } from "../utils/isNil";
 import request_ressource from "../utils/fetchApi";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Searchbar() {
  
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("");
+  const isFocused = useIsFocused();
 
   async function getAllSessionsFromServer() {
     let url = "";
@@ -30,7 +32,7 @@ export default function Searchbar() {
 
   useEffect(() => {
     getAllSessionsFromServer();
-  }, []);
+  }, [isFocused]);
 
   const sessions = data.map(function (event) {
     return {
