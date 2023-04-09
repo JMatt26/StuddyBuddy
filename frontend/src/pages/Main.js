@@ -6,6 +6,7 @@ import UpcomingSessionsComponent from "../../components/UpcomingSessionsComponen
 import request_ressource from "../../utils/fetchApi";
 import { useState, useEffect } from "react";
 import { isNil } from "../../utils/isNil";
+import Searchbar from '../../components/Searchbar';
 
 export default function Main({ navigation }) {
 
